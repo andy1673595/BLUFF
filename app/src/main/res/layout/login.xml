@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.andyhuang.bluff.activities.Login"
+    android:background="@color/com_facebook_blue">
+
+    <include
+        android:id="@+id/toolBar"
+        layout="@layout/mybar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <EditText
+        android:id="@+id/edit_login_account"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="120dp"
+        android:text="@string/login_account"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
+
+    <EditText
+        android:id="@+id/edit_login_password"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/login_password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_login_account" />
+
+    <TextView
+        android:id="@+id/text_login_loginpage"
+        android:layout_width="58dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="120dp"
+        android:text="@string/login"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/edit_login_account"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
+
+    <TextView
+        android:id="@+id/text_creat_loginpage"
+        android:layout_width="58dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:text="@string/creat"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/edit_login_password"
+        app:layout_constraintTop_toBottomOf="@+id/text_login_loginpage" />
+
+    <TextView
+        android:id="@+id/text_fb_login_loginpage"
+        android:layout_width="234dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="140dp"
+        android:layout_marginStart="75dp"
+        android:gravity="center"
+        android:text="用Facebook登入"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

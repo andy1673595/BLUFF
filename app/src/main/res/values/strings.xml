@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BLUFF</string>
+    <string name="facebook_app_id">221775368589818</string>
+    <string name="fb_login_protocol_scheme">fb221775368589818</string>
+    <string name="login_account">帳號</string>
+    <string name="login_password">密碼</string>
+    <string name="login">登入</string>
+    <string name="creat">建立</string>
+</resources>
