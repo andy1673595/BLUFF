@@ -3,19 +3,26 @@ package com.andyhuang.bluff.User;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.andyhuang.bluff.Bluff;
+import com.andyhuang.bluff.Callback.FacebookLoginCallback;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.activities.Login;
+import com.facebook.AccessToken;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import static com.andyhuang.bluff.Util.Constants.TAG;
 
 public class FirebaseAccount {
     private FirebaseAuth mAuth;
@@ -92,5 +99,31 @@ public class FirebaseAccount {
     }
     public void updateToFireBase() {
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_EMAIL_FIREBASE).setValue(userEmail);
+    }
+
+    public void facebookLogin(final AccessToken accessToken, final FacebookLoginCallback callback) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(login, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            user = mAuth.getCurrentUser();
+                            userUID = user.getUid();
+                            userEmail = user.getEmail();
+                            saveUserData();
+                          //  String token = accessToken.getToken();
+                         //   Log.d(TAG,token);
+                            callback.loginSuccess();
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        }
+                        // ...
+                    }
+                });
     }
 }

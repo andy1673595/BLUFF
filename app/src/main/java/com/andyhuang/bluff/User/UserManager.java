@@ -9,8 +9,8 @@ public class UserManager {
     private String email;
     private String password;
     private SharedPreferences userData;
-    private AccessToken fbtoken;
-    private String userPhoto;
+    private AccessToken fbToken;
+    private String userPhotoUrl;
     private FirebaseUser user;
 
     private static final UserManager ourInstance = new UserManager();
@@ -48,19 +48,19 @@ public class UserManager {
     }
 
     public AccessToken getFbtoken() {
-        return fbtoken;
+        return fbToken;
     }
 
-    public void setFbtoken(AccessToken fbtoken) {
-        this.fbtoken = fbtoken;
+    public void setFbtoken(AccessToken fbToken) {
+        this.fbToken = fbToken;
     }
 
     public String getUserPhoto() {
-        return userPhoto;
+        return userPhotoUrl;
     }
 
-    public void setUserPhoto(String userPhoto) {
-        this.userPhoto = userPhoto;
+    public void setUserPhoto(String userPhotoUrl) {
+        this.userPhotoUrl = userPhotoUrl;
     }
 
     public FirebaseUser getUser() {
