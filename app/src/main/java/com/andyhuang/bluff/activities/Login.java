@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.andyhuang.bluff.Callback.FacebookLoginCallback;
+import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
 import com.andyhuang.bluff.Callback.GetFacebookUserDataCallback;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.User.FacebookUserData;
@@ -34,6 +35,7 @@ public class Login extends BaseActivity implements View.OnClickListener{
     private FacebookLoginCallback callback = loginCallback();
     private FacebookUserData userDataAPI;
     private GetFacebookUserDataCallback facebookUserDataCallback = userDataCallback();
+    private FirebaseLoginCallback firebaseLoginCallback = firebaseCallback();
 
 
     @Override
@@ -63,9 +65,10 @@ public class Login extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.text_login_loginpage:
+                firebaseAccount.login(String.valueOf(accountInput.getText()),String.valueOf(passwordInput.getText()),firebaseCallback());
                 break;
             case R.id.text_creat_loginpage:
-                firebaseAccount.creatAccount(String.valueOf(accountInput.getText()),String.valueOf(passwordInput.getText()));
+                firebaseAccount.creatAccount(firebaseCallback(),String.valueOf(accountInput.getText()),String.valueOf(passwordInput.getText()));
                 break;
             case R.id.text_fb_login_loginpage:
                 LoginManager.getInstance().logInWithReadPermissions(this,
@@ -93,7 +96,7 @@ public class Login extends BaseActivity implements View.OnClickListener{
                 if (accessToken == null) {
                     Log.d(Constants.TAG, "token null");
                 }
-                userDataAPI.getUserData(userDataCallback(),accessToken);
+                userDataAPI.getUserData(userDataCallback(),accessToken,Login.this);
                 firebaseAccount.facebookLogin(accessToken,callback);
 
             }
@@ -129,9 +132,33 @@ public class Login extends BaseActivity implements View.OnClickListener{
         return new GetFacebookUserDataCallback() {
             @Override
             public void completed() {
-
+                startMainHallActiviry();
             }
         };
+    }
+
+    private FirebaseLoginCallback firebaseCallback() {
+        return new FirebaseLoginCallback() {
+            @Override
+            public void completed() {
+                startMainHallActiviry();
+            }
+
+            @Override
+            public void loginFail() {
+                Log.d(Constants.TAG,"firebase login fail");
+            }
+        };
+    }
+
+    public void startMainHallActiviry() {
+        //設定切換Activity時所需要的參數
+        Intent intent = new Intent();
+        intent.setClass(Login.this,MainHallPage.class);
+        //切換Activity
+        startActivity(intent);
+        //關掉activity
+        this.finish();
     }
 
 }
