@@ -5,14 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.andyhuang.bluff.activities.Login"
+
     android:background="@color/com_facebook_blue">
 
-    <include
-        android:id="@+id/toolBar"
-        layout="@layout/mybar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
 
     <EditText
         android:id="@+id/edit_login_account"
@@ -21,7 +16,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="120dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/edit_login_password"
@@ -41,7 +36,7 @@
         android:text="@string/login"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/edit_login_account"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_creat_loginpage"
