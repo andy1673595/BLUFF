@@ -6,7 +6,7 @@
     android:background="@color/teal100">
 
     <ImageView
-        android:id="@+id/toolBarButton"
+        android:id="@+id/toolBarMenuButton"
         android:layout_width="38dp"
         android:layout_height="38dp"
         android:layout_marginStart="8dp"
