@@ -2,9 +2,14 @@ package com.andyhuang.bluff.FriendPage;
 
 import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.Object.FriendInformation;
+import com.andyhuang.bluff.Object.MapFromFirebaseToFriendList;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -21,19 +26,27 @@ public class FriendPresenter implements FriendContract.Presenter {
     private ArrayList<FriendInformation> friendlist = new ArrayList<FriendInformation>();
     private String myUID;
     private Map<String,Object> friendInviteMap = new HashMap<>();
-
+    private ArrayList<Map<String,Object>> friendMapListFromFirebase;
+    private MapFromFirebaseToFriendList mapTransformer = new MapFromFirebaseToFriendList();
+    private ArrayList<String> UIDlist;
+    private String UIDfromFirebase;
 
     public FriendPresenter(FriendContract.View viewInput) {
         friendPageView = viewInput;
         friendPageView.setPresenter(this);
+        init();
+
+    }
+    void init() {
         Firebase.setAndroidContext(Bluff.getContext());
         myRef = new Firebase("https://myproject-556f6.firebaseio.com/userData/");
         myUID = UserManager.getInstance().getUserUID();
-    }
+    //    firstReadData();
+        readFriendDataFromFireBase();
 
+    }
     @Override
     public void start() {
-
     }
 
     @Override
@@ -56,9 +69,64 @@ public class FriendPresenter implements FriendContract.Presenter {
 
     }
 
+   /* public void firstReadData() {
+        friendlist = new ArrayList<FriendInformation>();
+        friendMapListFromFirebase = new ArrayList<Map<String,Object>>();
+        UIDlist = new ArrayList<String>();
+        myRef.child(myUID).child(Constants.FRIEND_LIST_FIREBASE).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot dataFriend : dataSnapshot.getChildren()) {
+                        UIDlist.add(dataFriend.getKey());
+                        friendInviteMap = (Map<String,Object>) dataFriend.getValue();
+                        friendMapListFromFirebase.add(friendInviteMap);
+                    }
+                    //transform maplist to friendlist
+                    friendlist = mapTransformer.getFriendList(friendMapListFromFirebase,UIDlist);
+                    friendPageView.setAdapter(friendlist);
+                    readFriendDataFromFireBase();
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+    }*/
+
     @Override
     public void readFriendDataFromFireBase() {
+        friendlist = new ArrayList<>();
+        myRef.child(myUID).child(Constants.FRIEND_LIST_FIREBASE).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                friendInviteMap = (Map<String,Object>) dataSnapshot.getValue();
+                UIDfromFirebase = dataSnapshot.getKey();
+                FriendInformation friendInformation = mapTransformer.getAddItem(friendInviteMap,UIDfromFirebase);
+                friendPageView.addItem(friendInformation);
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                friendInviteMap = (Map<String,Object>) dataSnapshot.getValue();
+                UIDfromFirebase = dataSnapshot.getKey();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     @Override

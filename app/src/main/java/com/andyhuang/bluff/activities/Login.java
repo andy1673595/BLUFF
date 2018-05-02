@@ -119,6 +119,7 @@ public class Login extends BaseActivity implements View.OnClickListener{
             @Override
             public void loginSuccess() {
                 Log.d(Constants.TAG,"facebook login success");
+                startMainHallActiviry();
             }
 
             @Override
@@ -132,7 +133,7 @@ public class Login extends BaseActivity implements View.OnClickListener{
         return new GetFacebookUserDataCallback() {
             @Override
             public void completed() {
-                startMainHallActiviry();
+               Log.d(Constants.TAG,"Got facebook data!");
             }
         };
     }

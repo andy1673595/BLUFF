@@ -3,18 +3,27 @@ package com.andyhuang.bluff.FriendPage;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.andyhuang.bluff.Bluff;
+import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.R;
+
+import java.util.ArrayList;
 
 public class FriendFragment extends Fragment implements FriendContract.View,View.OnClickListener {
     private FriendPresenter mPresenter;
     private EditText editEmailToFindFriend;
     private ImageView imageFindButton;
+    private FriendPageAdapter mAdapter;
+    private ArrayList<FriendInformation> friendList = new ArrayList<>();
+    private RecyclerView recyclerView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,9 +36,11 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
         View root = inflater.inflate(R.layout.fragment_friend, container, false);
         editEmailToFindFriend = (EditText)root.findViewById(R.id.edit_find_friend);
         imageFindButton = (ImageView)root.findViewById(R.id.image_find_friend);
-
         imageFindButton.setOnClickListener(this);
-
+        recyclerView = (RecyclerView)root.findViewById(R.id.recyclerview_friend_page);
+        recyclerView.setLayoutManager(new LinearLayoutManager(Bluff.getContext()));
+        mAdapter = new FriendPageAdapter(friendList,mPresenter,this);
+        recyclerView.setAdapter(mAdapter);
         return root;
     }
 
@@ -44,8 +55,15 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
     }
 
     @Override
-    public void setAdapter() {
+    public void setAdapter(ArrayList<FriendInformation> listInput) {
+        friendList = listInput;
+        mAdapter = new FriendPageAdapter(listInput,mPresenter,this);
+        recyclerView.setAdapter(mAdapter);
+    }
 
+    @Override
+    public void addItem(FriendInformation friendInformation) {
+        mAdapter.addItem(friendInformation);
     }
 
     @Override

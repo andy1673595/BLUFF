@@ -29,7 +29,8 @@ public class FriendPageAdapter extends RecyclerView.Adapter{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        holder = (ViewHolder) holder;
+        ((ViewHolder) holder).textEmail.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -48,6 +49,11 @@ public class FriendPageAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        return 0;
+        return listFriend.size();
+    }
+
+    public void addItem(FriendInformation friendInformation) {
+        listFriend.add(friendInformation);
+        notifyItemInserted(listFriend.size());
     }
 }

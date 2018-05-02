@@ -7,11 +7,12 @@ public class FriendInformation {
     private String photoURL;
     private boolean isFriendInvite;
 
-    public FriendInformation(String nameInput,String UIDInput,String emailInput,String photoURLInput){
+    public FriendInformation(String nameInput,String UIDInput,String emailInput,String photoURLInput,boolean isFriendInviteInput){
         name = nameInput;
         UID = UIDInput;
         email = emailInput;
         photoURL = photoURLInput;
+        isFriendInvite = isFriendInviteInput;
     }
 
 

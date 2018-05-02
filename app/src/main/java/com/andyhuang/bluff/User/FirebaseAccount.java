@@ -106,13 +106,6 @@ public class FirebaseAccount {
         UserManager.getInstance().setUserUID(userUID);
     }
 
-    public void saveUserFacebookData() {
-        Bluff.getContext().getSharedPreferences(Constants.TAG_FOR_SHAREDPREFREENCE,login.MODE_PRIVATE).edit()
-                .putString(Constants.USER_EMAIL_SHAREDPREFREENCE,userEmail)
-                .putString(Constants.USER_UID_SHAREDPREFREENCE,userUID)
-                .commit();
-    }
-
     public void updateToFireBase() {
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_EMAIL_FIREBASE).setValue(userEmail);
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_NAME_FIREBASE).setValue(userName);
@@ -134,7 +127,7 @@ public class FirebaseAccount {
                             userPhotoURL = UserManager.getInstance().getUserPhotoUrl();
                             userName = UserManager.getInstance().getUserName();
 
-                            saveUserFacebookData();
+                            saveUserData();
                             //save to UserManager
                             UserManager.getInstance().setEmail(userEmail);
                             UserManager.getInstance().setFbtoken(accessToken);
