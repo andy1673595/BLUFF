@@ -31,9 +31,11 @@ public class FirebaseAccount {
     private Firebase mRef;
     private Firebase myRef;
     private Login login;
-    private String userEmail;
-    private String userPassword;
-    private String userUID;
+    private String userEmail = "No data";
+    private String userPassword= "No data";
+    private String userUID = "No data";
+    private String userPhotoURL = "No data";
+    private String userName = "No data";
     DatabaseReference dataBaseRef = FirebaseDatabase.getInstance().getReference();
 
 
@@ -56,11 +58,7 @@ public class FirebaseAccount {
                             user = mAuth.getCurrentUser();
                             userUID = user.getUid();
 
-                            //set account and password into UserManager
-                            UserManager.getInstance().setEmail(userEmail);
-                            UserManager.getInstance().setPassword(userPassword);
-                            UserManager.getInstance().setUserUID(userUID);
-                            //save data to sharedPrefrence
+                            //save data to sharedPrefrence and Usermanage
                             saveUserData();
                             //String myUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                             //save data to firebase
@@ -84,6 +82,7 @@ public class FirebaseAccount {
                             Toast.makeText(login, "success", Toast.LENGTH_SHORT).show();
                             user = mAuth.getCurrentUser();
                             userUID = user.getUid();
+                            userEmail= user.getEmail();
                             //save data to sharedPrefrence
                             saveUserData();
                             callback.completed();
@@ -102,6 +101,9 @@ public class FirebaseAccount {
                 .putString(Constants.USER_PASSWORD_SHAREDPREFREENCE,userPassword)
                 .putString(Constants.USER_UID_SHAREDPREFREENCE,userUID)
                 .commit();
+        UserManager.getInstance().setEmail(userEmail);
+        UserManager.getInstance().setPassword(userPassword);
+        UserManager.getInstance().setUserUID(userUID);
     }
 
     public void saveUserFacebookData() {
@@ -113,6 +115,8 @@ public class FirebaseAccount {
 
     public void updateToFireBase() {
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_EMAIL_FIREBASE).setValue(userEmail);
+        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_NAME_FIREBASE).setValue(userName);
+        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_PHOTO_FIREBASE).setValue(userPhotoURL);
     }
 
     public void facebookLogin(final AccessToken accessToken, final FacebookLoginCallback callback) {
@@ -127,12 +131,15 @@ public class FirebaseAccount {
                             user = mAuth.getCurrentUser();
                             userUID = user.getUid();
                             userEmail = user.getEmail();
+                            userPhotoURL = UserManager.getInstance().getUserPhotoUrl();
+                            userName = UserManager.getInstance().getUserName();
+
                             saveUserFacebookData();
                             //save to UserManager
                             UserManager.getInstance().setEmail(userEmail);
                             UserManager.getInstance().setFbtoken(accessToken);
                             UserManager.getInstance().setUserUID(userUID);
-
+                            updateToFireBase();
                             callback.loginSuccess();
 
                         } else {

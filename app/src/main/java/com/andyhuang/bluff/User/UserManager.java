@@ -6,15 +6,15 @@ import com.facebook.AccessToken;
 import com.google.firebase.auth.FirebaseUser;
 
 public class UserManager {
-    private String email;
-    private String password;
+    private String email = "No data";
+    private String password = "No data";
     private SharedPreferences userData;
     private AccessToken fbToken;
-    private String userPhotoUrl;
+    private String userPhotoUrl = "No data";
     private FirebaseUser user;
-    private String userUID;
-    private String userName;
-    private String facebookID;
+    private String userUID = "No data";
+    private String userName = "No data";
+    private String facebookID = "No data";
 
     private static final UserManager ourInstance = new UserManager();
 
@@ -56,14 +56,6 @@ public class UserManager {
 
     public void setFbtoken(AccessToken fbToken) {
         this.fbToken = fbToken;
-    }
-
-    public String getUserPhoto() {
-        return userPhotoUrl;
-    }
-
-    public void setUserPhoto(String userPhotoUrl) {
-        this.userPhotoUrl = userPhotoUrl;
     }
 
     public FirebaseUser getUser() {

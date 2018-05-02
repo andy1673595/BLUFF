@@ -19,5 +19,7 @@ public class Constants {
     public static String USER_PASSWORD_FIREBASE = "userPassword";
     public static String USER_NAME_FIREBASE = "userName";
     public static String USER_PHOTO_FIREBASE = "userPhoto";
+    public static String FRIEND_LIST_FIREBASE = "friendlist";
+    public static String FRIEND_INVITE_FIREBASE = "isInvite";
 
 }

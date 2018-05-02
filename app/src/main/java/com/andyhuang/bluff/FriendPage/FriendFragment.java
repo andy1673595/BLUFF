@@ -28,6 +28,8 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
         editEmailToFindFriend = (EditText)root.findViewById(R.id.edit_find_friend);
         imageFindButton = (ImageView)root.findViewById(R.id.image_find_friend);
 
+        imageFindButton.setOnClickListener(this);
+
         return root;
     }
 

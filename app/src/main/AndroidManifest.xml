@@ -41,7 +41,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.MainHallPage"></activity>
+        <activity android:name=".activities.MainHallPage"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+
     </application>
 
 </manifest>
