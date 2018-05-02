@@ -36,6 +36,7 @@ public class FirebaseAccount {
     private String userUID;
     DatabaseReference dataBaseRef = FirebaseDatabase.getInstance().getReference();
 
+
     public FirebaseAccount(Context context) {
         login = (Login) context;
         mAuth = FirebaseAuth.getInstance();

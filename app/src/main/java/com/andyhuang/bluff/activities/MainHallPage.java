@@ -8,8 +8,6 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-
-import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.BluffContract;
 import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.R;
