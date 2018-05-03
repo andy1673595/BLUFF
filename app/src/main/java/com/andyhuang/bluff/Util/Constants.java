@@ -22,5 +22,6 @@ public class Constants {
     public static String USER_PHOTO_FIREBASE = "userPhoto";
     public static String FRIEND_LIST_FIREBASE = "friendlist";
     public static String FRIEND_INVITE_FIREBASE = "isInvite";
+    public static String USER_UID_FIREBASE = "userUID";
 
 }

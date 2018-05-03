@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.LruCache;
+import android.view.inputmethod.InputMethodManager;
+
 import okhttp3.internal.cache.DiskLruCache;
 import okhttp3.internal.io.FileSystem;
 import java.io.File;
@@ -15,11 +17,16 @@ public class Bluff extends Application {
     private static Context context;
     private static DiskLruCache mDiskLruCache;
     private static LruCache mLruCache;
+    private static InputMethodManager imm;
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
         initLruCache();
+        imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+    }
+    public static InputMethodManager getImm() {
+        return imm;
     }
 
     public static Context getContext() {

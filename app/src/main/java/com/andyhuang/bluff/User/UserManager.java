@@ -25,6 +25,14 @@ public class UserManager {
 
     private UserManager() {
     }
+    public void reset() {
+       email = Constants.NODATA;
+       password = Constants.NODATA;
+       userPhotoUrl = Constants.NODATA;
+       userUID = Constants.NODATA;
+       userName = Constants.NODATA;
+       facebookID = Constants.NODATA;
+    }
 
 
     public String getEmail() {

@@ -8,10 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 public class BaseActivity extends AppCompatActivity {
     protected Context mContext;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

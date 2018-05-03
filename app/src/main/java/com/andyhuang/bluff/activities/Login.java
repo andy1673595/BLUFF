@@ -13,6 +13,7 @@ import com.andyhuang.bluff.Callback.GetFacebookUserDataCallback;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.User.FacebookUserData;
 import com.andyhuang.bluff.User.FirebaseAccount;
+import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -65,12 +66,15 @@ public class Login extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.text_login_loginpage:
+                UserManager.getInstance().reset();
                 firebaseAccount.login(String.valueOf(accountInput.getText()),String.valueOf(passwordInput.getText()),firebaseCallback());
                 break;
             case R.id.text_creat_loginpage:
+                UserManager.getInstance().reset();
                 firebaseAccount.creatAccount(firebaseCallback(),String.valueOf(accountInput.getText()),String.valueOf(passwordInput.getText()));
                 break;
             case R.id.text_fb_login_loginpage:
+                UserManager.getInstance().reset();
                 LoginManager.getInstance().logInWithReadPermissions(this,
                         Arrays.asList("public_profile", "user_friends","email"));
                 break;

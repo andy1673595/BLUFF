@@ -8,13 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.R;
-
+import com.andyhuang.bluff.activities.MainHallPage;
 import java.util.ArrayList;
 
 public class FriendFragment extends Fragment implements FriendContract.View,View.OnClickListener {
@@ -24,6 +25,7 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
     private FriendPageAdapter mAdapter;
     private ArrayList<FriendInformation> friendList = new ArrayList<>();
     private RecyclerView recyclerView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +69,12 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
     }
 
     @Override
+    public void removeItem(int positon) {
+        mAdapter.removeItem(positon);
+    }
+
+
+    @Override
     public void showGamePage() {
 
     }
@@ -76,7 +84,14 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
         switch (v.getId()) {
             case R.id.image_find_friend:
                 mPresenter.inviteFriend(String.valueOf(editEmailToFindFriend.getText()));
+                hideSoftInput();
                 break;
         }
+    }
+
+    public void hideSoftInput() {
+        Bluff.getImm().hideSoftInputFromWindow(getActivity()
+                .getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+
     }
 }

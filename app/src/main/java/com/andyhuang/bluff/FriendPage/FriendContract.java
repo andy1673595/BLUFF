@@ -11,13 +11,15 @@ public interface FriendContract {
         void freshFriendList();
         void setAdapter(ArrayList<FriendInformation> listInput);
         void addItem(FriendInformation friendInformation);
+        void removeItem(int positon);
         void showGamePage();
     }
     interface Presenter extends BasePresenter {
         void inviteFriend();
         void inviteGame();
         void startGame();
-        void acceptInvite();
+        void acceptInvite(int position,String inviterEmail);
+        void refuseInvite(int position);
         void readFriendDataFromFireBase();
         void updateFriendDataToFireBase();
         void inviteFriend(String email);

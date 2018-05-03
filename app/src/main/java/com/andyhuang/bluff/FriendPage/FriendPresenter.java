@@ -9,7 +9,6 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -23,7 +22,7 @@ public class FriendPresenter implements FriendContract.Presenter {
     private FriendContract.View friendPageView;
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     private Firebase myRef;
-    private ArrayList<FriendInformation> friendlist = new ArrayList<FriendInformation>();
+    private ArrayList<FriendInformation> friendlist = new ArrayList<>();
     private String myUID;
     private Map<String,Object> friendInviteMap = new HashMap<>();
     private ArrayList<Map<String,Object>> friendMapListFromFirebase;
@@ -65,9 +64,20 @@ public class FriendPresenter implements FriendContract.Presenter {
     }
 
     @Override
-    public void acceptInvite() {
+    public void acceptInvite(int position, String inviterEmail) {
 
     }
+
+    @Override
+    public void refuseInvite(int position) {
+        FriendInformation inviter = friendlist.get(position);
+        String inviterUID = inviter.getUID();
+        myRef.child(myUID).child(Constants.FRIEND_LIST_FIREBASE)
+                .child(inviterUID).removeValue();
+        friendlist.remove(position);
+        friendPageView.removeItem(position);
+    }
+
 
    /* public void firstReadData() {
         friendlist = new ArrayList<FriendInformation>();
@@ -103,6 +113,7 @@ public class FriendPresenter implements FriendContract.Presenter {
                 friendInviteMap = (Map<String,Object>) dataSnapshot.getValue();
                 UIDfromFirebase = dataSnapshot.getKey();
                 FriendInformation friendInformation = mapTransformer.getAddItem(friendInviteMap,UIDfromFirebase);
+                friendlist.add(friendInformation);
                 friendPageView.addItem(friendInformation);
             }
 
@@ -138,6 +149,7 @@ public class FriendPresenter implements FriendContract.Presenter {
     public void inviteFriend(String email) {
         friendInviteMap.put(Constants.USER_EMAIL_FIREBASE,UserManager.getInstance().getEmail());
         friendInviteMap.put(Constants.USER_PHOTO_FIREBASE,UserManager.getInstance().getUserPhotoUrl());
+        friendInviteMap.put(Constants.USER_UID_FIREBASE,UserManager.getInstance().getUserUID());
         friendInviteMap.put(Constants.FRIEND_INVITE_FIREBASE,true);
         Query query = reference.child(Constants.USER_DATA_FIREBASE)
                 .orderByChild(Constants.USER_EMAIL_FIREBASE).equalTo(email);

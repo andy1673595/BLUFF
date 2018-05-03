@@ -41,11 +41,23 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
         if (!friendPhoto.equals(Constants.NODATA)) {
             holder.imageFriendPhoto.setTag(friendPhoto);
             new ImageFromLruCache().set(holder.imageFriendPhoto, friendPhoto);
+        } else {
+            holder.imageFriendPhoto.setImageResource(R.mipmap.ic_launcher_round);
+        }
+
+        if(friendInformation.isFriendInvite()) {
+            //this is friend invite item
+            holder.imageLeftIcon.setImageResource(R.drawable.ic_ok);
+            holder.imageRightIcon.setImageResource(R.drawable.ic_refuse);
+        }else {
+            //this is friend item
+            holder.imageLeftIcon.setImageResource(R.drawable.ic_drink);
+            holder.imageRightIcon.setImageResource(R.drawable.ic_profile);
         }
 
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView textEmail;
         ImageView imageFriendPhoto;
         ImageView imageLeftIcon;
@@ -56,6 +68,34 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
             imageFriendPhoto = (ImageView)itemView.findViewById(R.id.image_user_photo_friend_invite);
             imageLeftIcon = (ImageView)itemView.findViewById(R.id.image_left_icon_friend_listitem);
             imageRightIcon = (ImageView)itemView.findViewById(R.id.image_righ_icon_friend_listitem);
+            imageLeftIcon.setOnClickListener(this);
+            imageRightIcon.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            switch (v.getId()){
+                case R.id.image_righ_icon_friend_listitem:
+
+                    if(listFriend.get(position).isFriendInvite()) {
+                        //this is friend invite, right icon means cancel
+                        mPresenter.refuseInvite(position);
+                    }else {
+                        //this is friend item, right icon means look friend Profile
+
+                    }
+                    break;
+                case R.id.image_left_icon_friend_listitem:
+                    if(listFriend.get(position).isFriendInvite()) {
+                        //this is friend invite ,left icon means accept
+
+                    }else{
+                        //this is friend item, left icon means invite a game with friend
+
+                    }
+                    break;
+            }
         }
     }
 
@@ -67,5 +107,10 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
     public void addItem(FriendInformation friendInformation) {
         listFriend.add(friendInformation);
         notifyItemInserted(listFriend.size());
+    }
+
+    public void removeItem(int position) {
+        listFriend.remove(position);
+        notifyItemRemoved(position);
     }
 }
