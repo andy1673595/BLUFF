@@ -9,9 +9,14 @@ import android.widget.TextView;
 
 import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.R;
+import com.andyhuang.bluff.User.UserManager;
+import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.helper.ImageFromLruCache;
+import com.andyhuang.bluff.helper.UserOutlineProvider;
+
 import java.util.ArrayList;
 
-public class FriendPageAdapter extends RecyclerView.Adapter{
+public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.ViewHolder>{
     private ArrayList<FriendInformation> listFriend;
     private FriendContract.Presenter mPresenter;
     private FriendContract.View friendPageView;
@@ -28,9 +33,16 @@ public class FriendPageAdapter extends RecyclerView.Adapter{
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        holder = (ViewHolder) holder;
-        ((ViewHolder) holder).textEmail.
+    public void onBindViewHolder(ViewHolder holder, int position) {
+       FriendInformation friendInformation = listFriend.get(position);
+       String friendPhoto = friendInformation.getPhotoURL();
+       holder.textEmail.setText(friendInformation.getEmail());
+       holder.imageFriendPhoto.setOutlineProvider(new UserOutlineProvider());
+        if (!friendPhoto.equals(Constants.NODATA)) {
+            holder.imageFriendPhoto.setTag(friendPhoto);
+            new ImageFromLruCache().set(holder.imageFriendPhoto, friendPhoto);
+        }
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

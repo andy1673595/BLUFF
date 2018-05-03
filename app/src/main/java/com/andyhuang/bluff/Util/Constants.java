@@ -3,6 +3,7 @@ package com.andyhuang.bluff.Util;
 public class Constants {
     public static String FIREBASE_URL = "https://myproject-556f6.firebaseio.com/";
     public static String TAG = "Bluff Debug";
+    public static String NODATA = "No data";
     //String tag for SharedPreferences
     public static String TAG_FOR_SHAREDPREFREENCE = "userData";
     public static String USER_EMAIL_SHAREDPREFREENCE = "userEmail";

@@ -2,19 +2,20 @@ package com.andyhuang.bluff.User;
 
 import android.content.SharedPreferences;
 
+import com.andyhuang.bluff.Util.Constants;
 import com.facebook.AccessToken;
 import com.google.firebase.auth.FirebaseUser;
 
 public class UserManager {
-    private String email = "No data";
-    private String password = "No data";
+    private String email = Constants.NODATA;
+    private String password = Constants.NODATA;
     private SharedPreferences userData;
     private AccessToken fbToken;
-    private String userPhotoUrl = "No data";
+    private String userPhotoUrl = Constants.NODATA;
     private FirebaseUser user;
-    private String userUID = "No data";
-    private String userName = "No data";
-    private String facebookID = "No data";
+    private String userUID = Constants.NODATA;
+    private String userName = Constants.NODATA;
+    private String facebookID = Constants.NODATA;
 
     private static final UserManager ourInstance = new UserManager();
 

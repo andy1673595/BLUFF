@@ -31,11 +31,11 @@ public class FirebaseAccount {
     private Firebase mRef;
     private Firebase myRef;
     private Login login;
-    private String userEmail = "No data";
-    private String userPassword= "No data";
-    private String userUID = "No data";
-    private String userPhotoURL = "No data";
-    private String userName = "No data";
+    private String userEmail = Constants.NODATA;
+    private String userPassword= Constants.NODATA;
+    private String userUID = Constants.NODATA;
+    private String userPhotoURL = Constants.NODATA;
+    private String userName = Constants.NODATA;
     DatabaseReference dataBaseRef = FirebaseDatabase.getInstance().getReference();
 
 

@@ -10,7 +10,7 @@ public class MapFromFirebaseToFriendList {
     public ArrayList<FriendInformation> getFriendList(ArrayList<Map<String,Object>> mapList,ArrayList<String> UIDlist) {
         friendList = new ArrayList<FriendInformation>();
         for(int i=0;i<mapList.size();i++) {
-            FriendInformation friendInformation = new FriendInformation("No data",
+            FriendInformation friendInformation = new FriendInformation(Constants.NODATA,
                     UIDlist.get(i),
                     (String) mapList.get(i).get(Constants.USER_EMAIL_FIREBASE),
                     (String)mapList.get(i).get(Constants.USER_PHOTO_FIREBASE),
@@ -21,7 +21,7 @@ public class MapFromFirebaseToFriendList {
     }
 
     public FriendInformation getAddItem(Map<String,Object> map,String UID) {
-        FriendInformation friendInformation = new FriendInformation("No data",
+        FriendInformation friendInformation = new FriendInformation(Constants.NODATA,
                 UID,
                 (String) map.get(Constants.USER_EMAIL_FIREBASE),
                 (String) map.get(Constants.USER_PHOTO_FIREBASE),
