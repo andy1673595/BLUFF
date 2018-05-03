@@ -73,9 +73,19 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
         mAdapter.removeItem(positon);
     }
 
+    @Override
+    public void updateItemInvite(int positon, boolean isInvite) {
+        mAdapter.updateItemInvite(positon,isInvite);
+    }
+
 
     @Override
     public void showGamePage() {
+
+    }
+
+    @Override
+    public void showGameInvite(FriendInformation friend) {
 
     }
 

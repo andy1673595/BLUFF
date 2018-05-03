@@ -23,5 +23,12 @@ public class Constants {
     public static String FRIEND_LIST_FIREBASE = "friendlist";
     public static String FRIEND_INVITE_FIREBASE = "isInvite";
     public static String USER_UID_FIREBASE = "userUID";
+    public static String GAME_INVITE = "gameInvite";
+    public static String GAME ="gameInformaiton";
+    public static String GAME_ROOM = "gameRoom";
+
+    //Tag for Game firebase
+    public static String GAME_ROOM_ID_REF = "https://myproject-556f6.firebaseio.com/GameRoomID/";
+    public static String GAMER_FIREBASE = "gamer";
 
 }

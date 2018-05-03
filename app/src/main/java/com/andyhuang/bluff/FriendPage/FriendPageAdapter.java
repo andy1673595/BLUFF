@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.R;
-import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.helper.ImageFromLruCache;
 import com.andyhuang.bluff.helper.UserOutlineProvider;
@@ -20,6 +19,7 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
     private ArrayList<FriendInformation> listFriend;
     private FriendContract.Presenter mPresenter;
     private FriendContract.View friendPageView;
+
     public FriendPageAdapter(ArrayList<FriendInformation> listInput,FriendContract.Presenter mPresenterInput, FriendContract.View friendPageViewInput) {
         mPresenter = mPresenterInput;
         friendPageView = friendPageViewInput;
@@ -89,10 +89,10 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
                 case R.id.image_left_icon_friend_listitem:
                     if(listFriend.get(position).isFriendInvite()) {
                         //this is friend invite ,left icon means accept
-
+                        mPresenter.acceptInvite(position);
                     }else{
                         //this is friend item, left icon means invite a game with friend
-
+                        mPresenter.inviteGame(listFriend.get(position));
                     }
                     break;
             }
@@ -112,5 +112,9 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
     public void removeItem(int position) {
         listFriend.remove(position);
         notifyItemRemoved(position);
+    }
+    public void updateItemInvite(int positon, boolean isInvite) {
+        listFriend.get(positon).setFriendInvite(isInvite);
+        notifyItemChanged(positon);
     }
 }
