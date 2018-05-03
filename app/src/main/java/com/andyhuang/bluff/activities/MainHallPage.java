@@ -21,12 +21,11 @@ public class MainHallPage extends BaseActivity implements BluffContract.View {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_hall_page);
-
         myDrawerLayout = (DrawerLayout)findViewById(R.id.drawrlayout_main);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
         imageMenuButton = (ImageView)findViewById(R.id.toolBarMenuButton);
 
-        mPresenter = new BluffPresenter(this,getFragmentManager());
+        mPresenter = new BluffPresenter(this,getFragmentManager(),this);
         mNavigationView.setNavigationItemSelectedListener(navigationViewListener());
         imageMenuButton.setOnClickListener(mainClickListener);
         setDrawerLayout();
@@ -35,7 +34,6 @@ public class MainHallPage extends BaseActivity implements BluffContract.View {
     public void setDrawerLayout() {
         myDrawerLayout.setFitsSystemWindows(true);
         myDrawerLayout.setClipToPadding(false);
-
     }
 
     private NavigationView.OnNavigationItemSelectedListener navigationViewListener() {

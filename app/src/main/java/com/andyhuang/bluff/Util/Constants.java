@@ -30,5 +30,6 @@ public class Constants {
     //Tag for Game firebase
     public static String GAME_ROOM_ID_REF = "https://myproject-556f6.firebaseio.com/GameRoomID/";
     public static String GAMER_FIREBASE = "gamer";
+    public static String URL_GAME_ROOM_DATA= "https://myproject-556f6.firebaseio.com/GameData/";
 
 }

@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.andyhuang.bluff.Util.Constants.URL_GAME_ROOM_DATA;
+
 public class FriendPresenter implements FriendContract.Presenter {
     private FriendContract.View friendPageView;
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -45,7 +47,7 @@ public class FriendPresenter implements FriendContract.Presenter {
     void init() {
         Firebase.setAndroidContext(Bluff.getContext());
         myRef = new Firebase("https://myproject-556f6.firebaseio.com/userData/");
-        refGame = new Firebase("https://myproject-556f6.firebaseio.com/GameData/");
+        refGame = new Firebase(URL_GAME_ROOM_DATA);
         refGameRoomID = new Firebase(Constants.GAME_ROOM_ID_REF);
         myUID = UserManager.getInstance().getUserUID();
     //    firstReadData();
@@ -221,7 +223,11 @@ public class FriendPresenter implements FriendContract.Presenter {
 
     public void openGameRoom() {
         //invite friend with room ID
-        myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_ROOM).setValue(Constants.NODATA);
+        myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_ROOM).setValue(""+gameNumber);
+        myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_EMAIL_FIREBASE)
+                .setValue(UserManager.getInstance().getEmail());
+        myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_PHOTO_FIREBASE)
+                .setValue(UserManager.getInstance().getUserPhotoUrl());
         //increase the gameID to server
         refGameRoomID.setValue(gameNumber+1);
         //open the room

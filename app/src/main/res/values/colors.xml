@@ -6,4 +6,6 @@
     <color name="transparent">#00000000</color>
     <color name="teal100">#B2DFDB</color>
     <color name="teal200">#80CBC4</color>
+    <color name="teal800">#00695C</color>
+    <color name="tealA100">#A7FFEB</color>
 </resources>

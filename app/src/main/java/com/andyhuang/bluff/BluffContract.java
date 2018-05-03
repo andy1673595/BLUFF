@@ -11,5 +11,7 @@ public interface BluffContract {
         void transToMainPage();
         void transToFriendPage();
         void transToProfilePage();
+        void showGameInviteDialog();
+        void removeGameInvite();
     }
 }
