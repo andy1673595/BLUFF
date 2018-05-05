@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 
 import com.andyhuang.bluff.BluffPresenter;
@@ -20,9 +21,12 @@ public class GameInviteDialog extends Dialog implements View.OnClickListener{
     private Gamer inviter;
     private String roomID;
     public GameInviteDialog(@NonNull Context context, BluffPresenter bluffPresenterInput, Gamer inviterInput,String roomIDInput) {
-        super(context);
+        super(context,R.style.MyDialogStyle);
         inviter = inviterInput;
         roomID = roomIDInput;
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+
         setContentView(R.layout.dialog_game_invite);
         mContext = context;
         bluffPresenter = bluffPresenterInput;
