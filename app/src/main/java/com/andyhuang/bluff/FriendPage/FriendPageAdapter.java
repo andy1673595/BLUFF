@@ -37,7 +37,7 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
        FriendInformation friendInformation = listFriend.get(position);
        String friendPhoto = friendInformation.getPhotoURL();
        holder.textEmail.setText(friendInformation.getEmail());
-       holder.imageFriendPhoto.setOutlineProvider(new UserOutlineProvider());
+      // holder.imageFriendPhoto.setOutlineProvider(new UserOutlineProvider());
         if (!friendPhoto.equals(Constants.NODATA)) {
             holder.imageFriendPhoto.setTag(friendPhoto);
             new ImageFromLruCache().set(holder.imageFriendPhoto, friendPhoto);
