@@ -30,8 +30,11 @@ public class GameInvitePrsenter implements GameInviteContract.presenter{
         refGameData.child(roomID).child(Constants.GAMER_FIREBASE)
                 .child(UserManager.getInstance().getUserUID()).setValue(me);
         //dismiss the dialog view
-        dialog.dismiss();
+       // dialog.dismiss();
+
+
     }
+
 
     @Override
     public void removeInvite() {

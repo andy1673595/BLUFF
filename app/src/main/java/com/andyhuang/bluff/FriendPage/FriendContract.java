@@ -13,7 +13,7 @@ public interface FriendContract {
         void addItem(FriendInformation friendInformation);
         void removeItem(int positon);
         void updateItemInvite(int positon,boolean isInvite);
-        void showGamePage();
+        void showGamePage(String GameRoomID);
         void showGameInvite(FriendInformation friend);
     }
     interface Presenter extends BasePresenter {

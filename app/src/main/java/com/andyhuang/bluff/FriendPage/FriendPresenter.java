@@ -1,6 +1,7 @@
 package com.andyhuang.bluff.FriendPage;
 
 import com.andyhuang.bluff.Bluff;
+import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.Object.Gamer;
 import com.andyhuang.bluff.Object.MapFromFirebaseToFriendList;
@@ -37,6 +38,7 @@ public class FriendPresenter implements FriendContract.Presenter {
     private ArrayList<String> UIDlist;
     private String UIDfromFirebase;
     private int gameNumber =0;
+    private BluffPresenter bluffPresenter;
 
     public FriendPresenter(FriendContract.View viewInput) {
         friendPageView = viewInput;
@@ -233,5 +235,8 @@ public class FriendPresenter implements FriendContract.Presenter {
         //open the room
         Gamer me = new Gamer(myUID,UserManager.getInstance().getUserPhotoUrl(),UserManager.getInstance().getEmail());
         refGame.child(""+gameNumber).child(Constants.GAMER_FIREBASE).child(myUID).setValue(me);
+
+        friendPageView.showGamePage(""+gameNumber);
+
     }
 }

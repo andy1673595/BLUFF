@@ -8,4 +8,8 @@
     <color name="teal200">#80CBC4</color>
     <color name="teal800">#00695C</color>
     <color name="tealA100">#A7FFEB</color>
+    <color name="teal600">#00796B</color>
+    <color name="teal300">#4DB6AC</color>
+    <color name="teal400">#26A69A</color>
+    <color name="teal250">#66c0b8</color>
 </resources>

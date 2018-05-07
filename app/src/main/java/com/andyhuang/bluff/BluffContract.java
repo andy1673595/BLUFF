@@ -5,6 +5,7 @@ public interface BluffContract {
         void showProfilePage();
         void showFriendPage();
         void showMainPage();
+        void showGamePage(String gameRoomID);
 
     }
     interface Presenter extends BasePresenter {
@@ -13,5 +14,6 @@ public interface BluffContract {
         void transToProfilePage();
         void showGameInviteDialog();
         void removeGameInvite();
+        void setGameInformationAndGetIntoRoom(String RoomID);
     }
 }

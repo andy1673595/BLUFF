@@ -1,5 +1,6 @@
 package com.andyhuang.bluff.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -82,6 +83,16 @@ public class MainHallPage extends BaseActivity implements BluffContract.View {
     @Override
     public void showMainPage() {
 
+    }
+
+    @Override
+    public void showGamePage(String gameID) {
+        Intent intent = new Intent();
+        intent.setClass(this,GamePage.class);
+        intent.putExtra("gameID",gameID);
+        //I am invitee , set is Host false
+        intent.putExtra("isHost",false);
+        startActivity(intent);
     }
 
     @Override

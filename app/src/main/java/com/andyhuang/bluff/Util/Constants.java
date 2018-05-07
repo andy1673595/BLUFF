@@ -32,4 +32,5 @@ public class Constants {
     public static String GAMER_FIREBASE = "gamer";
     public static String URL_GAME_ROOM_DATA= "https://myproject-556f6.firebaseio.com/GameData/";
 
+
 }

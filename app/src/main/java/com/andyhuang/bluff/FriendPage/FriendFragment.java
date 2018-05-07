@@ -1,6 +1,7 @@
 package com.andyhuang.bluff.FriendPage;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,8 +14,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.andyhuang.bluff.Bluff;
+import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.R;
+import com.andyhuang.bluff.activities.GamePage;
 import com.andyhuang.bluff.activities.MainHallPage;
 import java.util.ArrayList;
 
@@ -26,11 +29,11 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
     private ArrayList<FriendInformation> friendList = new ArrayList<>();
     private RecyclerView recyclerView;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = new FriendPresenter(this);
-
     }
 
     @Override
@@ -80,8 +83,12 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
 
 
     @Override
-    public void showGamePage() {
-
+    public void showGamePage(String gameID) {
+        Intent intent = new Intent();
+        intent.setClass((MainHallPage)getActivity(),GamePage.class);
+        intent.putExtra("gameID",gameID);
+        intent.putExtra("isHost",true);
+        startActivity(intent);
     }
 
     @Override

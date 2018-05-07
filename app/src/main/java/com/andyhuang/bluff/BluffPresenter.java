@@ -158,4 +158,11 @@ public class BluffPresenter implements BluffContract.Presenter {
         userPhotoURLGameInvite = Constants.NODATA;
         hasReadPhoto = false;
     }
+
+    @Override
+    public void setGameInformationAndGetIntoRoom(String RoomID) {
+        bluffView.showGamePage(RoomID);
+    }
+
+
 }
