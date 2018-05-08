@@ -33,12 +33,9 @@ public class FriendPresenter implements FriendContract.Presenter {
     private String myUID;
     private String friendUID;
     private Map<String,Object> friendInviteMap = new HashMap<>();
-    private ArrayList<Map<String,Object>> friendMapListFromFirebase;
     private MapFromFirebaseToFriendList mapTransformer = new MapFromFirebaseToFriendList();
-    private ArrayList<String> UIDlist;
     private String UIDfromFirebase;
     private int gameNumber =0;
-    private BluffPresenter bluffPresenter;
 
     public FriendPresenter(FriendContract.View viewInput) {
         friendPageView = viewInput;
