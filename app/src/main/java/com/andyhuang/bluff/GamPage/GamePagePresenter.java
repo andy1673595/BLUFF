@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GamePagePresent implements GamePageContract.Presenter{
+public class GamePagePresenter implements GamePageContract.Presenter{
     private GamePageContract.View gamePgaeView;
     private Map<String,String> playerStateMap = new HashMap<>();
     private List<String> playerOrderList = new ArrayList<>();
@@ -23,7 +23,7 @@ public class GamePagePresent implements GamePageContract.Presenter{
 
     }
 
-    public GamePagePresent(GamePageContract.View gamePgaeViewInput) {
+    public GamePagePresenter(GamePageContract.View gamePgaeViewInput) {
         gamePgaeView = gamePgaeViewInput;
     }
 
@@ -31,7 +31,7 @@ public class GamePagePresent implements GamePageContract.Presenter{
     public void init(String roomIDInput, boolean isHostInput) {
         roomID = roomIDInput;
         isHost = isHostInput;
-        firebaseHelper = new GameFirebaseHelper(roomID,gamePgaeView);
+        firebaseHelper = new GameFirebaseHelper(roomID,gamePgaeView,isHost,this);
         //set Button UI
         if(isHost) {
             buttonType = Constants.BUTTON_START;
@@ -91,10 +91,18 @@ public class GamePagePresent implements GamePageContract.Presenter{
                 break;
             case "ready":
                 //get ready
+                buttonType = Constants.BUTTON_GET_READY;
+                firebaseHelper.setCurrentState(Constants.GET_READY);
                 break;
-            case "cancel":
+            case "get ready":
                 //cancel Ready
+                buttonType = Constants.BUTTON_READY;
+                firebaseHelper.setCurrentState(Constants.CANCEL_READY);
                 break;
         }
+    }
+
+    public void setButtonType(String type) {
+        buttonType = type;
     }
 }

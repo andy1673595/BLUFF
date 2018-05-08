@@ -81,6 +81,15 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/start_button_gamepage" />
 
+        <TextView
+            android:id="@+id/textGameInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/teal800"
+            app:layout_constraintEnd_toStartOf="@+id/image_game_state"
+            tools:layout_editor_absoluteY="10dp" />
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout

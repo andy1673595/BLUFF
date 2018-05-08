@@ -2,12 +2,12 @@ package com.andyhuang.bluff.GamPage.GameInformation;
 
 import com.andyhuang.bluff.Util.Constants;
 
-public class gameEndInformation {
+public class GameEndInformation {
     public String winnerUID = Constants.NODATA;
     public String loserUID = Constants.NODATA;
     public String textHowToEnd = Constants.NODATA;
 
-    public gameEndInformation(String winnerUID, String loserUID, String textHowToEnd) {
+    public GameEndInformation(String winnerUID, String loserUID, String textHowToEnd) {
         this.winnerUID = winnerUID;
         this.loserUID = loserUID;
         this.textHowToEnd = textHowToEnd;

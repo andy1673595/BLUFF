@@ -37,13 +37,16 @@ public class Constants {
     //Game State Button
     public static String BUTTON_START ="start";
     public static String BUTTON_READY = "ready";
-    public static String BUTTON_CANCEL = "cancel";
+    public static String BUTTON_GET_READY = "get ready";
     //GAME STATE
     public static String WAIT_HOST = "wait host";
     public static String READ_INIT_DATA = "read init data";
     public static String WAIT_READY = "wait ready";
+    public static String NEW_DICE = "get new dice";
     //Gamer current state
     public static String COMPLETED_READ_INIT = "completed read init";
+    public static String GET_READY = "get ready";
+    public static String CANCEL_READY = "cancel ready";
 
 
 

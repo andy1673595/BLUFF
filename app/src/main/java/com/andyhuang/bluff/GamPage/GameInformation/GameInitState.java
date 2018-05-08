@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class gameInitState {
+public class GameInitState {
     public List<Integer> diceTotalList = new ArrayList<>();
     public Map<String,List<Integer>> playerDiceList = new HashMap<>();
 
-    public gameInitState(List<Integer> diceTotalList,
-                        Map<String, List<Integer>> playerDiceList) {
+    public GameInitState(List<Integer> diceTotalList,
+                         Map<String, List<Integer>> playerDiceList) {
         this.diceTotalList = diceTotalList;
         this.playerDiceList = playerDiceList;
     }

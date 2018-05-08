@@ -1,25 +1,20 @@
 package com.andyhuang.bluff.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.andyhuang.bluff.GamPage.GamePageContract;
-import com.andyhuang.bluff.GamPage.GamePagePresent;
-import com.andyhuang.bluff.GameInviteDialog.GameInviteContract;
-import com.andyhuang.bluff.GameInviteDialog.GameInvitePrsenter;
-import com.andyhuang.bluff.Object.GameRoom;
+import com.andyhuang.bluff.GamPage.GamePagePresenter;
 import com.andyhuang.bluff.R;
-import com.andyhuang.bluff.Util.Constants;
 
 import java.util.ArrayList;
 
 public class GamePage extends BaseActivity implements View.OnClickListener ,GamePageContract.View {
     private String roomID;
     private boolean isHost;
-    private GamePagePresent mPrsenter;
+    private GamePagePresenter mPrsenter;
     private ImageView imageIncreaseDiceButton;
     private ImageView imageCatchButton;
     private ImageView imageReadyStateButton;
@@ -49,7 +44,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         imageHomeBackButton.setOnClickListener(this);
         //read bundle from MainActivity
         readIntent();
-        mPrsenter = new GamePagePresent(this);
+        mPrsenter = new GamePagePresenter(this);
         mPrsenter.init(roomID,isHost);
     }
 

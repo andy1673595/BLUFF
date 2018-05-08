@@ -5,13 +5,13 @@ import com.andyhuang.bluff.Util.Constants;
 import java.util.HashMap;
 import java.util.Map;
 
-public class currentInformation {
+public class CurrentInformation {
     public String currentPlayer = Constants.NODATA;
     public String recentPlayer = Constants.NODATA;
     public int recentDiceType = 0;
     public int recentDiceNumber = 0;
 
-    public currentInformation(String currentPlayer,String recentPlayer,
+    public CurrentInformation(String currentPlayer, String recentPlayer,
                               int recentDiceType, int recentDiceNumber) {
         this.currentPlayer = currentPlayer;
         this.recentPlayer = recentPlayer;
