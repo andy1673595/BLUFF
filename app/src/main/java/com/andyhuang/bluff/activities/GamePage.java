@@ -51,8 +51,6 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         readIntent();
         mPrsenter = new GamePagePresent(this);
         mPrsenter.init(roomID,isHost);
-
-
     }
 
     void readIntent() {

@@ -14,7 +14,6 @@ public interface GamePageContract {
     }
     interface Presenter extends BasePresenter {
         void init(String RoomID,boolean isHost);
-        void readRoomData();
         void newRandomDice();
         void listenPlayerCurrentState();
         void updateMyDiceState();

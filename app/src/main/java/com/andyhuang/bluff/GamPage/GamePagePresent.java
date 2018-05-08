@@ -16,6 +16,7 @@ public class GamePagePresent implements GamePageContract.Presenter{
     private String roomID;
     private boolean isHost;
     private String buttonType;
+    private GameFirebaseHelper firebaseHelper;
 
     @Override
     public void start() {
@@ -30,19 +31,20 @@ public class GamePagePresent implements GamePageContract.Presenter{
     public void init(String roomIDInput, boolean isHostInput) {
         roomID = roomIDInput;
         isHost = isHostInput;
+        firebaseHelper = new GameFirebaseHelper(roomID,gamePgaeView);
         //set Button UI
         if(isHost) {
             buttonType = Constants.BUTTON_START;
             gamePgaeView.freshStateButtonUI(Constants.BUTTON_START);
+            //host set game state to wait for host start
+            firebaseHelper.setGameState(Constants.WAIT_HOST);
         } else {
+            //invitee wait for host click start
             buttonType = "wait host start";
             gamePgaeView.freshStateButtonUI(Constants.BUTTON_READY);
         }
-    }
 
-    @Override
-    public void readRoomData() {
-
+        firebaseHelper.listenGameState();
     }
 
     @Override
@@ -84,7 +86,8 @@ public class GamePagePresent implements GamePageContract.Presenter{
     public void clickStateButton() {
         switch (buttonType) {
             case "start":
-                //I'm host , game start
+                //I'm host , get player list and update to server, everyone need to load it
+                firebaseHelper.getRoomData();
                 break;
             case "ready":
                 //get ready
