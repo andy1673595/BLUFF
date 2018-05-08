@@ -1,4 +1,4 @@
-package com.andyhuang.bluff.GamPage.GameInformation;
+package com.andyhuang.bluff.GamPage.GameHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 public class Dice {
     List<Integer> numberList = new ArrayList<>();
 
-    void getNewDice() {
-
+    public void getNewDice() {
+        
     }
 
 }

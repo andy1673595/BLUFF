@@ -83,7 +83,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
             case "ready":
                 imageReadyStateButton.setImageResource(R.drawable.ready_button_gamepage);
                 break;
-            case "cancel":
+            case "get ready":
                 imageReadyStateButton.setImageResource(R.drawable.cancel_button_gamepage);
                 break;
         }

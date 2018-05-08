@@ -1,6 +1,4 @@
 package com.andyhuang.bluff.GamPage;
-
-import com.andyhuang.bluff.GameInviteDialog.GameInviteContract;
 import com.andyhuang.bluff.Util.Constants;
 
 import java.util.ArrayList;
@@ -12,7 +10,6 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     private GamePageContract.View gamePgaeView;
     private Map<String,String> playerStateMap = new HashMap<>();
     private List<String> playerOrderList = new ArrayList<>();
-    private int playerTotal = 0;
     private String roomID;
     private boolean isHost;
     private String buttonType;
@@ -92,11 +89,13 @@ public class GamePagePresenter implements GamePageContract.Presenter{
             case "ready":
                 //get ready
                 buttonType = Constants.BUTTON_GET_READY;
+                gamePgaeView.freshStateButtonUI(Constants.BUTTON_GET_READY);
                 firebaseHelper.setCurrentState(Constants.GET_READY);
                 break;
             case "get ready":
                 //cancel Ready
                 buttonType = Constants.BUTTON_READY;
+                gamePgaeView.freshStateButtonUI(Constants.BUTTON_READY);
                 firebaseHelper.setCurrentState(Constants.CANCEL_READY);
                 break;
         }

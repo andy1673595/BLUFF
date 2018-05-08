@@ -1,6 +1,7 @@
 package com.andyhuang.bluff.GamPage;
 
-import com.andyhuang.bluff.GamPage.GameInformation.CurrentStateHelper;
+import com.andyhuang.bluff.GamPage.GameHelper.CurrentStateHelper;
+import com.andyhuang.bluff.GamPage.GameHelper.Dice;
 import com.andyhuang.bluff.Object.Gamer;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
@@ -24,6 +25,7 @@ public class GameFirebaseHelper {
     private boolean isHost;
     private CurrentStateHelper currentStateHelper;
     private GameFirebaseHelper mGameFirebaseHelper;
+    private Dice dice = new Dice();
 
 
     public GameFirebaseHelper(String roomID,GamePageContract.View gamePageViewInput,
@@ -100,6 +102,7 @@ public class GameFirebaseHelper {
                         mPresenter.setButtonType(Constants.BUTTON_READY);
                         break;
                     case "get new dice":
+                        dice.getNewDice();
                         break;
                 }
             }

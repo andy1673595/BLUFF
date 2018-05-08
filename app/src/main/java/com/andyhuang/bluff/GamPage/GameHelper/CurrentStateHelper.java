@@ -1,4 +1,4 @@
-package com.andyhuang.bluff.GamPage.GameInformation;
+package com.andyhuang.bluff.GamPage.GameHelper;
 
 import com.andyhuang.bluff.GamPage.GameFirebaseHelper;
 import com.andyhuang.bluff.Util.Constants;
