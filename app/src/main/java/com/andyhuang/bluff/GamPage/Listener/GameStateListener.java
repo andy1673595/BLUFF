@@ -43,10 +43,11 @@ public class GameStateListener implements ValueEventListener {
             case "get new dice":
                 dice.getNewDice();
                 gameRef.child(Constants.DICE_LIST).child(myUID).setValue(dice.getList());
+                gamePageView.freshDiceUI(dice.getList());
                 firebaseHelper.setCurrentState(Constants.COMPLETED_NEW_DICE);
                 break;
-            case "load dice list":
-
+            case "get initial game data":
+                firebaseHelper.getInitailGameData();
                 break;
         }
 

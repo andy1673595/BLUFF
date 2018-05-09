@@ -10,6 +10,7 @@ import com.andyhuang.bluff.GamPage.GamePagePresenter;
 import com.andyhuang.bluff.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GamePage extends BaseActivity implements View.OnClickListener ,GamePageContract.View {
     private String roomID;
@@ -23,6 +24,8 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private ImageView imageDice3;
     private ImageView imageDice4;
     private ImageView imageDice5;
+    private ImageView[] imageDiceArray;
+    private int[] diceImageSourceArray;
     private ImageView imageHomeBackButton;
 
     @Override
@@ -32,11 +35,20 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         imageIncreaseDiceButton = (ImageView)findViewById(R.id.image_increae_dice);
         imageCatchButton = (ImageView)findViewById(R.id.image_catch);
         imageReadyStateButton = (ImageView)findViewById(R.id.image_game_state);
-        imageDice1 = (ImageView)findViewById(R.id.image_table_dice1);
+       /* imageDice1 = (ImageView)findViewById(R.id.image_table_dice1);
         imageDice2 = (ImageView)findViewById(R.id.image_table_dice2);
         imageDice3 = (ImageView)findViewById(R.id.image_table_dice3);
         imageDice4 = (ImageView)findViewById(R.id.image_table_dice4);
-        imageDice5 = (ImageView)findViewById(R.id.image_table_dice5);
+        imageDice5 = (ImageView)findViewById(R.id.image_table_dice5);*/
+        imageDiceArray = new ImageView[]{
+                (ImageView)findViewById(R.id.image_table_dice1),
+                (ImageView)findViewById(R.id.image_table_dice2),
+                (ImageView)findViewById(R.id.image_table_dice3),
+                (ImageView)findViewById(R.id.image_table_dice4),
+                (ImageView)findViewById(R.id.image_table_dice5)};
+        diceImageSourceArray = new int[] {R.drawable.table_dice1,R.drawable.table_dice2,R.drawable.table_dice3,
+                    R.drawable.table_dice4,R.drawable.table_dice5,R.drawable.table_dice6};
+
         imageHomeBackButton = (ImageView)findViewById(R.id.image_home_button_gamepage);
         imageIncreaseDiceButton.setOnClickListener(this);
         imageCatchButton.setOnClickListener(this);
@@ -90,8 +102,10 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     }
 
     @Override
-    public void freshDiceUI(ArrayList<Integer> diceList) {
-
+    public void freshDiceUI(List<Integer> diceList) {
+        for(int diceInView =0;diceInView<5;diceInView++) {
+            imageDiceArray[diceInView].setImageResource(diceImageSourceArray[diceList.get(diceInView)-1]);
+        }
     }
 
     @Override

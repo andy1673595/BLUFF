@@ -46,12 +46,13 @@ public class Constants {
     public static String READ_INIT_DATA = "read init data";
     public static String WAIT_READY = "wait ready";
     public static String NEW_DICE = "get new dice";
-    public static String LOAD_DICE_LIST = "load dice list";
+    public static String GET_INITIAL_GAME_DATA ="get initial game data";
     //Gamer current state
     public static String COMPLETED_READ_INIT = "completed read init";
     public static String GET_READY = "get ready";
     public static String CANCEL_READY = "cancel ready";
     public static String COMPLETED_NEW_DICE = "completed new dice";
+
 
 
 

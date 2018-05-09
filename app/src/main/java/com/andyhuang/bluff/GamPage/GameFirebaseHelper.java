@@ -1,10 +1,13 @@
 package com.andyhuang.bluff.GamPage;
 
+import com.andyhuang.bluff.Callback.DiceTotalListenerCallback;
 import com.andyhuang.bluff.Callback.PlayerGetRoomDataCallback;
 import com.andyhuang.bluff.Callback.RoomListenerCallback;
-import com.andyhuang.bluff.GamPage.GameHelper.CurrentInformation;
+import com.andyhuang.bluff.helper.CurrentInformation;
 import com.andyhuang.bluff.GamPage.GameHelper.CurrentStateHelper;
 import com.andyhuang.bluff.GamPage.GameHelper.Dice;
+import com.andyhuang.bluff.GamPage.Listener.CurrentPlayerInformationListener;
+import com.andyhuang.bluff.GamPage.Listener.DiceTotalListener;
 import com.andyhuang.bluff.GamPage.Listener.GameStateListener;
 import com.andyhuang.bluff.GamPage.Listener.PlayerCurrentStateListener;
 import com.andyhuang.bluff.GamPage.Listener.PlayerGetRoomDataListener;
@@ -37,11 +40,10 @@ public class GameFirebaseHelper {
     private int currentPlayerNumber = 0;
     private GameStateListener gameStateListener;
     private RoomDataListener roomDataListener;
-    private RoomListenerCallback mRoomListenerCallback;
-    private PlayerGetRoomDataCallback mPlayerGetRoomDataCallback;
     private PlayerCurrentStateListener mPlayerCurrentStateListener;
     private PlayerGetRoomDataListener mPlayerGetRoomDataListener;
-
+    private DiceTotalListener mDiceTotalListener;
+    private CurrentPlayerInformationListener mCurrentPlayerInformationListener;
 
     public GameFirebaseHelper(String roomID,GamePageContract.View gamePageViewInput,
                               boolean isHostInput,GamePagePresenter mPresenterInput) {
@@ -52,11 +54,11 @@ public class GameFirebaseHelper {
         myUID = UserManager.getInstance().getUserUID();
         mGameFirebaseHelper = this;
         gameStateListener = new GameStateListener(this,dice,gameRef,mPresenter,gamePageView);
-        mRoomListenerCallback = getRoomListenerCallback();
-        mPlayerGetRoomDataCallback = getPlayerGetRoomCallback();
         roomDataListener = new RoomDataListener(gamerList,gameRef,this,mRoomListenerCallback);
         mPlayerGetRoomDataListener = new PlayerGetRoomDataListener(gamerList,this,isHostInput,
                                                             gamePageView,mPlayerGetRoomDataCallback);
+        mDiceTotalListener = new DiceTotalListener(mDiceTotalListenerCallback);
+
     }
 
     public void setGameState(String gameState) {
@@ -70,6 +72,8 @@ public class GameFirebaseHelper {
     public void playerGetRoomData() {
         gamerList = new ArrayList<>();
         gameRef.child(Constants.GAMER_LIST).addListenerForSingleValueEvent(mPlayerGetRoomDataListener);
+        //start listen current Information
+        listenCurrentPlayerInformation();
     }
 
     public void listenGameState() {
@@ -105,6 +109,8 @@ public class GameFirebaseHelper {
                        currentInformation.setCurrentPlayer(gamer.getUserUID());
                     }
                     gameRef.child(Constants.NEXT_PLAYER_INFORMATION).setValue(currentInformation);
+                    //tell player to get the dice total list
+                    setGameState(Constants.GET_INITIAL_GAME_DATA);
                 }
             }
             @Override
@@ -113,12 +119,19 @@ public class GameFirebaseHelper {
 
     }
 
+    public void getInitailGameData() {
+        gameRef.child(Constants.DICE_TOTAL_LIST).addListenerForSingleValueEvent(mDiceTotalListener);
+    }
+    public void listenCurrentPlayerInformation() {
+        mCurrentPlayerInformationListener = new CurrentPlayerInformationListener(this,gamePageView);
+        gameRef.child(Constants.NEXT_PLAYER_INFORMATION).addValueEventListener(mCurrentPlayerInformationListener);
+    }
+
     public void setGameStateInHelper(String stateInput) {
         gameState = stateInput;
     }
 
-    RoomListenerCallback getRoomListenerCallback() {
-        return new RoomListenerCallback() {
+    RoomListenerCallback mRoomListenerCallback= new RoomListenerCallback() {
             @Override
             public void returnCurrentHelper(CurrentStateHelper helperBack, List<Gamer> gamerListCallback) {
                 currentStateHelper = helperBack;
@@ -126,14 +139,24 @@ public class GameFirebaseHelper {
                 mPlayerCurrentStateListener = new PlayerCurrentStateListener(currentStateHelper);
             }
         };
-    }
 
-    public PlayerGetRoomDataCallback getPlayerGetRoomCallback() {
-       return new PlayerGetRoomDataCallback() {
+
+    private PlayerGetRoomDataCallback mPlayerGetRoomDataCallback= new PlayerGetRoomDataCallback() {
            @Override
            public void returnGamerList(List<Gamer> gamerListCallback) {
                 gamerList = gamerListCallback;
            }
        };
+
+    private DiceTotalListenerCallback mDiceTotalListenerCallback = new DiceTotalListenerCallback() {
+        @Override
+        public void getDiceTotalList(List<Integer> diceTotalCallback) {
+            //get the diceTotalList from firebase listener callback
+            diceTotal = diceTotalCallback;
+        }
+    };
+
+    public void setCurrentInformation(CurrentInformation currentInformationInput) {
+        currentInformation = currentInformationInput;
     }
 }
