@@ -5,6 +5,7 @@ import com.andyhuang.bluff.GamPage.GameHelper.CurrentInformation;
 import com.andyhuang.bluff.GamPage.GameHelper.CurrentStateHelper;
 import com.andyhuang.bluff.GamPage.GameHelper.Dice;
 import com.andyhuang.bluff.GamPage.Listener.GameStateListener;
+import com.andyhuang.bluff.GamPage.Listener.PlayerCurrentStateListener;
 import com.andyhuang.bluff.GamPage.Listener.RoomDataListener;
 import com.andyhuang.bluff.Object.Gamer;
 import com.andyhuang.bluff.User.UserManager;
@@ -37,6 +38,7 @@ public class GameFirebaseHelper {
     private GameStateListener gameStateListener;
     private RoomDataListener roomDataListener;
     private RoomListenerCallback mRoomListenerCallback;
+    private PlayerCurrentStateListener mPlayerCurrentStateListener;
 
 
     public GameFirebaseHelper(String roomID,GamePageContract.View gamePageViewInput,
@@ -91,34 +93,7 @@ public class GameFirebaseHelper {
     }
 
     public void hostListenPlayerCurrentState() {
-        gameRef.child(Constants.CURRENT_STATE_LIST).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String state = (String)dataSnapshot.getValue();
-                currentStateHelper.dealCurrentState(state);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                String state = (String)dataSnapshot.getValue();
-                currentStateHelper.dealCurrentState(state);
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+        gameRef.child(Constants.CURRENT_STATE_LIST).addChildEventListener(mPlayerCurrentStateListener);
     }
 
     public void setCurrentState(String state) {
@@ -164,6 +139,7 @@ public class GameFirebaseHelper {
             public void returnCurrentHelper(CurrentStateHelper helperBack, List<Gamer> gamerListCallback) {
                 currentStateHelper = helperBack;
                 gamerList = gamerListCallback;
+                mPlayerCurrentStateListener = new PlayerCurrentStateListener(currentStateHelper);
             }
         };
     }
