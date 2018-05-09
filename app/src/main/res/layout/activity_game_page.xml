@@ -87,13 +87,18 @@
             tools:layout_editor_absoluteY="10dp" />
 
         <TextView
-            android:id="@+id/textView4"
-            android:layout_width="148dp"
+            android:id="@+id/text_show_current_info"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:layout_marginEnd="4dp"
             android:gravity="center"
+            android:textColor="@color/teal800"
+            android:textSize="28sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textGameInfo"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/image_game_state"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="infromation" />
 
     </android.support.constraint.ConstraintLayout>
 

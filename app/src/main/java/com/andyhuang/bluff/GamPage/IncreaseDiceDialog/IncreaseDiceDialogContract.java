@@ -14,6 +14,6 @@ public interface IncreaseDiceDialogContract {
     interface View extends BaseView{
         void showNumberCountChooseDialog(String message);
         void showDiceNumber(int diceType);
-        void showError();
+        void showError(String message);
     }
 }

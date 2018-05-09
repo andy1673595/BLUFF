@@ -161,4 +161,15 @@ public class GameFirebaseHelper {
     public void setCurrentInformation(CurrentInformation currentInformationInput) {
         currentInformation = currentInformationInput;
     }
+
+    public List<Gamer> getGamerList() {
+        return gamerList;
+    }
+    public CurrentInformation getCurrentInformation() {
+        return currentInformation;
+    }
+
+    public void  updateCurrentInformation(CurrentInformation currentInformation) {
+        gameRef.child(Constants.NEXT_PLAYER_INFORMATION).setValue(currentInformation);
+    }
 }

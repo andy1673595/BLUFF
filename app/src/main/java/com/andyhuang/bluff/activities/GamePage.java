@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.andyhuang.bluff.GamPage.GamePageContract;
 import com.andyhuang.bluff.GamPage.GamePagePresenter;
 import com.andyhuang.bluff.R;
+import com.andyhuang.bluff.helper.CurrentInformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,9 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private ImageView imageReadyStateButton;
     private ImageView[] imageDiceArray;
     private int[] diceImageSourceArray;
+    private int[] diceImageSourceForInfo;
     private ImageView imageHomeBackButton;
+    private TextView textShowInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         imageIncreaseDiceButton = (ImageView)findViewById(R.id.image_increae_dice);
         imageCatchButton = (ImageView)findViewById(R.id.image_catch);
         imageReadyStateButton = (ImageView)findViewById(R.id.image_game_state);
+        textShowInformation =(TextView)findViewById(R.id.text_show_current_info);
         imageDiceArray = new ImageView[]{
                 (ImageView)findViewById(R.id.image_table_dice1),
                 (ImageView)findViewById(R.id.image_table_dice2),
@@ -38,6 +43,8 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
                 (ImageView)findViewById(R.id.image_table_dice5)};
         diceImageSourceArray = new int[] {R.drawable.table_dice1,R.drawable.table_dice2,R.drawable.table_dice3,
                     R.drawable.table_dice4,R.drawable.table_dice5,R.drawable.table_dice6};
+        diceImageSourceForInfo = new int[] {R.drawable.dice1,R.drawable.dice2,R.drawable.dice3,
+                R.drawable.dice4,R.drawable.dice5,R.drawable.dice6};
 
         imageHomeBackButton = (ImageView)findViewById(R.id.image_home_button_gamepage);
         imageIncreaseDiceButton.setOnClickListener(this);
@@ -119,8 +126,9 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     }
 
     @Override
-    public void freshRecentDiceUI(int diceType, int number) {
-
+    public void freshRecentDiceUI(CurrentInformation currentInformation) {
+        textShowInformation.setText(currentInformation.getRecentDiceNumber()+" 個");
+        imageReadyStateButton.setImageResource(diceImageSourceForInfo[currentInformation.getRecentDiceType()-1]);
     }
 
     @Override

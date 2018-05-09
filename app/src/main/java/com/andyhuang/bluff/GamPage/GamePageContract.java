@@ -2,6 +2,7 @@ package com.andyhuang.bluff.GamPage;
 
 import com.andyhuang.bluff.BasePresenter;
 import com.andyhuang.bluff.BaseView;
+import com.andyhuang.bluff.helper.CurrentInformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ public interface GamePageContract {
         void setCurrentPlayerUI();
         void setOtherPlayerUI();
         void setRecentPlayerUI();
-        void freshRecentDiceUI(int diceType , int number);
+        void freshRecentDiceUI(CurrentInformation currentInformation);
         void showEndInformation(String endText);
     }
     interface Presenter extends BasePresenter {

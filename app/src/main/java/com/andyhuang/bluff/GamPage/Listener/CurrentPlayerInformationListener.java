@@ -24,7 +24,10 @@ public class CurrentPlayerInformationListener implements ValueEventListener {
         mCurrentInformation = dataSnapshot.getValue(CurrentInformation.class);
         if( mCurrentInformation!= null ) {
             mGameFirebaseHelper.setCurrentInformation(mCurrentInformation);
-
+            //fresh who increase what dice and how many it is
+            if(mCurrentInformation.getRecentDiceType()!= 0) {
+                gamepageView.freshRecentDiceUI(mCurrentInformation);
+            }
             if(myUID.equals(mCurrentInformation.currentPlayer)) {
                 //I'm currentPlayer ,I can increase the dice
                 gamepageView.setCurrentPlayerUI();

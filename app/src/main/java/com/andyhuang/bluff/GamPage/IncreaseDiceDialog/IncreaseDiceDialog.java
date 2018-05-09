@@ -8,7 +8,10 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.andyhuang.bluff.GamPage.GameFirebaseHelper;
 import com.andyhuang.bluff.R;
+import com.andyhuang.bluff.helper.CurrentInformation;
 
 public class IncreaseDiceDialog extends Dialog
         implements IncreaseDiceDialogContract.View ,View.OnClickListener{
@@ -24,7 +27,7 @@ public class IncreaseDiceDialog extends Dialog
     private int[] diceImageSourceArray;
     private IncreasrDiceDialogPresenter mPresenter;
 
-    public IncreaseDiceDialog(@NonNull Context context) {
+    public IncreaseDiceDialog(@NonNull Context context,GameFirebaseHelper helper) {
         super(context, R.style.MyDialogStyle);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.increase_dice_dialog);
@@ -43,10 +46,9 @@ public class IncreaseDiceDialog extends Dialog
         buttonIncreaseOne.setOnClickListener(this);
         buttonDecreaseFive.setOnClickListener(this);
         buttonIncreaseFive.setOnClickListener(this);
-
         diceImageSourceArray = new int[] {R.drawable.dice1,R.drawable.dice2,R.drawable.dice3,
                 R.drawable.dice4,R.drawable.dice5,R.drawable.dice6};
-        mPresenter = new IncreasrDiceDialogPresenter(this);
+        mPresenter = new IncreasrDiceDialogPresenter(this, helper);
     }
 
 
@@ -61,8 +63,8 @@ public class IncreaseDiceDialog extends Dialog
     }
 
     @Override
-    public void showError() {
-
+    public void showError(String message) {
+        textInfoToPlayer.setText(message);
     }
 
     @Override

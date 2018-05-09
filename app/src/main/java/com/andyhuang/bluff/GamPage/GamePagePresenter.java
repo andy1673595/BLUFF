@@ -26,7 +26,6 @@ public class GamePagePresenter implements GamePageContract.Presenter{
 
     public GamePagePresenter(GamePageContract.View gamePgaeViewInput) {
         gamePgaeView = gamePgaeViewInput;
-        mDialog = new IncreaseDiceDialog((GamePage)gamePgaeView);
     }
 
     @Override
@@ -77,6 +76,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     @Override
     public void increaseDice() {
         if(isplaying) {
+            mDialog = new IncreaseDiceDialog((GamePage)gamePgaeView,firebaseHelper);
             mDialog.show();
         }
     }
