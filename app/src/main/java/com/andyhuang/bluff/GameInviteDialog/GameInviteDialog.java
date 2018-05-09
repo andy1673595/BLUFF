@@ -26,7 +26,6 @@ public class GameInviteDialog extends Dialog implements View.OnClickListener{
         roomID = roomIDInput;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-
         setContentView(R.layout.dialog_game_invite);
         mContext = context;
         bluffPresenter = bluffPresenterInput;

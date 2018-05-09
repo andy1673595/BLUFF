@@ -1,5 +1,7 @@
 package com.andyhuang.bluff.GamPage;
+import com.andyhuang.bluff.GamPage.IncreaseDiceDialog.IncreaseDiceDialog;
 import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.activities.GamePage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     private String buttonType;
     private boolean isplaying = false;
     private GameFirebaseHelper firebaseHelper;
+    private IncreaseDiceDialog mDialog;
 
     @Override
     public void start() {
@@ -23,6 +26,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
 
     public GamePagePresenter(GamePageContract.View gamePgaeViewInput) {
         gamePgaeView = gamePgaeViewInput;
+        mDialog = new IncreaseDiceDialog((GamePage)gamePgaeView);
     }
 
     @Override
@@ -73,7 +77,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     @Override
     public void increaseDice() {
         if(isplaying) {
-
+            mDialog.show();
         }
     }
 

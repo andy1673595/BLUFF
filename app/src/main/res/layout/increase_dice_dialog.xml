@@ -35,7 +35,7 @@
         android:id="@+id/image_dice_choose"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="55dp"
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/image_increase_dialog_background"
         app:layout_constraintStart_toStartOf="@+id/image_increase_dialog_background"
@@ -45,13 +45,14 @@
         android:id="@+id/text_dice_count"
         android:layout_width="130dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="76dp"
+        android:layout_marginBottom="24dp"
         android:layout_marginStart="32dp"
         android:gravity="center_vertical"
         android:text=" X 1"
-        android:textSize="52sp"
+        android:textColor="@color/Cyan900"
+        android:textSize="44sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/image_increase_dialog_background"
+        app:layout_constraintBottom_toBottomOf="@+id/image_dice_choose"
         app:layout_constraintStart_toEndOf="@+id/image_dice_choose" />
 
     <Button
