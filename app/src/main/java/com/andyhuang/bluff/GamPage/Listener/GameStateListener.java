@@ -49,6 +49,10 @@ public class GameStateListener implements ValueEventListener {
             case "get initial game data":
                 firebaseHelper.getInitailGameData();
                 break;
+            case "playing":
+                mPresenter.setIsplaying(true);
+                mPresenter.setButtonType(Constants.BUTTON_PLAYING);
+                break;
         }
 
     }

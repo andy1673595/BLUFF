@@ -10,6 +10,9 @@ public interface GamePageContract {
     interface View extends BaseView {
         void freshStateButtonUI(String buttonType);
         void freshDiceUI(List<Integer> diceList);
+        void setCurrentPlayerUI();
+        void setOtherPlayerUI();
+        void setRecentPlayerUI();
         void freshRecentDiceUI(int diceType , int number);
         void showEndInformation(String endText);
     }

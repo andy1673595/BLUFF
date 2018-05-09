@@ -153,6 +153,8 @@ public class GameFirebaseHelper {
         public void getDiceTotalList(List<Integer> diceTotalCallback) {
             //get the diceTotalList from firebase listener callback
             diceTotal = diceTotalCallback;
+            //tell server player got dice total, get ready to start game
+            gameRef.child(Constants.CURRENT_STATE_LIST).child(myUID).setValue(Constants.READY_FOR_PLAYING);
         }
     };
 

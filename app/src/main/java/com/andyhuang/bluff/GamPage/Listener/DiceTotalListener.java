@@ -11,6 +11,7 @@ import java.util.List;
 public class DiceTotalListener implements ValueEventListener {
     DiceTotalListenerCallback callback;
     List<Integer> diceTotal = new ArrayList<>();
+
     public DiceTotalListener(DiceTotalListenerCallback callbackInput) {
         callback = callbackInput;
     }
@@ -21,6 +22,7 @@ public class DiceTotalListener implements ValueEventListener {
                 diceTotal.add (Integer.parseInt(String.valueOf((long) diceData.getValue())));
             }
             callback.getDiceTotalList(diceTotal);
+
         }
     }
 

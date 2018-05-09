@@ -5,13 +5,6 @@ public class CurrentInformation {
     public String recentPlayer = Constants.NODATA;
     public int recentDiceType = 0;
     public int recentDiceNumber = 0;
-  /*  public CurrentInformation(String currentPlayer, String recentPlayer,
-                              int recentDiceType, int recentDiceNumber) {
-        this.currentPlayer = currentPlayer;
-        this.recentPlayer = recentPlayer;
-        this.recentDiceType = recentDiceType;
-        this.recentDiceNumber = recentDiceNumber;
-    }*/
 
     public String getCurrentPlayer() {
         return currentPlayer;

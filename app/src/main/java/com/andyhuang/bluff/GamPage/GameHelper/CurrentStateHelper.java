@@ -7,6 +7,7 @@ public class CurrentStateHelper {
     private int countForCompletedRead=0;
     private int countForGetReady = 0;
     private int countForNewDice = 0;
+    private int countForStartPlaying = 0;
     GameFirebaseHelper firebaseHelper;
     int playerTotal;
     public CurrentStateHelper(GameFirebaseHelper firebaseHelperInput,int playerTotalInput) {
@@ -41,6 +42,20 @@ public class CurrentStateHelper {
                     firebaseHelper.hostGetEachDiceList();
                 }
                 break;
+            case "ready for playing":
+                countForStartPlaying++;
+                if(countForStartPlaying==playerTotal) {
+                    //all player ready to play game
+                    firebaseHelper.setGameState(Constants.PLAYING);
+                }
+                break;
         }
+    }
+
+    public void resetCount() {
+        countForCompletedRead=0;
+        countForGetReady = 0;
+        countForNewDice = 0;
+        countForStartPlaying = 0;
     }
 }

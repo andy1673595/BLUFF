@@ -13,6 +13,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     private String roomID;
     private boolean isHost;
     private String buttonType;
+    private boolean isplaying = false;
     private GameFirebaseHelper firebaseHelper;
 
     @Override
@@ -71,7 +72,9 @@ public class GamePagePresenter implements GamePageContract.Presenter{
 
     @Override
     public void increaseDice() {
+        if(isplaying) {
 
+        }
     }
 
     @Override
@@ -104,4 +107,5 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     public void setButtonType(String type) {
         buttonType = type;
     }
+    public void setIsplaying(boolean isplayingInput) {isplaying = isplayingInput;}
 }
