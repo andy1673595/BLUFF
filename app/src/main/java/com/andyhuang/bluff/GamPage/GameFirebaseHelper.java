@@ -1,23 +1,23 @@
 package com.andyhuang.bluff.GamPage;
 
+import com.andyhuang.bluff.Callback.PlayerGetRoomDataCallback;
 import com.andyhuang.bluff.Callback.RoomListenerCallback;
 import com.andyhuang.bluff.GamPage.GameHelper.CurrentInformation;
 import com.andyhuang.bluff.GamPage.GameHelper.CurrentStateHelper;
 import com.andyhuang.bluff.GamPage.GameHelper.Dice;
 import com.andyhuang.bluff.GamPage.Listener.GameStateListener;
 import com.andyhuang.bluff.GamPage.Listener.PlayerCurrentStateListener;
+import com.andyhuang.bluff.GamPage.Listener.PlayerGetRoomDataListener;
 import com.andyhuang.bluff.GamPage.Listener.RoomDataListener;
 import com.andyhuang.bluff.Object.Gamer;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class GameFirebaseHelper {
@@ -38,7 +38,9 @@ public class GameFirebaseHelper {
     private GameStateListener gameStateListener;
     private RoomDataListener roomDataListener;
     private RoomListenerCallback mRoomListenerCallback;
+    private PlayerGetRoomDataCallback mPlayerGetRoomDataCallback;
     private PlayerCurrentStateListener mPlayerCurrentStateListener;
+    private PlayerGetRoomDataListener mPlayerGetRoomDataListener;
 
 
     public GameFirebaseHelper(String roomID,GamePageContract.View gamePageViewInput,
@@ -51,7 +53,10 @@ public class GameFirebaseHelper {
         mGameFirebaseHelper = this;
         gameStateListener = new GameStateListener(this,dice,gameRef,mPresenter,gamePageView);
         mRoomListenerCallback = getRoomListenerCallback();
+        mPlayerGetRoomDataCallback = getPlayerGetRoomCallback();
         roomDataListener = new RoomDataListener(gamerList,gameRef,this,mRoomListenerCallback);
+        mPlayerGetRoomDataListener = new PlayerGetRoomDataListener(gamerList,this,isHostInput,
+                                                            gamePageView,mPlayerGetRoomDataCallback);
     }
 
     public void setGameState(String gameState) {
@@ -64,28 +69,7 @@ public class GameFirebaseHelper {
     //all player read player list
     public void playerGetRoomData() {
         gamerList = new ArrayList<>();
-        gameRef.child(Constants.GAMER_LIST).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot gamerData:dataSnapshot.getChildren()) {
-                        Gamer gamer = new Gamer((String) gamerData.child(Constants.USER_UID_FIREBASE).getValue(),
-                                (String)gamerData.child("userPhotoURL").getValue(),
-                                (String)gamerData.child(Constants.USER_EMAIL_FIREBASE).getValue()) ;
-                      gamerList.add(gamer);
-                    }
-                  //tell server have read data
-                    setCurrentState(Constants.COMPLETED_READ_INIT);
-                  //if I'm host , start to listen player current state
-                  if(isHost) hostListenPlayerCurrentState();
-                  //set button to ready
-                  gamePageView.freshStateButtonUI(Constants.BUTTON_READY);
-                }
-            }
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
+        gameRef.child(Constants.GAMER_LIST).addListenerForSingleValueEvent(mPlayerGetRoomDataListener);
     }
 
     public void listenGameState() {
@@ -144,4 +128,12 @@ public class GameFirebaseHelper {
         };
     }
 
+    public PlayerGetRoomDataCallback getPlayerGetRoomCallback() {
+       return new PlayerGetRoomDataCallback() {
+           @Override
+           public void returnGamerList(List<Gamer> gamerListCallback) {
+                gamerList = gamerListCallback;
+           }
+       };
+    }
 }

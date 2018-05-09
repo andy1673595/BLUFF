@@ -18,7 +18,8 @@ public class PlayerCurrentStateListener implements ChildEventListener {
 
     @Override
     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+        String state = (String)dataSnapshot.getValue();
+        mCurrentStateHelper.dealCurrentState(state);
     }
 
     @Override
