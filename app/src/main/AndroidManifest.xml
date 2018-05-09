@@ -48,7 +48,8 @@
             android:name=".activities.MainHallPage"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".activities.GamePage"></activity>
+        <activity android:name=".activities.GamePage"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

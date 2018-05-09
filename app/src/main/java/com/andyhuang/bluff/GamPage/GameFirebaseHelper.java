@@ -3,6 +3,7 @@ package com.andyhuang.bluff.GamPage;
 import com.andyhuang.bluff.GamPage.GameHelper.CurrentInformation;
 import com.andyhuang.bluff.GamPage.GameHelper.CurrentStateHelper;
 import com.andyhuang.bluff.GamPage.GameHelper.Dice;
+import com.andyhuang.bluff.GamPage.Listener.GameStateListener;
 import com.andyhuang.bluff.Object.Gamer;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
@@ -31,6 +32,7 @@ public class GameFirebaseHelper {
     private List<Integer> diceTotal;
     private CurrentInformation currentInformation;
     private int currentPlayerNumber = 0;
+    private GameStateListener gameStateListener;
 
 
     public GameFirebaseHelper(String roomID,GamePageContract.View gamePageViewInput,
@@ -41,6 +43,7 @@ public class GameFirebaseHelper {
         isHost = isHostInput;
         myUID = UserManager.getInstance().getUserUID();
         mGameFirebaseHelper = this;
+        gameStateListener = new GameStateListener(this,dice,gameRef,mPresenter,gamePageView);
     }
 
     public void setGameState(String gameState) {
@@ -101,33 +104,7 @@ public class GameFirebaseHelper {
     }
 
     public void listenGameState() {
-        gameRef.child(Constants.GAME_STATE).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                gameState = (String) dataSnapshot.getValue();
-                switch (gameState) {
-                    case "read init data":
-                        playerGetRoomData();
-                        break;
-                    case "wait ready":
-                        gamePageView.freshStateButtonUI(Constants.BUTTON_READY);
-                        mPresenter.setButtonType(Constants.BUTTON_READY);
-                        break;
-                    case "get new dice":
-                        dice.getNewDice();
-                        gameRef.child(Constants.DICE_LIST).child(myUID).setValue(dice.getList());
-                        setCurrentState(Constants.COMPLETED_NEW_DICE);
-                        break;
-                    case "load dice list":
-
-                        break;
-                }
-            }
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+        gameRef.child(Constants.GAME_STATE).addValueEventListener(gameStateListener);
     }
 
     public void hostListenPlayerCurrentState() {
@@ -192,6 +169,10 @@ public class GameFirebaseHelper {
             public void onCancelled(FirebaseError firebaseError) { }
         });
 
+    }
+
+    public void setGameStateInHelper(String stateInput) {
+        gameState = stateInput;
     }
 
 }
