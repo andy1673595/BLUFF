@@ -1,9 +1,11 @@
 package com.andyhuang.bluff.GamPage;
 
+import com.andyhuang.bluff.Callback.RoomListenerCallback;
 import com.andyhuang.bluff.GamPage.GameHelper.CurrentInformation;
 import com.andyhuang.bluff.GamPage.GameHelper.CurrentStateHelper;
 import com.andyhuang.bluff.GamPage.GameHelper.Dice;
 import com.andyhuang.bluff.GamPage.Listener.GameStateListener;
+import com.andyhuang.bluff.GamPage.Listener.RoomDataListener;
 import com.andyhuang.bluff.Object.Gamer;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
@@ -33,6 +35,8 @@ public class GameFirebaseHelper {
     private CurrentInformation currentInformation;
     private int currentPlayerNumber = 0;
     private GameStateListener gameStateListener;
+    private RoomDataListener roomDataListener;
+    private RoomListenerCallback mRoomListenerCallback;
 
 
     public GameFirebaseHelper(String roomID,GamePageContract.View gamePageViewInput,
@@ -44,6 +48,8 @@ public class GameFirebaseHelper {
         myUID = UserManager.getInstance().getUserUID();
         mGameFirebaseHelper = this;
         gameStateListener = new GameStateListener(this,dice,gameRef,mPresenter,gamePageView);
+        mRoomListenerCallback = getRoomListenerCallback();
+        roomDataListener = new RoomDataListener(gamerList,gameRef,this,mRoomListenerCallback);
     }
 
     public void setGameState(String gameState) {
@@ -51,29 +57,7 @@ public class GameFirebaseHelper {
     }
     //host read gamer and update it to server
     public void getRoomData() {
-        gameRef.child(Constants.GAMER_FIREBASE).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    //read all player
-                    for (DataSnapshot gamerData : dataSnapshot.getChildren()) {
-
-                        Gamer gamer = new Gamer((String) gamerData.child(Constants.USER_UID_FIREBASE).getValue(),
-                                (String)gamerData.child("userPhotoURL").getValue(),
-                                (String)gamerData.child(Constants.USER_EMAIL_FIREBASE).getValue()) ;
-                        gamerList.add(gamer);
-                    }
-
-                    gameRef.child(Constants.GAMER_LIST).setValue(gamerList);
-                    //use total player to creat current state helper
-                    currentStateHelper = new CurrentStateHelper(mGameFirebaseHelper,gamerList.size());
-                    setGameState(Constants.READ_INIT_DATA);
-                }
-            }
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
+        gameRef.child(Constants.GAMER_FIREBASE).addListenerForSingleValueEvent(roomDataListener);
     }
     //all player read player list
     public void playerGetRoomData() {
@@ -87,7 +71,6 @@ public class GameFirebaseHelper {
                                 (String)gamerData.child("userPhotoURL").getValue(),
                                 (String)gamerData.child(Constants.USER_EMAIL_FIREBASE).getValue()) ;
                       gamerList.add(gamer);
-
                     }
                   //tell server have read data
                     setCurrentState(Constants.COMPLETED_READ_INIT);
@@ -173,6 +156,16 @@ public class GameFirebaseHelper {
 
     public void setGameStateInHelper(String stateInput) {
         gameState = stateInput;
+    }
+
+    RoomListenerCallback getRoomListenerCallback() {
+        return new RoomListenerCallback() {
+            @Override
+            public void returnCurrentHelper(CurrentStateHelper helperBack, List<Gamer> gamerListCallback) {
+                currentStateHelper = helperBack;
+                gamerList = gamerListCallback;
+            }
+        };
     }
 
 }
