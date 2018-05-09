@@ -6,6 +6,7 @@ import com.andyhuang.bluff.Util.Constants;
 public class CurrentStateHelper {
     private int countForCompletedRead=0;
     private int countForGetReady = 0;
+    private int countForNewDice = 0;
     GameFirebaseHelper firebaseHelper;
     int playerTotal;
     public CurrentStateHelper(GameFirebaseHelper firebaseHelperInput,int playerTotalInput) {
@@ -30,8 +31,15 @@ public class CurrentStateHelper {
                 }
                 break;
             case "cancel ready":
-                if(countForGetReady < 0) countForGetReady=0;
                 countForGetReady--;
+                if(countForGetReady < 0) countForGetReady=0;
+                break;
+            case "completed new dice":
+                countForNewDice++;
+                if(countForNewDice == playerTotal) {
+                    //all player completed new dice, host caculate dice list
+                    firebaseHelper.hostGetEachDiceList();
+                }
                 break;
         }
     }

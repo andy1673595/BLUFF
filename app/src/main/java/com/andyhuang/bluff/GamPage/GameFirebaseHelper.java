@@ -1,5 +1,6 @@
 package com.andyhuang.bluff.GamPage;
 
+import com.andyhuang.bluff.GamPage.GameHelper.CurrentInformation;
 import com.andyhuang.bluff.GamPage.GameHelper.CurrentStateHelper;
 import com.andyhuang.bluff.GamPage.GameHelper.Dice;
 import com.andyhuang.bluff.Object.Gamer;
@@ -12,6 +13,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GameFirebaseHelper {
@@ -19,13 +21,16 @@ public class GameFirebaseHelper {
     private String gameState;
     private GamePageContract.View gamePageView;
     private GamePagePresenter mPresenter;
-    private List<Gamer> gamerList = new ArrayList<>();
-    private int playerTotal;
+    private List<Gamer> gamerList = new ArrayList<Gamer>();
     private String myUID;
     private boolean isHost;
     private CurrentStateHelper currentStateHelper;
     private GameFirebaseHelper mGameFirebaseHelper;
     private Dice dice = new Dice();
+    private List<List<Integer>> diceListForEachPlayer;
+    private List<Integer> diceTotal;
+    private CurrentInformation currentInformation;
+    private int currentPlayerNumber = 0;
 
 
     public GameFirebaseHelper(String roomID,GamePageContract.View gamePageViewInput,
@@ -55,6 +60,7 @@ public class GameFirebaseHelper {
                                 (String)gamerData.child(Constants.USER_EMAIL_FIREBASE).getValue()) ;
                         gamerList.add(gamer);
                     }
+
                     gameRef.child(Constants.GAMER_LIST).setValue(gamerList);
                     //use total player to creat current state helper
                     currentStateHelper = new CurrentStateHelper(mGameFirebaseHelper,gamerList.size());
@@ -68,12 +74,18 @@ public class GameFirebaseHelper {
     }
     //all player read player list
     public void playerGetRoomData() {
+        gamerList = new ArrayList<>();
         gameRef.child(Constants.GAMER_LIST).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                  gamerList = (List<Gamer>)dataSnapshot.getValue();
-                  playerTotal = gamerList.size();
+                    for (DataSnapshot gamerData:dataSnapshot.getChildren()) {
+                        Gamer gamer = new Gamer((String) gamerData.child(Constants.USER_UID_FIREBASE).getValue(),
+                                (String)gamerData.child("userPhotoURL").getValue(),
+                                (String)gamerData.child(Constants.USER_EMAIL_FIREBASE).getValue()) ;
+                      gamerList.add(gamer);
+
+                    }
                   //tell server have read data
                     setCurrentState(Constants.COMPLETED_READ_INIT);
                   //if I'm host , start to listen player current state
@@ -103,6 +115,11 @@ public class GameFirebaseHelper {
                         break;
                     case "get new dice":
                         dice.getNewDice();
+                        gameRef.child(Constants.DICE_LIST).child(myUID).setValue(dice.getList());
+                        setCurrentState(Constants.COMPLETED_NEW_DICE);
+                        break;
+                    case "load dice list":
+
                         break;
                 }
             }
@@ -148,5 +165,33 @@ public class GameFirebaseHelper {
         gameRef.child(Constants.CURRENT_STATE_LIST).child(myUID).setValue(state);
     }
 
+    //host collect each player's dice set and caculate total,then update it to server
+    public void hostGetEachDiceList() {
+        diceListForEachPlayer = new ArrayList<>();
+        gameRef.child(Constants.DICE_LIST).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot dicedata : dataSnapshot.getChildren()) {
+                        List<Integer> dice = (List<Integer>)dicedata.getValue();
+                        diceListForEachPlayer.add(dice);
+                    }
+                    diceTotal = dice.getTotalList(diceListForEachPlayer);
+                    //update to server
+                    gameRef.child(Constants.DICE_TOTAL_LIST).setValue(diceTotal);
+                    //set first gamer first time
+                    if(currentInformation ==null) {
+                        currentInformation = new CurrentInformation();
+                        Gamer gamer = gamerList.get(currentPlayerNumber);
+                       currentInformation.setCurrentPlayer(gamer.getUserUID());
+                    }
+                    gameRef.child(Constants.NEXT_PLAYER_INFORMATION).setValue(currentInformation);
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) { }
+        });
+
+    }
 
 }
