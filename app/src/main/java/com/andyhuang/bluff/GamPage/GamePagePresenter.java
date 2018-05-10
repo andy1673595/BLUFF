@@ -11,7 +11,6 @@ import java.util.Map;
 
 public class GamePagePresenter implements GamePageContract.Presenter{
     private GamePageContract.View gamePgaeView;
-    private Map<String,String> playerStateMap = new HashMap<>();
     private String roomID;
     private boolean isHost;
     private String buttonType;
@@ -50,31 +49,6 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     }
 
     @Override
-    public void newRandomDice() {
-
-    }
-
-    @Override
-    public void listenPlayerCurrentState() {
-
-    }
-
-    @Override
-    public void updateMyDiceState() {
-
-    }
-
-    @Override
-    public void loadInitialGameData() {
-
-    }
-
-    @Override
-    public void readCurrentData() {
-
-    }
-
-    @Override
     public void increaseDice() {
         if(isplaying) {
             mDialog = new IncreaseDiceDialog((GamePage)gamePgaeView,firebaseHelper);
@@ -84,10 +58,10 @@ public class GamePagePresenter implements GamePageContract.Presenter{
 
     @Override
     public void catchPlayer() {
-        CheckWhoWin checkWhoWin = new CheckWhoWin(firebaseHelper.getDiceTotal(),hasTellOne, firebaseHelper.getGamerList());
-        GameEndInformation gameEndInformation =checkWhoWin
-                .getGameEndInformation(firebaseHelper.getCurrentInformation());
-        firebaseHelper.updateGameEndInfromation(gameEndInformation);
+            CheckWhoWin checkWhoWin = new CheckWhoWin(firebaseHelper.getDiceTotal(),hasTellOne, firebaseHelper.getGamerList());
+            GameEndInformation gameEndInformation =checkWhoWin
+                    .getGameEndInformation(firebaseHelper.getCurrentInformation());
+            firebaseHelper.updateGameEndInfromation(gameEndInformation);
     }
 
     @Override
@@ -113,7 +87,9 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     }
     @Override
     public void reset() {
-
+        hasTellOne =false;
+        isplaying = false;
+        buttonType = Constants.BUTTON_READY;
     }
 
     public void setButtonType(String type) {

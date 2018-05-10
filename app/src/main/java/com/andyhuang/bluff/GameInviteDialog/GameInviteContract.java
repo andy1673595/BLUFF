@@ -1,6 +1,6 @@
 package com.andyhuang.bluff.GameInviteDialog;
 
-import com.andyhuang.bluff.Object.Gamer;
+import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 
 public interface GameInviteContract {
     interface presenter {

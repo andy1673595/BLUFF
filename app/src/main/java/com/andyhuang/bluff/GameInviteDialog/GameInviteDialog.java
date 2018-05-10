@@ -2,7 +2,6 @@ package com.andyhuang.bluff.GameInviteDialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
@@ -10,9 +9,8 @@ import android.view.Window;
 import android.widget.ImageView;
 
 import com.andyhuang.bluff.BluffPresenter;
-import com.andyhuang.bluff.Object.Gamer;
+import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.R;
-import com.andyhuang.bluff.Util.Constants;
 
 public class GameInviteDialog extends Dialog implements View.OnClickListener{
     private GameInvitePrsenter mPresenter;

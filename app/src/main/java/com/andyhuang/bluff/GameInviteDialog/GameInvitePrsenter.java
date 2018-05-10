@@ -1,13 +1,10 @@
 package com.andyhuang.bluff.GameInviteDialog;
 
 import com.andyhuang.bluff.Bluff;
-import com.andyhuang.bluff.Object.Gamer;
+import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import static com.andyhuang.bluff.Util.Constants.URL_GAME_ROOM_DATA;
 

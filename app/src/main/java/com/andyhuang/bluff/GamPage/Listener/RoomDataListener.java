@@ -3,7 +3,7 @@ package com.andyhuang.bluff.GamPage.Listener;
 import com.andyhuang.bluff.Callback.RoomListenerCallback;
 import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
 import com.andyhuang.bluff.GamPage.GameHelper.CurrentStateHelper;
-import com.andyhuang.bluff.Object.Gamer;
+import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Util.Constants;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;

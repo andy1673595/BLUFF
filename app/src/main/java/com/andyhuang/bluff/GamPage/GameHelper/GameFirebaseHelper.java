@@ -4,6 +4,7 @@ import com.andyhuang.bluff.Callback.DiceTotalListenerCallback;
 import com.andyhuang.bluff.Callback.EndGameListenerCallback;
 import com.andyhuang.bluff.Callback.PlayerGetRoomDataCallback;
 import com.andyhuang.bluff.Callback.RoomListenerCallback;
+import com.andyhuang.bluff.GamPage.GameObject.Dice;
 import com.andyhuang.bluff.GamPage.GamePageContract;
 import com.andyhuang.bluff.GamPage.GamePagePresenter;
 import com.andyhuang.bluff.GamPage.Listener.EndGameListener;
@@ -14,7 +15,7 @@ import com.andyhuang.bluff.GamPage.Listener.GameStateListener;
 import com.andyhuang.bluff.GamPage.Listener.PlayerCurrentStateListener;
 import com.andyhuang.bluff.GamPage.Listener.PlayerGetRoomDataListener;
 import com.andyhuang.bluff.GamPage.Listener.RoomDataListener;
-import com.andyhuang.bluff.Object.Gamer;
+import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
 import com.firebase.client.DataSnapshot;
@@ -211,6 +212,21 @@ public class GameFirebaseHelper {
     }
 
     public void reset() {
-
+        if(isHost) {
+            currentStateHelper.resetCount();
+            //start from who lose game
+            currentInformation.setCurrentPlayer(mGameEndInformation.getLoserUID());
+            currentInformation.setRecentDiceType(0);
+            currentInformation.setRecentDiceNumber(0);
+            currentInformation.setRecentPlayer(Constants.NODATA);
+            gameRef.child(Constants.NEXT_PLAYER_INFORMATION).setValue(currentInformation);
+        }
+        if(currentInformation.getCurrentPlayer().equals(myUID)) {
+            gamePageView.resetView(true);
+        }else {
+            gamePageView.resetView(false);
+        }
+        //restart a game , wait for ready
+        gameRef.child(Constants.CURRENT_STATE_LIST).child(myUID).setValue(Constants.COMPLETED_READ_INIT);
     }
 }

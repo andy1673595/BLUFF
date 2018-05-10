@@ -51,6 +51,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         imageHomeBackButton = (ImageView)findViewById(R.id.image_home_button_gamepage);
         imageIncreaseDiceButton.setOnClickListener(this);
         imageIncreaseDiceButton.setVisibility(View.INVISIBLE);
+        imageCatchButton.setVisibility(View.INVISIBLE);
         imageCatchButton.setOnClickListener(this);
         imageReadyStateButton.setOnClickListener(this);
         imageHomeBackButton.setOnClickListener(this);
@@ -111,20 +112,12 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     }
 
     @Override
-    public void setCurrentPlayerUI() {
-        imageIncreaseDiceButton.setVisibility(View.VISIBLE);
-        imageCatchButton.setVisibility(View.VISIBLE);
-    }
+    public void refreshCatchAndIncreaseUI(boolean increaseVisible, boolean catchVisible) {
+        if(increaseVisible)  imageIncreaseDiceButton.setVisibility(View.VISIBLE);
+        else  imageIncreaseDiceButton.setVisibility(View.INVISIBLE);
 
-    @Override
-    public void setOtherPlayerUI() {
-        imageIncreaseDiceButton.setVisibility(View.INVISIBLE);
-        imageCatchButton.setVisibility(View.VISIBLE);
-    }
-    @Override
-    public void setRecentPlayerUI() {
-        imageIncreaseDiceButton.setVisibility(View.INVISIBLE);
-        imageCatchButton.setVisibility(View.INVISIBLE);
+        if(catchVisible) imageCatchButton.setVisibility(View.VISIBLE);
+        else imageCatchButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -137,6 +130,22 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     public void showEndInformation(String endText) {
         mGameEndDialog = new GameEndDialog(this,endText,mExitRoomCallback);
         mGameEndDialog.show();
+    }
+
+    @Override
+    public void resetView(boolean isNextPlayer) {
+        imageReadyStateButton.setImageResource(R.drawable.ready_button_gamepage);
+        imageCatchButton.setVisibility(View.INVISIBLE);
+        textShowInformation.setText(" ");
+        for(int i=0;i<5;i++) {
+            imageDiceArray[i].setImageResource(R.drawable.table_random_dice);
+        }
+        if(isNextPlayer) {
+            imageIncreaseDiceButton.setVisibility(View.VISIBLE);
+        } else {
+            imageIncreaseDiceButton.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     private ExitRoomCallback mExitRoomCallback = new ExitRoomCallback() {

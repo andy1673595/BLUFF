@@ -8,7 +8,7 @@ import android.support.annotation.StringDef;
 import com.andyhuang.bluff.FriendPage.FriendFragment;
 import com.andyhuang.bluff.GameInviteDialog.GameInviteDialog;
 import com.andyhuang.bluff.MainHallPage.MainHallFragment;
-import com.andyhuang.bluff.Object.Gamer;
+import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Profile.ProfileFragment;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;

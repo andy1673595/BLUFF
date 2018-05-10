@@ -1,9 +1,8 @@
 package com.andyhuang.bluff.FriendPage;
 
 import com.andyhuang.bluff.Bluff;
-import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.Object.FriendInformation;
-import com.andyhuang.bluff.Object.Gamer;
+import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Object.MapFromFirebaseToFriendList;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
@@ -36,6 +35,7 @@ public class FriendPresenter implements FriendContract.Presenter {
     private MapFromFirebaseToFriendList mapTransformer = new MapFromFirebaseToFriendList();
     private String UIDfromFirebase;
     private int gameNumber =0;
+    private ArrayList<String> UIDlistForInvite = new ArrayList<>();
 
     public FriendPresenter(FriendContract.View viewInput) {
         friendPageView = viewInput;
@@ -59,6 +59,7 @@ public class FriendPresenter implements FriendContract.Presenter {
     @Override
     public void inviteGame(FriendInformation friend) {
         friendUID = friend.getUID();
+        UIDlistForInvite.add(friendUID);
         myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_INVITE).setValue(myUID);
         //get RoomID then open the game's room
         getNumberOfGameRoom();
@@ -91,31 +92,6 @@ public class FriendPresenter implements FriendContract.Presenter {
         friendPageView.removeItem(position);
     }
 
-
-   /* public void firstReadData() {
-        friendlist = new ArrayList<FriendInformation>();
-        friendMapListFromFirebase = new ArrayList<Map<String,Object>>();
-        UIDlist = new ArrayList<String>();
-        myRef.child(myUID).child(Constants.FRIEND_LIST_FIREBASE).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot dataFriend : dataSnapshot.getChildren()) {
-                        UIDlist.add(dataFriend.getKey());
-                        friendInviteMap = (Map<String,Object>) dataFriend.getValue();
-                        friendMapListFromFirebase.add(friendInviteMap);
-                    }
-                    //transform maplist to friendlist
-                    friendlist = mapTransformer.getFriendList(friendMapListFromFirebase,UIDlist);
-                    friendPageView.setAdapter(friendlist);
-                    readFriendDataFromFireBase();
-                }
-            }
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-    }*/
 
     @Override
     public void readFriendDataFromFireBase() {

@@ -13,6 +13,7 @@ public class CurrentPlayerInformationListener implements ValueEventListener {
     GameFirebaseHelper mGameFirebaseHelper;
     GamePageContract.View gamepageView;
     GamePageContract.Presenter gamepagePresenter;
+    boolean firstTurn = true;
     String myUID = UserManager.getInstance().getUserUID();
     public CurrentPlayerInformationListener(GameFirebaseHelper helper,GamePageContract.View viewInput) {
         mGameFirebaseHelper = helper;
@@ -26,16 +27,22 @@ public class CurrentPlayerInformationListener implements ValueEventListener {
             //fresh who increase what dice and how many it is
             if(mCurrentInformation.getRecentDiceType()!= 0) {
                 gamepageView.freshRecentDiceUI(mCurrentInformation);
+                firstTurn =false;
+            } else {
+                firstTurn =true;
             }
+
             if(myUID.equals(mCurrentInformation.currentPlayer)) {
                 //I'm currentPlayer ,I can increase the dice
-                gamepageView.setCurrentPlayerUI();
+                if(firstTurn) gamepageView.refreshCatchAndIncreaseUI(true,false);
+                else gamepageView.refreshCatchAndIncreaseUI(true,true);
             } else if(myUID.equals(mCurrentInformation.recentPlayer)){
                 //I'm recent player ,I can't catch myself
-                gamepageView.setRecentPlayerUI();
+                gamepageView.refreshCatchAndIncreaseUI(false,false);
             } else {
                 //I'm not the currentPlayer, I only can catch recent person
-                gamepageView.setOtherPlayerUI();
+                if(firstTurn) gamepageView.refreshCatchAndIncreaseUI(false,false);
+                else gamepageView.refreshCatchAndIncreaseUI(false,true);
             }
         }
     }

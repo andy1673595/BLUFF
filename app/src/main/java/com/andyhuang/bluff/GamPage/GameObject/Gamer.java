@@ -1,4 +1,4 @@
-package com.andyhuang.bluff.Object;
+package com.andyhuang.bluff.GamPage.GameObject;
 
 import com.andyhuang.bluff.Util.Constants;
 

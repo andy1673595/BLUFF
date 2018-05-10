@@ -1,4 +1,4 @@
-package com.andyhuang.bluff.GamPage.GameHelper;
+package com.andyhuang.bluff.GamPage.GameObject;
 
 import java.util.ArrayList;
 import java.util.Date;

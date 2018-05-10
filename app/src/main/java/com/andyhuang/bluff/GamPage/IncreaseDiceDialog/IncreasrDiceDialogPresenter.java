@@ -3,7 +3,7 @@ package com.andyhuang.bluff.GamPage.IncreaseDiceDialog;
 import android.app.Dialog;
 
 import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
-import com.andyhuang.bluff.Object.Gamer;
+import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.helper.CurrentInformation;
 

@@ -11,19 +11,13 @@ public interface GamePageContract {
     interface View extends BaseView {
         void freshStateButtonUI(String buttonType);
         void freshDiceUI(List<Integer> diceList);
-        void setCurrentPlayerUI();
-        void setOtherPlayerUI();
-        void setRecentPlayerUI();
+        void refreshCatchAndIncreaseUI(boolean increaseVisible,boolean catchVisible);
         void freshRecentDiceUI(CurrentInformation currentInformation);
         void showEndInformation(String endText);
+        void resetView(boolean isNextPlayer);
     }
     interface Presenter extends BasePresenter {
         void init(String RoomID,boolean isHost);
-        void newRandomDice();
-        void listenPlayerCurrentState();
-        void updateMyDiceState();
-        void loadInitialGameData();
-        void readCurrentData();
         void reset();
         void increaseDice();
         void catchPlayer();
