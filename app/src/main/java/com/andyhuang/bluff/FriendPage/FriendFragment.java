@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -28,7 +29,7 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
     private FriendPageAdapter mAdapter;
     private ArrayList<FriendInformation> friendList = new ArrayList<>();
     private RecyclerView recyclerView;
-
+    private Button mButtonStart;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,8 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
         editEmailToFindFriend = (EditText)root.findViewById(R.id.edit_find_friend);
         imageFindButton = (ImageView)root.findViewById(R.id.image_find_friend);
         imageFindButton.setOnClickListener(this);
+        mButtonStart= (Button)root.findViewById(R.id.button_start_game);
+        mButtonStart.setOnClickListener(this);
         recyclerView = (RecyclerView)root.findViewById(R.id.recyclerview_friend_page);
         recyclerView.setLayoutManager(new LinearLayoutManager(Bluff.getContext()));
         mAdapter = new FriendPageAdapter(friendList,mPresenter,this);
@@ -102,6 +105,9 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
             case R.id.image_find_friend:
                 mPresenter.inviteFriend(String.valueOf(editEmailToFindFriend.getText()));
                 hideSoftInput();
+                break;
+            case R.id.button_start_game:
+                mPresenter.getNumberOfGameRoom();
                 break;
         }
     }

@@ -18,6 +18,7 @@ public interface FriendContract {
     }
     interface Presenter extends BasePresenter {
         void inviteGame(FriendInformation friend);
+        void removeInvite(FriendInformation friend);
         void acceptInvite(int position);
         void refuseInvite(int position);
         void readFriendDataFromFireBase();

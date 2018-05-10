@@ -4,7 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.andyhuang.bluff.Object.FriendInformation;
@@ -57,17 +60,20 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
 
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,CompoundButton.OnCheckedChangeListener{
         TextView textEmail;
         ImageView imageFriendPhoto;
         ImageView imageLeftIcon;
         ImageView imageRightIcon;
+        CheckBox checkBoxForInviteGame;
         public ViewHolder(View itemView) {
             super(itemView);
             textEmail = (TextView)itemView.findViewById(R.id.text_email_friend_listItem);
             imageFriendPhoto = (ImageView)itemView.findViewById(R.id.image_user_photo_friend_invite);
             imageLeftIcon = (ImageView)itemView.findViewById(R.id.image_left_icon_friend_listitem);
             imageRightIcon = (ImageView)itemView.findViewById(R.id.image_righ_icon_friend_listitem);
+            checkBoxForInviteGame = (CheckBox)itemView.findViewById(R.id.checkBox_item_friend);
+            checkBoxForInviteGame.setOnCheckedChangeListener(this);
             imageLeftIcon.setOnClickListener(this);
             imageRightIcon.setOnClickListener(this);
         }
@@ -92,10 +98,26 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
                         mPresenter.acceptInvite(position);
                     }else{
                         //this is friend item, left icon means invite a game with friend
-                        mPresenter.inviteGame(listFriend.get(position));
+                     /*   if(checkBoxForInviteGame.isChecked()) {
+                            mPresenter.inviteGame(listFriend.get(position));
+                            checkBoxForInviteGame.setChecked(true);
+                        } else {
+                            mPresenter.removeInvite(listFriend.get(position));
+                            checkBoxForInviteGame.setChecked(false);
+                        }*/
                     }
                     break;
             }
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            int position = getAdapterPosition();
+           if(checkBoxForInviteGame.isChecked()) {
+                mPresenter.inviteGame(listFriend.get(position));
+            } else {
+                mPresenter.removeInvite(listFriend.get(position));
+           }
         }
     }
 

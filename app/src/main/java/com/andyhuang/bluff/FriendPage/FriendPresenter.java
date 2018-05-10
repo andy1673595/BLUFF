@@ -30,7 +30,6 @@ public class FriendPresenter implements FriendContract.Presenter {
     private Firebase refGameRoomID;
     private ArrayList<FriendInformation> friendlist = new ArrayList<>();
     private String myUID;
-    private String friendUID;
     private Map<String,Object> friendInviteMap = new HashMap<>();
     private MapFromFirebaseToFriendList mapTransformer = new MapFromFirebaseToFriendList();
     private String UIDfromFirebase;
@@ -58,11 +57,17 @@ public class FriendPresenter implements FriendContract.Presenter {
     }
     @Override
     public void inviteGame(FriendInformation friend) {
-        friendUID = friend.getUID();
+        String friendUID = friend.getUID();
         UIDlistForInvite.add(friendUID);
-        myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_INVITE).setValue(myUID);
+
         //get RoomID then open the game's room
-        getNumberOfGameRoom();
+     //   getNumberOfGameRoom();
+    }
+
+    @Override
+    public void removeInvite(FriendInformation friend) {
+        String friendUID = friend.getUID();
+        UIDlistForInvite.remove(friendUID);
     }
 
 
@@ -198,17 +203,20 @@ public class FriendPresenter implements FriendContract.Presenter {
 
     public void openGameRoom() {
         //invite friend with room ID
-        myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_ROOM).setValue(""+gameNumber);
-        myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_EMAIL_FIREBASE)
-                .setValue(UserManager.getInstance().getEmail());
-        myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_PHOTO_FIREBASE)
-                .setValue(UserManager.getInstance().getUserPhotoUrl());
+        for(String friendUID : UIDlistForInvite) {
+            myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_INVITE).setValue(myUID);
+            myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_ROOM).setValue(""+gameNumber);
+            myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_EMAIL_FIREBASE)
+                    .setValue(UserManager.getInstance().getEmail());
+            myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_PHOTO_FIREBASE)
+                    .setValue(UserManager.getInstance().getUserPhotoUrl());
+        }
         //increase the gameID to server
         refGameRoomID.setValue(gameNumber+1);
         //open the room
         Gamer me = new Gamer(myUID,UserManager.getInstance().getUserPhotoUrl(),UserManager.getInstance().getEmail());
         refGame.child(""+gameNumber).child(Constants.GAMER_FIREBASE).child(myUID).setValue(me);
-
+        UIDlistForInvite.clear();
         friendPageView.showGamePage(""+gameNumber);
 
     }

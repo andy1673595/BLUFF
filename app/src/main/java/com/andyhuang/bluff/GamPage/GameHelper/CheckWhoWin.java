@@ -20,10 +20,12 @@ public class CheckWhoWin {
 
     public GameEndInformation getGameEndInformation (CurrentInformation currentInformation) {
         String gamerBeCatched ="";
+        String loserUID="";
         for(Gamer gamer : gamerList) {
             //find Email whose be can by UID
             if(gamer.getUserUID().equals(currentInformation.getRecentPlayer())) {
                 gamerBeCatched = gamer.getUserEmail();
+                loserUID =gamer.getUserUID();
                 break;
             }
         }
@@ -37,7 +39,7 @@ public class CheckWhoWin {
                     +"\n總共"+ total+ "個" + currentInformation.getRecentDiceType();
             message += "\n"+gamerBeCatched+" 輸了罰一杯";
             gameEndInformation = new GameEndInformation();
-            gameEndInformation.setLoserUID(gamerBeCatched);
+            gameEndInformation.setLoserUID(loserUID);
             gameEndInformation.setWinnerUID(UserManager.getInstance().getUserUID());
             gameEndInformation.setTextHowToEnd(message);
         } else {
@@ -48,7 +50,7 @@ public class CheckWhoWin {
             message += "\n" + UserManager.getInstance().getEmail() +" 輸了罰一杯";
             gameEndInformation = new GameEndInformation();
             gameEndInformation.setLoserUID(UserManager.getInstance().getUserUID());
-            gameEndInformation.setWinnerUID(gamerBeCatched);
+            gameEndInformation.setWinnerUID(loserUID);
             gameEndInformation.setTextHowToEnd(message);
         }
 
@@ -59,10 +61,8 @@ public class CheckWhoWin {
         int numberCatch = currentInformation.getRecentDiceType();
         int countCatch = currentInformation.getRecentDiceNumber();
         if(numberCatch !=1 && !hasTellOne) {
-            int x =  diceTotalList.get(numberCatch-1);
             total = diceTotalList.get(numberCatch-1)+diceTotalList.get(0);
         }else {
-            int x =  diceTotalList.get(numberCatch-1);
             total = diceTotalList.get(numberCatch-1);
         }
         if(total >= countCatch) return false;
