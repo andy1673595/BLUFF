@@ -1,8 +1,7 @@
 package com.andyhuang.bluff.GamPage.Listener;
 
-import com.andyhuang.bluff.GamPage.GameFirebaseHelper;
+import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
 import com.andyhuang.bluff.GamPage.GamePageContract;
-import com.andyhuang.bluff.GamPage.GamePagePresenter;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.helper.CurrentInformation;
 import com.firebase.client.DataSnapshot;

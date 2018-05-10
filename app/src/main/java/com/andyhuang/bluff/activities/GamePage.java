@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.andyhuang.bluff.GamPage.GameEndDialog.ExitRoomCallback;
+import com.andyhuang.bluff.GamPage.GameEndDialog.GameEndDialog;
 import com.andyhuang.bluff.GamPage.GamePageContract;
 import com.andyhuang.bluff.GamPage.GamePagePresenter;
 import com.andyhuang.bluff.R;
@@ -26,6 +28,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private int[] diceImageSourceForInfo;
     private ImageView imageHomeBackButton;
     private TextView textShowInformation;
+    private GameEndDialog mGameEndDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +85,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
 
     @Override
     public void setPresenter(Object presenter) {
-
+        mPrsenter = (GamePagePresenter) presenter;
     }
 
     @Override
@@ -132,6 +135,14 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
 
     @Override
     public void showEndInformation(String endText) {
-
+        mGameEndDialog = new GameEndDialog(this,endText,mExitRoomCallback);
+        mGameEndDialog.show();
     }
+
+    private ExitRoomCallback mExitRoomCallback = new ExitRoomCallback() {
+        @Override
+        public void exitRoom() {
+
+        }
+    };
 }

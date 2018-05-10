@@ -1,14 +1,12 @@
 package com.andyhuang.bluff.GamPage;
 import com.andyhuang.bluff.GamPage.GameHelper.CheckWhoWin;
 import com.andyhuang.bluff.GamPage.GameHelper.GameEndInformation;
+import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
 import com.andyhuang.bluff.GamPage.IncreaseDiceDialog.IncreaseDiceDialog;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.activities.GamePage;
-import com.firebase.client.Firebase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class GamePagePresenter implements GamePageContract.Presenter{
@@ -112,6 +110,10 @@ public class GamePagePresenter implements GamePageContract.Presenter{
                 firebaseHelper.setCurrentState(Constants.CANCEL_READY);
                 break;
         }
+    }
+    @Override
+    public void reset() {
+
     }
 
     public void setButtonType(String type) {

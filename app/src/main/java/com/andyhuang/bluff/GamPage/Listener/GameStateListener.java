@@ -1,6 +1,6 @@
 package com.andyhuang.bluff.GamPage.Listener;
 
-import com.andyhuang.bluff.GamPage.GameFirebaseHelper;
+import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
 import com.andyhuang.bluff.GamPage.GameHelper.Dice;
 import com.andyhuang.bluff.GamPage.GamePageContract;
 import com.andyhuang.bluff.GamPage.GamePagePresenter;
@@ -52,6 +52,9 @@ public class GameStateListener implements ValueEventListener {
             case "playing":
                 mPresenter.setIsplaying(true);
                 mPresenter.setButtonType(Constants.BUTTON_PLAYING);
+                break;
+            case "load end information":
+                firebaseHelper.loadGameEndInfromation();
                 break;
         }
 

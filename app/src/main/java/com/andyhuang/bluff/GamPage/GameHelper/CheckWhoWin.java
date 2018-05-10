@@ -36,16 +36,20 @@ public class CheckWhoWin {
                     "的"+currentInformation.getRecentDiceNumber()+"個"+currentInformation.getRecentDiceType()
                     +"\n總共"+ total+ "個" + currentInformation.getRecentDiceType();
             message += "\n"+gamerBeCatched+" 輸了罰一杯";
-            gameEndInformation = new GameEndInformation(UserManager.getInstance().getUserUID(),
-                    gamerBeCatched,message);
+            gameEndInformation = new GameEndInformation();
+            gameEndInformation.setLoserUID(gamerBeCatched);
+            gameEndInformation.setWinnerUID(UserManager.getInstance().getUserUID());
+            gameEndInformation.setTextHowToEnd(message);
         } else {
             //catch fail , I lose
-            String message = UserManager.getInstance().getEmail()+" 抓了 "+ gamerBeCatched +
+            String message = UserManager.getInstance().getEmail()+" 抓了\n "+ gamerBeCatched +
                     "的"+currentInformation.getRecentDiceNumber()+"個"+currentInformation.getRecentDiceType()
                     +"\n總共"+ total+ "個" + currentInformation.getRecentDiceType();
             message += "\n" + UserManager.getInstance().getEmail() +" 輸了罰一杯";
-            gameEndInformation = new GameEndInformation( gamerBeCatched,
-                    UserManager.getInstance().getUserUID(),message);
+            gameEndInformation = new GameEndInformation();
+            gameEndInformation.setLoserUID(UserManager.getInstance().getUserUID());
+            gameEndInformation.setWinnerUID(gamerBeCatched);
+            gameEndInformation.setTextHowToEnd(message);
         }
 
         return gameEndInformation;

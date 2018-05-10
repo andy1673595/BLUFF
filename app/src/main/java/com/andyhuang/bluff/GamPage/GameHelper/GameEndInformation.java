@@ -7,12 +7,6 @@ public class GameEndInformation {
     public String loserUID = Constants.NODATA;
     public String textHowToEnd = Constants.NODATA;
 
-    public GameEndInformation(String winnerUID, String loserUID, String textHowToEnd) {
-        this.winnerUID = winnerUID;
-        this.loserUID = loserUID;
-        this.textHowToEnd = textHowToEnd;
-    }
-
     public String getWinnerUID() {
         return winnerUID;
     }

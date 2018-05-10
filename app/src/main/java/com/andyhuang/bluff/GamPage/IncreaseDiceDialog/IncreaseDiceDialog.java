@@ -9,9 +9,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.andyhuang.bluff.GamPage.GameFirebaseHelper;
+import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
 import com.andyhuang.bluff.R;
-import com.andyhuang.bluff.helper.CurrentInformation;
 
 public class IncreaseDiceDialog extends Dialog
         implements IncreaseDiceDialogContract.View ,View.OnClickListener{

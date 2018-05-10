@@ -1,12 +1,13 @@
-package com.andyhuang.bluff.GamPage;
+package com.andyhuang.bluff.GamPage.GameHelper;
 
 import com.andyhuang.bluff.Callback.DiceTotalListenerCallback;
+import com.andyhuang.bluff.Callback.EndGameListenerCallback;
 import com.andyhuang.bluff.Callback.PlayerGetRoomDataCallback;
 import com.andyhuang.bluff.Callback.RoomListenerCallback;
-import com.andyhuang.bluff.GamPage.GameHelper.GameEndInformation;
+import com.andyhuang.bluff.GamPage.GamePageContract;
+import com.andyhuang.bluff.GamPage.GamePagePresenter;
+import com.andyhuang.bluff.GamPage.Listener.EndGameListener;
 import com.andyhuang.bluff.helper.CurrentInformation;
-import com.andyhuang.bluff.GamPage.GameHelper.CurrentStateHelper;
-import com.andyhuang.bluff.GamPage.GameHelper.Dice;
 import com.andyhuang.bluff.GamPage.Listener.CurrentPlayerInformationListener;
 import com.andyhuang.bluff.GamPage.Listener.DiceTotalListener;
 import com.andyhuang.bluff.GamPage.Listener.GameStateListener;
@@ -30,6 +31,7 @@ public class GameFirebaseHelper {
     private GamePageContract.View gamePageView;
     private GamePagePresenter mPresenter;
     private List<Gamer> gamerList = new ArrayList<Gamer>();
+    private GameEndInformation mGameEndInformation;
     private String myUID;
     private boolean isHost;
     private CurrentStateHelper currentStateHelper;
@@ -45,6 +47,8 @@ public class GameFirebaseHelper {
     private PlayerGetRoomDataListener mPlayerGetRoomDataListener;
     private DiceTotalListener mDiceTotalListener;
     private CurrentPlayerInformationListener mCurrentPlayerInformationListener;
+    private EndGameListener mEndGameListener;
+
 
     public GameFirebaseHelper(String roomID,GamePageContract.View gamePageViewInput,
                               boolean isHostInput,GamePagePresenter mPresenterInput) {
@@ -59,6 +63,7 @@ public class GameFirebaseHelper {
         mPlayerGetRoomDataListener = new PlayerGetRoomDataListener(gamerList,this,isHostInput,
                                                             gamePageView,mPlayerGetRoomDataCallback);
         mDiceTotalListener = new DiceTotalListener(mDiceTotalListenerCallback);
+        mEndGameListener = new EndGameListener(mEndGameListenerCallback);
     }
 
     public void setGameState(String gameState) {
@@ -158,6 +163,19 @@ public class GameFirebaseHelper {
         }
     };
 
+    public EndGameListenerCallback mEndGameListenerCallback = new EndGameListenerCallback() {
+        @Override
+        public void completedLoadInfo(GameEndInformation gameEndInformationInput) {
+            //completed load endgameInformation
+            mGameEndInformation = gameEndInformationInput;
+            //show Endgame informaion
+            gamePageView.showEndInformation(mGameEndInformation.getTextHowToEnd());
+            //reset to start new game
+            reset();
+            mPresenter.reset();
+        }
+    };
+
     public void setCurrentInformation(CurrentInformation currentInformationInput) {
         currentInformation = currentInformationInput;
         //one has been called
@@ -186,5 +204,13 @@ public class GameFirebaseHelper {
         gameRef.child(Constants.END_INFORMATION).setValue(gameEndInformation);
         //tell everyone should end game
         gameRef.child(Constants.GAME_STATE).setValue(Constants.LOAD_END_INFO);
+    }
+
+    public void loadGameEndInfromation() {
+        gameRef.child(Constants.END_INFORMATION).addListenerForSingleValueEvent(mEndGameListener);
+    }
+
+    public void reset() {
+
     }
 }

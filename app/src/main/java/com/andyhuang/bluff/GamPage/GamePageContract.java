@@ -24,6 +24,7 @@ public interface GamePageContract {
         void updateMyDiceState();
         void loadInitialGameData();
         void readCurrentData();
+        void reset();
         void increaseDice();
         void catchPlayer();
         void clickStateButton();
