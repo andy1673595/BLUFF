@@ -26,7 +26,6 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private int[] diceImageSourceForInfo;
     private ImageView imageHomeBackButton;
     private TextView textShowInformation;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

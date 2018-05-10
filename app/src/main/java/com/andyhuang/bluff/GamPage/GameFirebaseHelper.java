@@ -3,6 +3,7 @@ package com.andyhuang.bluff.GamPage;
 import com.andyhuang.bluff.Callback.DiceTotalListenerCallback;
 import com.andyhuang.bluff.Callback.PlayerGetRoomDataCallback;
 import com.andyhuang.bluff.Callback.RoomListenerCallback;
+import com.andyhuang.bluff.GamPage.GameHelper.GameEndInformation;
 import com.andyhuang.bluff.helper.CurrentInformation;
 import com.andyhuang.bluff.GamPage.GameHelper.CurrentStateHelper;
 import com.andyhuang.bluff.GamPage.GameHelper.Dice;
@@ -58,7 +59,6 @@ public class GameFirebaseHelper {
         mPlayerGetRoomDataListener = new PlayerGetRoomDataListener(gamerList,this,isHostInput,
                                                             gamePageView,mPlayerGetRoomDataCallback);
         mDiceTotalListener = new DiceTotalListener(mDiceTotalListenerCallback);
-
     }
 
     public void setGameState(String gameState) {
@@ -160,6 +160,10 @@ public class GameFirebaseHelper {
 
     public void setCurrentInformation(CurrentInformation currentInformationInput) {
         currentInformation = currentInformationInput;
+        //one has been called
+        if(currentInformation.getRecentDiceType()==1) {
+            mPresenter.sethasTellOne(true);
+        }
     }
 
     public List<Gamer> getGamerList() {
@@ -171,5 +175,16 @@ public class GameFirebaseHelper {
 
     public void  updateCurrentInformation(CurrentInformation currentInformation) {
         gameRef.child(Constants.NEXT_PLAYER_INFORMATION).setValue(currentInformation);
+    }
+
+    public List<Integer> getDiceTotal() {
+        return diceTotal;
+    }
+
+    public void updateGameEndInfromation(GameEndInformation gameEndInformation) {
+        //update game end information
+        gameRef.child(Constants.END_INFORMATION).setValue(gameEndInformation);
+        //tell everyone should end game
+        gameRef.child(Constants.GAME_STATE).setValue(Constants.LOAD_END_INFO);
     }
 }

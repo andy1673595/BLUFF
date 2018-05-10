@@ -1,7 +1,10 @@
 package com.andyhuang.bluff.GamPage;
+import com.andyhuang.bluff.GamPage.GameHelper.CheckWhoWin;
+import com.andyhuang.bluff.GamPage.GameHelper.GameEndInformation;
 import com.andyhuang.bluff.GamPage.IncreaseDiceDialog.IncreaseDiceDialog;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.activities.GamePage;
+import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,13 +14,13 @@ import java.util.Map;
 public class GamePagePresenter implements GamePageContract.Presenter{
     private GamePageContract.View gamePgaeView;
     private Map<String,String> playerStateMap = new HashMap<>();
-    private List<String> playerOrderList = new ArrayList<>();
     private String roomID;
     private boolean isHost;
     private String buttonType;
     private boolean isplaying = false;
     private GameFirebaseHelper firebaseHelper;
     private IncreaseDiceDialog mDialog;
+    private boolean hasTellOne = false;
 
     @Override
     public void start() {
@@ -83,7 +86,10 @@ public class GamePagePresenter implements GamePageContract.Presenter{
 
     @Override
     public void catchPlayer() {
-
+        CheckWhoWin checkWhoWin = new CheckWhoWin(firebaseHelper.getDiceTotal(),hasTellOne, firebaseHelper.getGamerList());
+        GameEndInformation gameEndInformation =checkWhoWin
+                .getGameEndInformation(firebaseHelper.getCurrentInformation());
+        firebaseHelper.updateGameEndInfromation(gameEndInformation);
     }
 
     @Override
@@ -112,4 +118,5 @@ public class GamePagePresenter implements GamePageContract.Presenter{
         buttonType = type;
     }
     public void setIsplaying(boolean isplayingInput) {isplaying = isplayingInput;}
+    public void sethasTellOne(boolean hasTellOneInput) {hasTellOne = hasTellOneInput;}
 }
