@@ -13,7 +13,6 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="50dp"
         android:adjustViewBounds="true"
-        android:background="@color/teal800"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,20 +21,26 @@
         <TextView
             android:id="@+id/text_invite_game_message_dialog"
             android:layout_width="254dp"
-            android:layout_height="74dp"
+            android:layout_height="102dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:gravity="center"
             android:text="邀請訊息"
             android:textColor="@color/tealA100"
+            android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/image_ok_invite_game"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginBottom="16dp"
             android:layout_marginStart="36dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:padding="5dp"
+            android:scaleType="fitXY"
             android:tint="@color/tealA100"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,10 +48,11 @@
 
         <ImageView
             android:id="@+id/image_refuse_invite_game"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginBottom="16dp"
             android:layout_marginStart="48dp"
+            android:padding="5dp"
             android:tint="@color/tealA100"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_ok_invite_game"

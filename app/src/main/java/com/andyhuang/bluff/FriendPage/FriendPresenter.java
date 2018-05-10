@@ -59,9 +59,6 @@ public class FriendPresenter implements FriendContract.Presenter {
     public void inviteGame(FriendInformation friend) {
         String friendUID = friend.getUID();
         UIDlistForInvite.add(friendUID);
-
-        //get RoomID then open the game's room
-     //   getNumberOfGameRoom();
     }
 
     @Override
@@ -217,6 +214,7 @@ public class FriendPresenter implements FriendContract.Presenter {
         Gamer me = new Gamer(myUID,UserManager.getInstance().getUserPhotoUrl(),UserManager.getInstance().getEmail());
         refGame.child(""+gameNumber).child(Constants.GAMER_FIREBASE).child(myUID).setValue(me);
         UIDlistForInvite.clear();
+
         friendPageView.showGamePage(""+gameNumber);
 
     }

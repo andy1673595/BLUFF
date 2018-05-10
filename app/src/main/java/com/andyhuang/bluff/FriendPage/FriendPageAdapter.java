@@ -139,4 +139,8 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
         listFriend.get(positon).setFriendInvite(isInvite);
         notifyItemChanged(positon);
     }
+
+    public void resetCheck() {
+
+    }
 }
