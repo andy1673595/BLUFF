@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/gamer_leave_dialog_background"
+        android:layout_width="329dp"
+        android:layout_height="250dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/increase_dialog_back_2" />
+
+    <TextView
+        android:id="@+id/text_gamer_leave_dialog_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center"
+        android:text="有玩家離開遊戲\n本遊戲房間將關閉"
+        android:textColor="@color/teal800"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/button_exit_room_dialog"
+        app:layout_constraintEnd_toEndOf="@+id/gamer_leave_dialog_background"
+        app:layout_constraintStart_toStartOf="@+id/gamer_leave_dialog_background" />
+
+
+    <Button
+        android:id="@+id/button_confirm_gamer_leave"
+        style="@style/MyButtonInDiceDialog"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="確認"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/gamer_leave_dialog_background"
+        app:layout_constraintEnd_toEndOf="@+id/text_gamer_leave_dialog_info"
+        app:layout_constraintStart_toStartOf="@+id/text_gamer_leave_dialog_info" />
+
+    <TextView
+        android:id="@+id/text_gamer_leave_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="離開房間"
+        android:textColor="@color/teal600"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="@+id/text_gamer_leave_dialog_info"
+        app:layout_constraintStart_toStartOf="@+id/text_gamer_leave_dialog_info"
+        app:layout_constraintTop_toTopOf="@+id/gamer_leave_dialog_background" />
+
+</android.support.constraint.ConstraintLayout>

@@ -226,6 +226,7 @@ public class GameFirebaseHelper {
         }else {
             gamePageView.resetView(false);
         }
+        diceTotal.clear();
         //restart a game , wait for ready
         gameRef.child(Constants.CURRENT_STATE_LIST).child(myUID).setValue(Constants.COMPLETED_READ_INIT);
     }
