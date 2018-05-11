@@ -10,6 +10,7 @@ import com.andyhuang.bluff.GamPage.GameEndDialog.ExitRoomCallback;
 import com.andyhuang.bluff.GamPage.GameEndDialog.GameEndDialog;
 import com.andyhuang.bluff.GamPage.GamePageContract;
 import com.andyhuang.bluff.GamPage.GamePagePresenter;
+import com.andyhuang.bluff.GamPage.LeaveRoomDialog.ExitGameDialog;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.helper.CurrentInformation;
 
@@ -29,10 +30,13 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private ImageView imageHomeBackButton;
     private TextView textShowInformation;
     private GameEndDialog mGameEndDialog;
+    private ExitGameDialog mExitGameDialog;
+    private GamePage thisActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_page);
+        thisActivity = this;
         imageIncreaseDiceButton = (ImageView)findViewById(R.id.image_increae_dice);
         imageCatchButton = (ImageView)findViewById(R.id.image_catch);
         imageReadyStateButton = (ImageView)findViewById(R.id.image_game_state);
@@ -80,6 +84,8 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
                 mPrsenter.catchPlayer();
                 break;
             case R.id.image_home_button_gamepage:
+                mExitGameDialog = new ExitGameDialog(this,mExitRoomCallback);
+                mExitGameDialog.show();
                 break;
         }
     }
@@ -154,7 +160,13 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private ExitRoomCallback mExitRoomCallback = new ExitRoomCallback() {
         @Override
         public void exitRoom() {
-
+            thisActivity.finish();
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        mExitGameDialog = new ExitGameDialog(this,mExitRoomCallback);
+        mExitGameDialog.show();
+    }
 }
