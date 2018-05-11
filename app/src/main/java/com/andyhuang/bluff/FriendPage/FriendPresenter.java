@@ -35,6 +35,7 @@ public class FriendPresenter implements FriendContract.Presenter {
     private String UIDfromFirebase;
     private int gameNumber =0;
     private ArrayList<String> UIDlistForInvite = new ArrayList<>();
+    private FriendPageAdapter adapter;
 
     public FriendPresenter(FriendContract.View viewInput) {
         friendPageView = viewInput;
@@ -182,7 +183,8 @@ public class FriendPresenter implements FriendContract.Presenter {
                 .child(myUID).setValue(friendInviteMap);
     }
 
-    public void getNumberOfGameRoom() {
+    public void getNumberOfGameRoom(FriendPageAdapter adapterInput) {
+        adapter = adapterInput;
         refGameRoomID.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -213,9 +215,12 @@ public class FriendPresenter implements FriendContract.Presenter {
         //open the room
         Gamer me = new Gamer(myUID,UserManager.getInstance().getUserPhotoUrl(),UserManager.getInstance().getEmail());
         refGame.child(""+gameNumber).child(Constants.GAMER_FIREBASE).child(myUID).setValue(me);
+        //reset invite Information
         UIDlistForInvite.clear();
-
+        adapter.resetCheck();
         friendPageView.showGamePage(""+gameNumber);
-
+    }
+    public void setAdapter(FriendPageAdapter adapterInput) {
+        adapter = adapterInput;
     }
 }

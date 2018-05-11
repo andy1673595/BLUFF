@@ -20,6 +20,8 @@ import java.util.ArrayList;
 
 public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.ViewHolder>{
     private ArrayList<FriendInformation> listFriend;
+    private ArrayList<Boolean> checkBoxResetList = new ArrayList<>();
+    private boolean startReset = false;
     private FriendContract.Presenter mPresenter;
     private FriendContract.View friendPageView;
 
@@ -37,9 +39,22 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        if(position >= checkBoxResetList.size()) {
+            checkBoxResetList.add(false);
+        }
        FriendInformation friendInformation = listFriend.get(position);
        String friendPhoto = friendInformation.getPhotoURL();
        holder.textEmail.setText(friendInformation.getEmail());
+
+       //reset checkboxResetList
+        if(startReset && checkBoxResetList.get(position)) {
+            checkBoxResetList.set(position,false);
+            holder.checkBoxForInviteGame.setChecked(false);
+           if(position == checkBoxResetList.size()) {
+               startReset =false;
+           }
+        }
+
       // holder.imageFriendPhoto.setOutlineProvider(new UserOutlineProvider());
         if (!friendPhoto.equals(Constants.NODATA)) {
             holder.imageFriendPhoto.setTag(friendPhoto);
@@ -89,22 +104,12 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
                         mPresenter.refuseInvite(position);
                     }else {
                         //this is friend item, right icon means look friend Profile
-
                     }
                     break;
                 case R.id.image_left_icon_friend_listitem:
                     if(listFriend.get(position).isFriendInvite()) {
                         //this is friend invite ,left icon means accept
                         mPresenter.acceptInvite(position);
-                    }else{
-                        //this is friend item, left icon means invite a game with friend
-                     /*   if(checkBoxForInviteGame.isChecked()) {
-                            mPresenter.inviteGame(listFriend.get(position));
-                            checkBoxForInviteGame.setChecked(true);
-                        } else {
-                            mPresenter.removeInvite(listFriend.get(position));
-                            checkBoxForInviteGame.setChecked(false);
-                        }*/
                     }
                     break;
             }
@@ -115,6 +120,8 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
             int position = getAdapterPosition();
            if(checkBoxForInviteGame.isChecked()) {
                 mPresenter.inviteGame(listFriend.get(position));
+                checkBoxResetList.set(position,true);
+
             } else {
                 mPresenter.removeInvite(listFriend.get(position));
            }
@@ -141,6 +148,7 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
     }
 
     public void resetCheck() {
-
+        startReset = true;
+        notifyDataSetChanged();
     }
 }

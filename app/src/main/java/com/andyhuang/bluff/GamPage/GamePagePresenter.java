@@ -41,8 +41,8 @@ public class GamePagePresenter implements GamePageContract.Presenter{
             firebaseHelper.setGameState(Constants.WAIT_HOST);
         } else {
             //invitee wait for host click start
-            buttonType = "wait host start";
-            gamePgaeView.freshStateButtonUI(Constants.BUTTON_READY);
+            buttonType =Constants.BUTTON_WAIT;
+            gamePgaeView.freshStateButtonUI(Constants.BUTTON_WAIT);
         }
 
         firebaseHelper.listenGameState();

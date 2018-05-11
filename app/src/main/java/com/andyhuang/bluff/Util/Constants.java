@@ -40,6 +40,7 @@ public class Constants {
     public static String END_INFORMATION = "end information";
     //Game State Button
     public static String BUTTON_START ="start";
+    public static String BUTTON_WAIT = "wait host start";
     public static String BUTTON_READY = "ready";
     public static String BUTTON_GET_READY = "get ready";
     public static String BUTTON_PLAYING = "playing";

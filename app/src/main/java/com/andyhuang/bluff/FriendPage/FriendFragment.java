@@ -107,7 +107,7 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
                 hideSoftInput();
                 break;
             case R.id.button_start_game:
-                mPresenter.getNumberOfGameRoom();
+                mPresenter.getNumberOfGameRoom(mAdapter);
                 break;
         }
     }
