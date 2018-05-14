@@ -38,6 +38,7 @@ public class Constants {
     public static String DICE_TOTAL_LIST = "dice total list";
     public static String NEXT_PLAYER_INFORMATION = "next player";
     public static String END_INFORMATION = "end information";
+    public static String ONLINE_STATE = "online state";
     //Game State Button
     public static String BUTTON_START ="start";
     public static String BUTTON_WAIT = "wait host start";

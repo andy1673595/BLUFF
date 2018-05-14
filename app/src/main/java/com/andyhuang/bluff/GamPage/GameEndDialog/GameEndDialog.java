@@ -8,8 +8,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.andyhuang.bluff.GamPage.GameHelper.GameEndInformation;
-import com.andyhuang.bluff.GamPage.GamePagePresenter;
 import com.andyhuang.bluff.R;
 
 public class GameEndDialog extends Dialog implements View.OnClickListener{

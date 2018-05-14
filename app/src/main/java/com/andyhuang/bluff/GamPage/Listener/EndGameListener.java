@@ -1,7 +1,7 @@
 package com.andyhuang.bluff.GamPage.Listener;
 
 import com.andyhuang.bluff.Callback.EndGameListenerCallback;
-import com.andyhuang.bluff.GamPage.GameHelper.GameEndInformation;
+import com.andyhuang.bluff.GamPage.GameObject.GameEndInformation;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;

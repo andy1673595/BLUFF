@@ -12,9 +12,8 @@ import com.andyhuang.bluff.GamPage.GamePageContract;
 import com.andyhuang.bluff.GamPage.GamePagePresenter;
 import com.andyhuang.bluff.GamPage.LeaveRoomDialog.ExitGameDialog;
 import com.andyhuang.bluff.R;
-import com.andyhuang.bluff.helper.CurrentInformation;
+import com.andyhuang.bluff.GamPage.GameObject.CurrentInformation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GamePage extends BaseActivity implements View.OnClickListener ,GamePageContract.View {

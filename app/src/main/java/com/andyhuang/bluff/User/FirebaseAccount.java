@@ -29,14 +29,14 @@ public class FirebaseAccount {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private Firebase mRef;
-    private Firebase myRef;
     private Login login;
     private String userEmail = Constants.NODATA;
     private String userPassword= Constants.NODATA;
     private String userUID = Constants.NODATA;
     private String userPhotoURL = Constants.NODATA;
     private String userName = Constants.NODATA;
-    DatabaseReference dataBaseRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference dataBaseRef = FirebaseDatabase.getInstance().getReference();
+    private Firebase userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
 
 
     public FirebaseAccount(Context context) {
@@ -57,7 +57,8 @@ public class FirebaseAccount {
                             userPassword = passwordInput;
                             user = mAuth.getCurrentUser();
                             userUID = user.getUid();
-
+                            //update online state
+                            userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
                             //save data to sharedPrefrence and Usermanage
                             saveUserData();
                             //String myUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -83,8 +84,11 @@ public class FirebaseAccount {
                             user = mAuth.getCurrentUser();
                             userUID = user.getUid();
                             userEmail= user.getEmail();
+                            //update online state
+                            userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
                             //save data to sharedPrefrence
                             saveUserData();
+
                             callback.completed();
                         } else {
                             Toast.makeText(login, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -126,7 +130,8 @@ public class FirebaseAccount {
                             userEmail = user.getEmail();
                             userPhotoURL = UserManager.getInstance().getUserPhotoUrl();
                             userName = UserManager.getInstance().getUserName();
-
+                            //update online state
+                            userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
                             saveUserData();
                             //save to UserManager
                             UserManager.getInstance().setEmail(userEmail);

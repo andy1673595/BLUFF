@@ -1,13 +1,10 @@
 package com.andyhuang.bluff.GamPage;
 import com.andyhuang.bluff.GamPage.GameHelper.CheckWhoWin;
-import com.andyhuang.bluff.GamPage.GameHelper.GameEndInformation;
+import com.andyhuang.bluff.GamPage.GameObject.GameEndInformation;
 import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
 import com.andyhuang.bluff.GamPage.IncreaseDiceDialog.IncreaseDiceDialog;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.activities.GamePage;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class GamePagePresenter implements GamePageContract.Presenter{
     private GamePageContract.View gamePgaeView;

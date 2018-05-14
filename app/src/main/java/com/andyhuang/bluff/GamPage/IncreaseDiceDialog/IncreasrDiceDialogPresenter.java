@@ -5,7 +5,7 @@ import android.app.Dialog;
 import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.User.UserManager;
-import com.andyhuang.bluff.helper.CurrentInformation;
+import com.andyhuang.bluff.GamPage.GameObject.CurrentInformation;
 
 import java.util.List;
 

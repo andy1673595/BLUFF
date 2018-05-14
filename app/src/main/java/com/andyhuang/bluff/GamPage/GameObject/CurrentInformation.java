@@ -1,4 +1,4 @@
-package com.andyhuang.bluff.helper;
+package com.andyhuang.bluff.GamPage.GameObject;
 import com.andyhuang.bluff.Util.Constants;
 public class CurrentInformation {
     public String currentPlayer = Constants.NODATA;

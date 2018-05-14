@@ -2,7 +2,6 @@ package com.andyhuang.bluff.GamPage.IncreaseDiceDialog;
 
 import com.andyhuang.bluff.BasePresenter;
 import com.andyhuang.bluff.BaseView;
-import com.andyhuang.bluff.helper.CurrentInformation;
 
 public interface IncreaseDiceDialogContract {
     interface Presenter extends BasePresenter{
