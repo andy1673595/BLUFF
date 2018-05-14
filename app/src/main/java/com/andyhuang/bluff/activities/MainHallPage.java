@@ -30,6 +30,7 @@ public class MainHallPage extends BaseActivity implements BluffContract.View {
         mNavigationView.setNavigationItemSelectedListener(navigationViewListener());
         imageMenuButton.setOnClickListener(mainClickListener);
         setDrawerLayout();
+        mPresenter.setDisconnectWhenGetOutline();
     }
 
     public void setDrawerLayout() {

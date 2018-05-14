@@ -36,12 +36,15 @@ public class FirebaseAccount {
     private String userPhotoURL = Constants.NODATA;
     private String userName = Constants.NODATA;
     private DatabaseReference dataBaseRef = FirebaseDatabase.getInstance().getReference();
-    private Firebase userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
+    private DatabaseReference presenceRef = FirebaseDatabase.getInstance().getReference("disconnectmessage");
+    private Firebase userDataRef;
 
 
     public FirebaseAccount(Context context) {
         login = (Login) context;
         mAuth = FirebaseAuth.getInstance();
+        Firebase.setAndroidContext(context);
+        userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
     }
 
 
@@ -58,6 +61,7 @@ public class FirebaseAccount {
                             user = mAuth.getCurrentUser();
                             userUID = user.getUid();
                             //update online state
+                            userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
                             userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
                             //save data to sharedPrefrence and Usermanage
                             saveUserData();
@@ -85,6 +89,7 @@ public class FirebaseAccount {
                             userUID = user.getUid();
                             userEmail= user.getEmail();
                             //update online state
+                            userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
                             userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
                             //save data to sharedPrefrence
                             saveUserData();

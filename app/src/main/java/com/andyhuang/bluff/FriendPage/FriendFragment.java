@@ -1,6 +1,7 @@
 package com.andyhuang.bluff.FriendPage;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -95,8 +96,9 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
     }
 
     @Override
-    public void showGameInvite(FriendInformation friend) {
-
+    public void showErrorDialog(String errorMessage) {
+        IniviteErrorDialog dialog = new IniviteErrorDialog(this.getActivity(),errorMessage);
+        dialog.show();
     }
 
     @Override

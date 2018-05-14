@@ -43,6 +43,8 @@ public class GamePagePresenter implements GamePageContract.Presenter{
         }
 
         firebaseHelper.listenGameState();
+        //tell other I'm gaming
+        firebaseHelper.setIsGaming(true);
     }
 
     @Override
@@ -82,6 +84,14 @@ public class GamePagePresenter implements GamePageContract.Presenter{
                 break;
         }
     }
+
+    @Override
+    public void tellServerNotInGame() {
+        firebaseHelper.setCurrentState(Constants.EXIT_GAME);
+        firebaseHelper.setGameState(Constants.EVERYONE_EXIT_GAME);
+        firebaseHelper.setIsGaming(false);
+    }
+
     @Override
     public void reset() {
         hasTellOne =false;

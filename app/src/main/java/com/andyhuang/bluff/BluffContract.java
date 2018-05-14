@@ -15,5 +15,6 @@ public interface BluffContract {
         void showGameInviteDialog();
         void removeGameInvite();
         void setGameInformationAndGetIntoRoom(String RoomID);
+        void setDisconnectWhenGetOutline();
     }
 }

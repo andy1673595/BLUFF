@@ -1,6 +1,7 @@
 package com.andyhuang.bluff.FriendPage;
 
 import com.andyhuang.bluff.Bluff;
+import com.andyhuang.bluff.Callback.GameInviteForFriendFragmentCallback;
 import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Object.MapFromFirebaseToFriendList;
@@ -36,6 +37,7 @@ public class FriendPresenter implements FriendContract.Presenter {
     private int gameNumber =0;
     private ArrayList<String> UIDlistForInvite = new ArrayList<>();
     private FriendPageAdapter adapter;
+    private boolean creatRoom = true;
 
     public FriendPresenter(FriendContract.View viewInput) {
         friendPageView = viewInput;
@@ -156,6 +158,8 @@ public class FriendPresenter implements FriendContract.Presenter {
                         //send invite
                         myRef.child(friendUID).child(Constants.FRIEND_LIST_FIREBASE).child(myUID)
                                 .setValue(friendInviteMap);
+
+
                     }
                 }
             }
@@ -201,26 +205,61 @@ public class FriendPresenter implements FriendContract.Presenter {
     }
 
     public void openGameRoom() {
-        //invite friend with room ID
-        for(String friendUID : UIDlistForInvite) {
-            myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_INVITE).setValue(myUID);
-            myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_ROOM).setValue(""+gameNumber);
-            myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_EMAIL_FIREBASE)
-                    .setValue(UserManager.getInstance().getEmail());
-            myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_PHOTO_FIREBASE)
-                    .setValue(UserManager.getInstance().getUserPhotoUrl());
+        //check and invite friend with room ID
+        for(int i =0;i<UIDlistForInvite.size();i++) {
+            String friendUID = UIDlistForInvite.get(i);
+            boolean isLast =( i == UIDlistForInvite.size()-1);
+            GameInviteListener listener = new GameInviteListener(gameInviteCallback,isLast);
+            Query query = reference.child(Constants.USER_DATA_FIREBASE)
+                    .orderByKey().equalTo(friendUID);
+            query.addListenerForSingleValueEvent(listener);
         }
-        //increase the gameID to server
-        refGameRoomID.setValue(gameNumber+1);
-        //open the room
-        Gamer me = new Gamer(myUID,UserManager.getInstance().getUserPhotoUrl(),UserManager.getInstance().getEmail());
-        refGame.child(""+gameNumber).child(Constants.GAMER_FIREBASE).child(myUID).setValue(me);
-        //reset invite Information
-        UIDlistForInvite.clear();
-        adapter.resetCheck();
-        friendPageView.showGamePage(""+gameNumber);
+
     }
     public void setAdapter(FriendPageAdapter adapterInput) {
         adapter = adapterInput;
     }
+
+    private GameInviteForFriendFragmentCallback gameInviteCallback = new GameInviteForFriendFragmentCallback() {
+        @Override
+        public void openRoom() {
+            if(creatRoom) {
+                for(String friendUID : UIDlistForInvite) {
+                    //send game invite
+                    myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_INVITE)
+                            .setValue(myUID);
+                    myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_ROOM)
+                            .setValue(""+gameNumber);
+                    myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_EMAIL_FIREBASE)
+                            .setValue(UserManager.getInstance().getEmail());
+                    myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_PHOTO_FIREBASE)
+                            .setValue(UserManager.getInstance().getUserPhotoUrl());
+                }
+
+                //increase the gameID to server
+                refGameRoomID.setValue(gameNumber+1);
+                //open the room
+                Gamer me = new Gamer(myUID,UserManager.getInstance().getUserPhotoUrl(),UserManager.getInstance().getEmail());
+                refGame.child(""+gameNumber).child(Constants.GAMER_FIREBASE).child(myUID).setValue(me);
+                //reset invite Information
+                UIDlistForInvite.clear();
+                adapter.resetCheck();
+                creatRoom = true;
+                friendPageView.showGamePage(""+gameNumber);
+            } else {
+                //reset invite Information
+                UIDlistForInvite.clear();
+                adapter.resetCheck();
+                creatRoom = true;
+            }
+        }
+
+        @Override
+        public void showError(String message) {
+            //don't create room
+            creatRoom = false;
+            //show error dialog
+            friendPageView.showErrorDialog(message);
+        }
+    };
 }

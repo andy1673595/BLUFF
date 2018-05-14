@@ -10,6 +10,7 @@ import com.andyhuang.bluff.GamPage.GameEndDialog.ExitRoomCallback;
 import com.andyhuang.bluff.GamPage.GameEndDialog.GameEndDialog;
 import com.andyhuang.bluff.GamPage.GamePageContract;
 import com.andyhuang.bluff.GamPage.GamePagePresenter;
+import com.andyhuang.bluff.GamPage.GamerLeaveDialog.GamerLeaveDialog;
 import com.andyhuang.bluff.GamPage.LeaveRoomDialog.ExitGameDialog;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.GamPage.GameObject.CurrentInformation;
@@ -156,9 +157,16 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
 
     }
 
+    @Override
+    public void showOtherGamerLeaveDialog() {
+        GamerLeaveDialog gamerLeaveDialog = new GamerLeaveDialog(this,mExitRoomCallback);
+        gamerLeaveDialog.show();
+    }
+
     private ExitRoomCallback mExitRoomCallback = new ExitRoomCallback() {
         @Override
         public void exitRoom() {
+            mPrsenter.tellServerNotInGame();
             thisActivity.finish();
         }
     };

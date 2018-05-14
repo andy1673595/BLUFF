@@ -14,6 +14,7 @@ public interface GamePageContract {
         void freshRecentDiceUI(CurrentInformation currentInformation);
         void showEndInformation(String endText);
         void resetView(boolean isNextPlayer);
+        void showOtherGamerLeaveDialog();
     }
     interface Presenter extends BasePresenter {
         void init(String RoomID,boolean isHost);
@@ -21,5 +22,6 @@ public interface GamePageContract {
         void increaseDice();
         void catchPlayer();
         void clickStateButton();
+        void tellServerNotInGame();
     }
 }

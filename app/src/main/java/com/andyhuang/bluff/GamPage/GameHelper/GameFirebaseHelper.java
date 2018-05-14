@@ -231,4 +231,9 @@ public class GameFirebaseHelper {
         //restart a game , wait for ready
         gameRef.child(Constants.CURRENT_STATE_LIST).child(myUID).setValue(Constants.COMPLETED_READ_INIT);
     }
+
+    public void setIsGaming(boolean isGaming) {
+        Firebase userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
+        userDataRef.child(myUID).child(Constants.IS_GAMING).setValue(isGaming);
+    }
 }

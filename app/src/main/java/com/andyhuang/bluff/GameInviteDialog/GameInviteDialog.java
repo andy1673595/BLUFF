@@ -39,6 +39,7 @@ public class GameInviteDialog extends Dialog implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.image_ok_invite_game:
+
                 mPresenter.acceptAndStartGame(inviter,roomID);
                 bluffPresenter.setGameInformationAndGetIntoRoom(roomID);
                 dismiss();

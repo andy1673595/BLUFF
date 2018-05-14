@@ -1,17 +1,19 @@
 package com.andyhuang.bluff.GamPage.GameHelper;
 
 import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.activities.GamePage;
 
 public class CurrentStateHelper {
     private int countForCompletedRead=0;
     private int countForGetReady = 0;
     private int countForNewDice = 0;
     private int countForStartPlaying = 0;
-    GameFirebaseHelper firebaseHelper;
-    int playerTotal;
-    public CurrentStateHelper(GameFirebaseHelper firebaseHelperInput,int playerTotalInput) {
+    private GameFirebaseHelper firebaseHelper;
+    private int playerTotal;
+    public CurrentStateHelper(GameFirebaseHelper firebaseHelperInput, int playerTotalInput) {
         firebaseHelper = firebaseHelperInput;
         playerTotal = playerTotalInput;
+
     }
     public void dealCurrentState(String state) {
         switch (state) {
@@ -47,6 +49,9 @@ public class CurrentStateHelper {
                     //all player ready to play game
                     firebaseHelper.setGameState(Constants.PLAYING);
                 }
+                break;
+            case "exit game":
+                firebaseHelper.setGameState(Constants.EVERYONE_EXIT_GAME);
                 break;
         }
     }

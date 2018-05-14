@@ -56,6 +56,9 @@ public class GameStateListener implements ValueEventListener {
             case "load end information":
                 firebaseHelper.loadGameEndInfromation();
                 break;
+            case "exit game":
+                gamePageView.showOtherGamerLeaveDialog();
+                break;
         }
 
     }

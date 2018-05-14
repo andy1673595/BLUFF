@@ -39,6 +39,7 @@ public class Constants {
     public static String NEXT_PLAYER_INFORMATION = "next player";
     public static String END_INFORMATION = "end information";
     public static String ONLINE_STATE = "online state";
+    public static String IS_GAMING = "is gaming";
     //Game State Button
     public static String BUTTON_START ="start";
     public static String BUTTON_WAIT = "wait host start";
@@ -53,10 +54,12 @@ public class Constants {
     public static String GET_INITIAL_GAME_DATA ="get initial game data";
     public static String PLAYING = "playing";
     public static String LOAD_END_INFO = "load end information";
+    public static String EVERYONE_EXIT_GAME = "exit game";
     //Gamer current state
     public static String COMPLETED_READ_INIT = "completed read init";
     public static String GET_READY = "get ready";
     public static String CANCEL_READY = "cancel ready";
     public static String COMPLETED_NEW_DICE = "completed new dice";
     public static String READY_FOR_PLAYING = "ready for playing";
+    public static String EXIT_GAME = "exit game";
 }
