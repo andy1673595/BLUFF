@@ -51,6 +51,9 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".activities.GamePage"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".activities.CreateAccountPage"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -2,9 +2,12 @@ package com.andyhuang.bluff.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andyhuang.bluff.Callback.FacebookLoginCallback;
@@ -23,11 +26,12 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Login extends BaseActivity implements View.OnClickListener{
-    private TextView loginButton;
-    private TextView createButton;
-    private TextView facebookLoginButton;
+    private ImageView imageLoginButton;
+    private TextView textCreateButton;
     private EditText accountInput;
     private EditText passwordInput;
     private FirebaseAccount firebaseAccount;
@@ -35,6 +39,7 @@ public class Login extends BaseActivity implements View.OnClickListener{
     private AccessToken accessToken;
     private FacebookLoginCallback callback = loginCallback();
     private FacebookUserData userDataAPI;
+    private ConstraintLayout layoutFBLogin;
     private GetFacebookUserDataCallback facebookUserDataCallback = userDataCallback();
     private FirebaseLoginCallback firebaseLoginCallback = firebaseCallback();
 
@@ -43,16 +48,15 @@ public class Login extends BaseActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
-        loginButton = (TextView)findViewById(R.id.text_login_loginpage);
-        createButton = (TextView)findViewById(R.id.text_creat_loginpage);
-        facebookLoginButton = (TextView)findViewById(R.id.text_fb_login_loginpage);
+        layoutFBLogin = findViewById(R.id.constraintLayout_fb_login);
+        imageLoginButton =findViewById(R.id.image_login_button);
+        textCreateButton = findViewById(R.id.text_create_account);
         accountInput = (EditText)findViewById(R.id.edit_login_account);
         passwordInput = (EditText)findViewById(R.id.edit_login_password);
 
-        loginButton.setOnClickListener(this);
-        createButton.setOnClickListener(this);
-        facebookLoginButton.setOnClickListener(this);
+        imageLoginButton.setOnClickListener(this);
+        textCreateButton.setOnClickListener(this);
+        layoutFBLogin.setOnClickListener(this);
 
         firebaseAccount = new FirebaseAccount(Login.this);
         userDataAPI = new FacebookUserData();
@@ -65,15 +69,17 @@ public class Login extends BaseActivity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.text_login_loginpage:
+            case R.id.image_login_button:
                 UserManager.getInstance().reset();
+
                 firebaseAccount.login(String.valueOf(accountInput.getText()),String.valueOf(passwordInput.getText()),firebaseCallback());
                 break;
-            case R.id.text_creat_loginpage:
+            case R.id.text_create_account:
                 UserManager.getInstance().reset();
-                firebaseAccount.creatAccount(firebaseCallback(),String.valueOf(accountInput.getText()),String.valueOf(passwordInput.getText()));
+                startCreateAccountActivity();
+            //    firebaseAccount.creatAccount(firebaseCallback(),String.valueOf(accountInput.getText()),String.valueOf(passwordInput.getText()));
                 break;
-            case R.id.text_fb_login_loginpage:
+            case R.id.constraintLayout_fb_login:
                 UserManager.getInstance().reset();
                 LoginManager.getInstance().logInWithReadPermissions(this,
                         Arrays.asList("public_profile", "user_friends","email"));
@@ -160,6 +166,15 @@ public class Login extends BaseActivity implements View.OnClickListener{
         //設定切換Activity時所需要的參數
         Intent intent = new Intent();
         intent.setClass(Login.this,MainHallPage.class);
+        //切換Activity
+        startActivity(intent);
+        //關掉activity
+        this.finish();
+    }
+
+    public void startCreateAccountActivity() {
+        Intent intent = new Intent();
+        intent.setClass(Login.this,CreateAccountPage.class);
         //切換Activity
         startActivity(intent);
         //關掉activity

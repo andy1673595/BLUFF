@@ -13,4 +13,7 @@
     <color name="teal400">#26A69A</color>
     <color name="teal250">#66c0b8</color>
     <color name="Cyan900">#006064</color>
+    <color name="loginBackGround">#9B9B9B</color>
+    <color name="login_background2">#80CBC4</color>
+    <color name="teal500">#009688</color>
 </resources>

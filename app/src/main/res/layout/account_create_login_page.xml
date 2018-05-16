@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/login_background2">
+
+    <TextView
+        android:id="@+id/text_create_account_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="120dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="32dp"
+        android:text="建立帳號"
+        android:textColor="@color/teal600"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_email_create_account"
+        android:layout_width="197dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="18dp"
+        android:inputType="textEmailAddress"
+        android:text="abc@abc.abc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_create_account_title" />
+
+    <EditText
+        android:id="@+id/edit_password_create_account"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:inputType="textPassword"
+        android:text="abc555abc666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_email_create_account" />
+
+    <EditText
+        android:id="@+id/edit_name_create_account"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="41dp"
+        android:text="姓名"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_password_create_account" />
+
+    <EditText
+        android:id="@+id/edit_photo_create_account"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="19dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_name_create_account" />
+
+    <TextView
+        android:id="@+id/text_completed_create_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="147dp"
+        android:layout_marginEnd="26dp"
+        android:padding="10dp"
+        android:text="完成"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/text_error_message_create_account"
+        android:layout_width="196dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="49dp"
+        android:layout_marginTop="38dp"
+        app:layout_constraintEnd_toStartOf="@+id/text_completed_create_account"
+        app:layout_constraintTop_toBottomOf="@+id/edit_photo_create_account" />
+
+</android.support.constraint.ConstraintLayout>

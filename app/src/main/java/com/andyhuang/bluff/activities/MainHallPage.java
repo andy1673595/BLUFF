@@ -24,7 +24,7 @@ public class MainHallPage extends BaseActivity implements BluffContract.View {
         setContentView(R.layout.main_hall_page);
         myDrawerLayout = (DrawerLayout)findViewById(R.id.drawrlayout_main);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-        imageMenuButton = (ImageView)findViewById(R.id.toolBarMenuButton);
+        imageMenuButton = (ImageView)findViewById(R.id.image_menu_button);
 
         mPresenter = new BluffPresenter(this,getFragmentManager(),this);
         mNavigationView.setNavigationItemSelectedListener(navigationViewListener());

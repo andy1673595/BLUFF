@@ -5,63 +5,103 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.andyhuang.bluff.activities.Login"
+    android:background="@color/login_background2">
 
-    android:background="@color/com_facebook_blue">
 
-
-    <EditText
-        android:id="@+id/edit_login_account"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="120dp"
-        android:text="abc@abc.abc"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/edit_login_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/login_background2" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout_fb_login"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/text_fb_login_loginpage"
+            android:layout_width="234dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="12dp"
+            android:background="@color/teal100"
+            android:gravity="center"
+            android:text="使用Facebook登入"
+            android:textColor="@color/teal500"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_fb_icon" />
+
+        <ImageView
+            android:id="@+id/image_fb_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            app:layout_constraintBottom_toBottomOf="@+id/text_fb_login_loginpage"
+            app:layout_constraintEnd_toStartOf="@+id/text_fb_login_loginpage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/facebook_icon" />
+    </android.support.constraint.ConstraintLayout>
 
     <EditText
         android:id="@+id/edit_login_password"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:text="abcabchfjlas"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_login_account" />
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="8dp"
+        android:text="abc555abc666"
+        android:textColor="@color/teal600"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout_fb_login"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout_fb_login" />
 
-    <TextView
-        android:id="@+id/text_login_loginpage"
-        android:layout_width="58dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="120dp"
-        android:text="@string/login"
-        android:textSize="20sp"
+    <EditText
+        android:id="@+id/edit_login_account"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="abc@abc.abc"
+        android:textColor="@color/teal600"
+        app:layout_constraintBottom_toTopOf="@+id/edit_login_password"
+        app:layout_constraintEnd_toEndOf="@+id/edit_login_password"
+        app:layout_constraintStart_toStartOf="@+id/edit_login_password" />
+
+    <ImageView
+        android:id="@+id/image_login_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_login_password"
         app:layout_constraintStart_toEndOf="@+id/edit_login_account"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:srcCompat="@drawable/image_login_icon" />
 
     <TextView
-        android:id="@+id/text_creat_loginpage"
-        android:layout_width="58dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="18dp"
-        android:text="@string/creat"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/edit_login_password"
-        app:layout_constraintTop_toBottomOf="@+id/text_login_loginpage" />
-
-    <TextView
-        android:id="@+id/text_fb_login_loginpage"
-        android:layout_width="234dp"
-        android:layout_height="57dp"
-        android:layout_marginBottom="140dp"
-        android:layout_marginStart="75dp"
-        android:gravity="center"
-        android:text="用Facebook登入"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:id="@+id/text_create_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:autoLink="web"
+        android:text="沒有帳號嗎?"
+        android:textColor="@color/teal500"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_login_password" />
 
 
 </android.support.constraint.ConstraintLayout>
