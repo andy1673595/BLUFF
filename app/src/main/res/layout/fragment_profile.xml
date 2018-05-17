@@ -11,7 +11,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="30"
+        android:layout_weight="35"
         android:background="@drawable/profile_background">
 
         <ImageView
@@ -26,6 +26,120 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@mipmap/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/text_user_name_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
+            android:text="姓名"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/tealA100"
+            app:layout_constraintTop_toBottomOf="@+id/image_user_photo_profile" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:text="總場數"
+            android:textColor="#004D40"
+            app:layout_constraintBottom_toTopOf="@+id/text_total_count_games"
+            app:layout_constraintEnd_toStartOf="@+id/line_divider_left_profile"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            style="@style/GameDataNumberInProfile"
+            android:id="@+id/text_total_count_games"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="100"
+            app:layout_constraintBottom_toBottomOf="@+id/line_divider_left_profile"
+            app:layout_constraintEnd_toStartOf="@+id/line_divider_left_profile"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/line_divider_right_profile"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/tealA100"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_user_photo_profile"
+            app:layout_constraintTop_toBottomOf="@+id/text_user_name_profile"
+            app:layout_constraintVertical_bias="0.0"></android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/line_divider_left_profile"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/tealA100"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/image_user_photo_profile"
+            app:layout_constraintTop_toBottomOf="@+id/text_user_name_profile"
+            app:layout_constraintVertical_bias="0.0"></android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:textColor="#004D40"
+            android:text="勝率(兩人)"
+            app:layout_constraintEnd_toStartOf="@+id/line_divider_right_profile"
+            app:layout_constraintStart_toEndOf="@+id/line_divider_left_profile"
+            app:layout_constraintTop_toTopOf="@+id/textView5" />
+
+        <TextView
+            style="@style/GameDataNumberInProfile"
+            android:id="@+id/text_win_rate_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="50%"
+            app:layout_constraintBottom_toBottomOf="@+id/text_total_count_games"
+            app:layout_constraintEnd_toStartOf="@+id/line_divider_right_profile"
+            app:layout_constraintStart_toEndOf="@+id/line_divider_left_profile" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:textColor="#004D40"
+            android:text="總場數(兩人)"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/line_divider_right_profile"
+            app:layout_constraintTop_toTopOf="@+id/textView4" />
+
+        <TextView
+            android:id="@+id/text_two_person_games_count_profile"
+            style="@style/GameDataNumberInProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="50"
+            app:layout_constraintBottom_toBottomOf="@+id/text_win_rate_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/line_divider_right_profile" />
+
     </android.support.constraint.ConstraintLayout>
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

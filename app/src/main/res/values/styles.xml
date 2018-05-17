@@ -35,4 +35,9 @@
        <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/button_rounde</item>
     </style>
+
+    <style name="GameDataNumberInProfile">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/tealA100</item>
+    </style>
 </resources>
