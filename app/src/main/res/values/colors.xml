@@ -16,4 +16,6 @@
     <color name="loginBackGround">#9B9B9B</color>
     <color name="login_background2">#80CBC4</color>
     <color name="teal500">#009688</color>
+    <color name="teal50">#E0F2F1</color>
+    <color name="teal_profie_background">#EBFAF9</color>
 </resources>
