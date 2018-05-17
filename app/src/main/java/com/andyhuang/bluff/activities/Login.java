@@ -77,7 +77,6 @@ public class Login extends BaseActivity implements View.OnClickListener{
             case R.id.text_create_account:
                 UserManager.getInstance().reset();
                 startCreateAccountActivity();
-            //    firebaseAccount.creatAccount(firebaseCallback(),String.valueOf(accountInput.getText()),String.valueOf(passwordInput.getText()));
                 break;
             case R.id.constraintLayout_fb_login:
                 UserManager.getInstance().reset();

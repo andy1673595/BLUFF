@@ -36,7 +36,9 @@ public class RoomDataListener implements ValueEventListener {
                 Gamer gamer = new Gamer((String) gamerData.child(Constants.USER_UID_FIREBASE).getValue(),
                         (String)gamerData.child("userPhotoURL").getValue(),
                         (String)gamerData.child(Constants.USER_EMAIL_FIREBASE).getValue()) ;
-                gamerList.add(gamer);
+                if(!gamerList.contains(gamer)) {
+                    gamerList.add(gamer);
+                }
             }
 
             gameRef.child(Constants.GAMER_LIST).setValue(gamerList);

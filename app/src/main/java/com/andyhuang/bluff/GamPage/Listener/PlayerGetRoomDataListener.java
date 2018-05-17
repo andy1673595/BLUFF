@@ -9,6 +9,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class PlayerGetRoomDataListener implements ValueEventListener {
@@ -20,12 +21,13 @@ public class PlayerGetRoomDataListener implements ValueEventListener {
     public PlayerGetRoomDataListener(List<Gamer> gamerListInput, GameFirebaseHelper helper,
                             boolean isHostInput, GamePageContract.View gamePageViewInput,
                             PlayerGetRoomDataCallback callbackInput) {
-        gamerList =gamerListInput;
+        gamerList = new LinkedList<Gamer>();
         mGameFirebaseHelper = helper;
         isHost = isHostInput;
         gamePageView =gamePageViewInput;
         callback= callbackInput;
     }
+
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
         if (dataSnapshot.exists()) {
@@ -33,7 +35,7 @@ public class PlayerGetRoomDataListener implements ValueEventListener {
                 Gamer gamer = new Gamer((String) gamerData.child(Constants.USER_UID_FIREBASE).getValue(),
                         (String)gamerData.child("userPhotoURL").getValue(),
                         (String)gamerData.child(Constants.USER_EMAIL_FIREBASE).getValue()) ;
-                gamerList.add(gamer);
+                    gamerList.add(gamer);
             }
             //tell server have read data
             mGameFirebaseHelper.setCurrentState(Constants.COMPLETED_READ_INIT);

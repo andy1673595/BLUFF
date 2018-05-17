@@ -20,7 +20,7 @@ public class CurrentStateHelper {
             case "completed read init":
                 countForCompletedRead++;
                 //all player read Room data
-                if(countForCompletedRead == playerTotal) {
+                if(countForCompletedRead >= playerTotal) {
                     firebaseHelper.setGameState(Constants.WAIT_READY);
 
                 }
@@ -28,7 +28,7 @@ public class CurrentStateHelper {
             case "get ready" :
                 countForGetReady ++;
                 //all player get ready, get new dice set
-                if(countForGetReady == playerTotal) {
+                if(countForGetReady >= playerTotal) {
                     firebaseHelper.setGameState(Constants.NEW_DICE);
                 }
                 break;
@@ -38,14 +38,14 @@ public class CurrentStateHelper {
                 break;
             case "completed new dice":
                 countForNewDice++;
-                if(countForNewDice == playerTotal) {
+                if(countForNewDice >= playerTotal) {
                     //all player completed new dice, host caculate dice list
                     firebaseHelper.hostGetEachDiceList();
                 }
                 break;
             case "ready for playing":
                 countForStartPlaying++;
-                if(countForStartPlaying==playerTotal) {
+                if(countForStartPlaying>=playerTotal) {
                     //all player ready to play game
                     firebaseHelper.setGameState(Constants.PLAYING);
                 }

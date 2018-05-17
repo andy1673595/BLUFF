@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.andyhuang.bluff.Bluff;
+import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.Util.Constants;
 
 import java.io.InputStream;
@@ -15,10 +16,12 @@ import java.net.URL;
 import java.nio.charset.MalformedInputException;
 import java.util.concurrent.Executors;
 
+import static com.andyhuang.bluff.helper.ImageRounder.getRoundedCornerBitmap;
+
 public class ImageFromLruCache {
-
-    public void set(ImageView imageView, String imageUrl) {
-
+    float roundPx = 0f;
+    public void set(ImageView imageView, String imageUrl,float roundPxInput) {
+        roundPx = roundPxInput;
         Bitmap bitmap = (Bitmap) Bluff.getLruCache().get(imageUrl);
 
         if (bitmap == null) {
@@ -29,7 +32,7 @@ public class ImageFromLruCache {
         } else {
 
             Log.d(Constants.TAG, "LruCache exist, set bitmap directly.: " + imageUrl);
-            imageView.setImageBitmap(bitmap);
+            imageView.setImageBitmap(getRoundedCornerBitmap(bitmap,roundPx));
         }
 
     }
@@ -101,7 +104,8 @@ public class ImageFromLruCache {
 
                 Bluff.getLruCache().put(mImageUrl, mBitmap);
                 if (mImageView.getTag() == mImageUrl) {
-                    mImageView.setImageBitmap(mBitmap);
+                    mImageView.setImageBitmap(getRoundedCornerBitmap(mBitmap,roundPx));
+                   // mImageView.setImageBitmap(mBitmap);
                 }
             }
         }

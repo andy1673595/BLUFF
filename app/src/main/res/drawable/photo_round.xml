@@ -6,28 +6,18 @@ android:shape="rectangle"
 
     <!-- 圓角，Layout佈局圓角幅度設定值 -->
     <corners 
-    android:radius="20dip"
+    android:radius="20dp"
     />
 
     <!-- 框內底部顏色 -->
     <solid
     android:color="@android:color/black"
     />
-
-
-    <!-- 畫面顏色漸層，開始色碼與結束色碼進行漸層，角度為315度 -->
-    <gradient
-    android:startColor="#DC143C"
-    android:endColor="#FFD2D2"
-    android:angle="315"
-    />
-        
-
         
     <!-- 尺寸大小 -->
     <size
-    android:width="300dip"
-    android:height="300dip"
+    android:width="80dp"
+    android:height="80dp"
     />
         
 </shape>

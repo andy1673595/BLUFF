@@ -62,4 +62,10 @@ public class Constants {
     public static String COMPLETED_NEW_DICE = "completed new dice";
     public static String READY_FOR_PLAYING = "ready for playing";
     public static String EXIT_GAME = "exit game";
+
+    //Game result TAG
+    public static String GAME_RESULT = "game result";
+    public static String LOSE_TIMES = "lose times";
+    public static String WIN_TIMES = "win times";
+    public static String TOTAL_TIMES = "total times";
 }

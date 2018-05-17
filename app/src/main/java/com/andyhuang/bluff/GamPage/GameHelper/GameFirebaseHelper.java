@@ -206,6 +206,15 @@ public class GameFirebaseHelper {
         gameRef.child(Constants.END_INFORMATION).setValue(gameEndInformation);
         //tell everyone should end game
         gameRef.child(Constants.GAME_STATE).setValue(Constants.LOAD_END_INFO);
+        UpdateGameResult gameResult = new UpdateGameResult();
+        //If this game is a 2 person game,upadte the win and lose result to server
+        if(gamerList.size()==2) {
+            gameResult.updateToFirebase(gamerList,gameEndInformation);
+        }
+
+        gameResult.updateOnlyTimesToFirebase(gamerList);
+
+
     }
 
     public void loadGameEndInfromation() {

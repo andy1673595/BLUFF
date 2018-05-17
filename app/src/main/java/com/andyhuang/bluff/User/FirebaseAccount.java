@@ -7,10 +7,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.andyhuang.bluff.Bluff;
+import com.andyhuang.bluff.Callback.CheckIsCreateCallback;
 import com.andyhuang.bluff.Callback.FacebookLoginCallback;
 import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.activities.Login;
+import com.andyhuang.bluff.helper.FacebookLoginOrCreate;
 import com.facebook.AccessToken;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,8 +22,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import static com.andyhuang.bluff.Util.Constants.TAG;
 
@@ -63,6 +68,7 @@ public class FirebaseAccount {
                             //update online state
                             userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
                             userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
+                            userDataRef.child(userUID).child(Constants.IS_GAMING).setValue(false);
                             //save data to sharedPrefrence and Usermanage
                             saveUserData();
                             //String myUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -91,6 +97,7 @@ public class FirebaseAccount {
                             //update online state
                             userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
                             userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
+                            userDataRef.child(userUID).child(Constants.IS_GAMING).setValue(false);
                             //save data to sharedPrefrence
                             saveUserData();
 
@@ -119,6 +126,13 @@ public class FirebaseAccount {
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_EMAIL_FIREBASE).setValue(userEmail);
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_NAME_FIREBASE).setValue(userName);
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_PHOTO_FIREBASE).setValue(userPhotoURL);
+        //intial game result data
+        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
+                .child(Constants.WIN_TIMES).setValue(0);
+        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
+                .child(Constants.LOSE_TIMES).setValue(0);
+        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
+                .child(Constants.TOTAL_TIMES).setValue(0);
     }
 
     public void facebookLogin(final AccessToken accessToken, final FacebookLoginCallback callback) {
@@ -137,12 +151,14 @@ public class FirebaseAccount {
                             userName = UserManager.getInstance().getUserName();
                             //update online state
                             userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
+                            userDataRef.child(userUID).child(Constants.IS_GAMING).setValue(false);
                             saveUserData();
                             //save to UserManager
                             UserManager.getInstance().setEmail(userEmail);
                             UserManager.getInstance().setFbtoken(accessToken);
                             UserManager.getInstance().setUserUID(userUID);
-                            updateToFireBase();
+                            //check is first Create or not and update To FireBase
+                            isCreate(mCheckIsCreateCallback);
                             callback.loginSuccess();
 
                         } else {
@@ -153,4 +169,36 @@ public class FirebaseAccount {
                     }
                 });
     }
+
+    public void isCreate(final CheckIsCreateCallback callback) {
+        dataBaseRef.child(UserManager.getInstance().getUserUID()).child(Constants.GAME_RESULT).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if((Object)dataSnapshot.child(Constants.TOTAL_TIMES).getValue() == null) {
+                    callback.thisIsFirstCreate();
+                }else {
+                    callback.notFirstCreate();
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private CheckIsCreateCallback mCheckIsCreateCallback = new CheckIsCreateCallback() {
+        @Override
+        public void thisIsFirstCreate() {
+            updateToFireBase();
+        }
+
+        @Override
+        public void notFirstCreate() {
+            //do nothing
+        }
+    };
 }

@@ -58,7 +58,7 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
       // holder.imageFriendPhoto.setOutlineProvider(new UserOutlineProvider());
         if (!friendPhoto.equals(Constants.NODATA)) {
             holder.imageFriendPhoto.setTag(friendPhoto);
-            new ImageFromLruCache().set(holder.imageFriendPhoto, friendPhoto);
+            new ImageFromLruCache().set(holder.imageFriendPhoto, friendPhoto,40f);
         } else {
             holder.imageFriendPhoto.setImageResource(R.mipmap.ic_launcher_round);
         }

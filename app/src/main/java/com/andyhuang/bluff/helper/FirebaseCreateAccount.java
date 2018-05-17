@@ -55,6 +55,7 @@ public class FirebaseCreateAccount {
                             //update online state
                             userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
                             userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
+                            userDataRef.child(userUID).child(Constants.IS_GAMING).setValue(false);
                             //save data to sharedPrefrence and Usermanage
                             saveUserData();
                             //String myUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -85,5 +86,12 @@ public class FirebaseCreateAccount {
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_EMAIL_FIREBASE).setValue(userEmail);
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_NAME_FIREBASE).setValue(userName);
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_PHOTO_FIREBASE).setValue(userPhotoURL);
+        //intial game result data
+        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
+                .child(Constants.WIN_TIMES).setValue(0);
+        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
+                .child(Constants.LOSE_TIMES).setValue(0);
+        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
+                .child(Constants.TOTAL_TIMES).setValue(0);
     }
 }
