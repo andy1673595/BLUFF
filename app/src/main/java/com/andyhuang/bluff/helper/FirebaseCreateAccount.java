@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
+import com.andyhuang.bluff.Object.GameResult;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.activities.CreateAccountPage;
@@ -86,12 +87,17 @@ public class FirebaseCreateAccount {
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_EMAIL_FIREBASE).setValue(userEmail);
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_NAME_FIREBASE).setValue(userName);
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_PHOTO_FIREBASE).setValue(userPhotoURL);
+        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_COMMENT_FIREBASE).setValue(Constants.NODATA);
         //intial game result data
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
+                .setValue(new GameResult() );
+
+
+       /* dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
                 .child(Constants.WIN_TIMES).setValue(0);
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
                 .child(Constants.LOSE_TIMES).setValue(0);
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
-                .child(Constants.TOTAL_TIMES).setValue(0);
+                .child(Constants.TOTAL_TIMES).setValue(0);*/
     }
 }

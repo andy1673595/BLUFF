@@ -87,7 +87,6 @@ public class BluffPresenter implements BluffContract.Presenter {
 
     @Override
     public void transToProfilePage() {
-        mProfileFragment.onResume();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.hide(mFriendFragment).hide(mMainHallFragment)
                 .show(mProfileFragment).commit();

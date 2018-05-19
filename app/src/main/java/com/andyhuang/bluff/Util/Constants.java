@@ -20,6 +20,7 @@ public class Constants {
     public static String USER_PASSWORD_FIREBASE = "userPassword";
     public static String USER_NAME_FIREBASE = "userName";
     public static String USER_PHOTO_FIREBASE = "userPhoto";
+    public static String USER_COMMENT_FIREBASE = "userComment";
     public static String FRIEND_LIST_FIREBASE = "friendlist";
     public static String FRIEND_INVITE_FIREBASE = "isInvite";
     public static String USER_UID_FIREBASE = "userUID";
@@ -64,8 +65,8 @@ public class Constants {
     public static String EXIT_GAME = "exit game";
 
     //Game result TAG
-    public static String GAME_RESULT = "game result";
-    public static String LOSE_TIMES = "lose times";
-    public static String WIN_TIMES = "win times";
-    public static String TOTAL_TIMES = "total times";
+    public static String GAME_RESULT = "GameResult";
+    public static String LOSE_TIMES = "loseTimes";
+    public static String WIN_TIMES = "winTimes";
+    public static String TOTAL_TIMES = "totalTimes";
 }
