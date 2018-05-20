@@ -13,8 +13,8 @@ import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
 import com.andyhuang.bluff.Object.GameResult;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.activities.Login;
-import com.andyhuang.bluff.helper.FacebookLoginOrCreate;
 import com.facebook.AccessToken;
+import com.facebook.FacebookCallback;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -132,12 +132,6 @@ public class FirebaseAccount {
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
                 .setValue(new GameResult() );
 
-       /* dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
-                .child(Constants.WIN_TIMES).setValue(0);
-        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
-                .child(Constants.LOSE_TIMES).setValue(0);
-        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
-                .child(Constants.TOTAL_TIMES).setValue(0);*/
     }
 
     public void facebookLogin(final AccessToken accessToken, final FacebookLoginCallback callback) {
@@ -163,8 +157,8 @@ public class FirebaseAccount {
                             UserManager.getInstance().setFbtoken(accessToken);
                             UserManager.getInstance().setUserUID(userUID);
                             //check is first Create or not and update To FireBase
-                            isCreate(mCheckIsCreateCallback);
-                            callback.loginSuccess();
+                            isCreate(mCheckIsCreateCallback,callback);
+
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -175,17 +169,16 @@ public class FirebaseAccount {
                 });
     }
 
-    public void isCreate(final CheckIsCreateCallback callback) {
-        dataBaseRef.child(UserManager.getInstance().getUserUID()).child(Constants.GAME_RESULT).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void isCreate(final CheckIsCreateCallback callback, final FacebookLoginCallback fbCallback) {
+        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if((Object)dataSnapshot.child(Constants.TOTAL_TIMES).getValue() == null) {
-                    callback.thisIsFirstCreate();
+                if((Object)dataSnapshot.getValue() == null) {
+                    callback.thisIsFirstCreate(fbCallback);
                 }else {
                     callback.notFirstCreate();
+                    fbCallback.loginSuccess();
                 }
-
-
             }
 
             @Override
@@ -197,8 +190,9 @@ public class FirebaseAccount {
 
     private CheckIsCreateCallback mCheckIsCreateCallback = new CheckIsCreateCallback() {
         @Override
-        public void thisIsFirstCreate() {
+        public void thisIsFirstCreate(FacebookLoginCallback fbCallback) {
             updateToFireBase();
+            fbCallback.loginSuccess();
         }
 
         @Override

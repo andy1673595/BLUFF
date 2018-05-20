@@ -24,7 +24,7 @@ public class GameEndDialog extends Dialog implements View.OnClickListener{
         textInfo = (TextView)findViewById(R.id.text_end_game_info);
         textInfo.setText(gameEndStringInput);
         mButtonStartNewGame = (Button)findViewById(R.id.button_new_game_dialog);
-        mButtonExitRoom = (Button)findViewById(R.id.button_exit_room_dialog);
+        mButtonExitRoom = (Button)findViewById(R.id.button_quit_edit_comment);
         mButtonStartNewGame.setOnClickListener(this);
         mButtonExitRoom.setOnClickListener(this);
     }
@@ -35,7 +35,7 @@ public class GameEndDialog extends Dialog implements View.OnClickListener{
             case R.id.button_new_game_dialog:
                 dismiss();
                 break;
-            case R.id.button_exit_room_dialog:
+            case R.id.button_quit_edit_comment:
                 callback.exitRoom();
                 dismiss();
                 break;

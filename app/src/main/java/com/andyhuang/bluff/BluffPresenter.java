@@ -3,6 +3,7 @@ package com.andyhuang.bluff;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.Bundle;
 import android.support.annotation.StringDef;
 import android.util.Log;
 
@@ -55,6 +56,11 @@ public class BluffPresenter implements BluffContract.Presenter {
         mMainHallFragment = new MainHallFragment();
         mProfileFragment = new ProfileFragment();
         mFriendFragment = new FriendFragment();
+        //set UID to profile fragment
+        Bundle bundle = new Bundle();
+        bundle.putString("UID",UserManager.getInstance().getUserUID());//这里的values就是我们要传的值
+        mProfileFragment.setArguments(bundle);
+        //inti
         initFragment();
         Firebase.setAndroidContext(Bluff.getContext());
         refUserData = new Firebase("https://myproject-556f6.firebaseio.com/userData/");

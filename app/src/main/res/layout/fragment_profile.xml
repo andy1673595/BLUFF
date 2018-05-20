@@ -149,9 +149,9 @@
         android:layout_weight="60">
 
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/image_email_icon_profile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
@@ -162,21 +162,21 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="268dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginTop="24dp"
-            android:background="@color/teal50"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            android:background="@drawable/bg_user_email"
+            app:layout_constraintStart_toEndOf="@+id/image_email_icon_profile"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/text_email_profile"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginBottom="3dp"
                 android:layout_marginEnd="22dp"
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="3dp"
-                android:text="andyandy@gamil.com"
+                android:ellipsize="end"
                 android:textColor="@color/teal800"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -202,11 +202,11 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/image_email_icon_profile"
             app:srcCompat="@drawable/profile_comment_background" />
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/text_comment_profile"
             android:layout_width="240dp"
             android:layout_height="220dp"
             android:layout_marginEnd="30dp"
@@ -216,5 +216,18 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+        <ImageView
+            android:id="@+id/image_modify_comment_button"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:padding="4dp"
+            android:tint="@color/teal600"
+            app:layout_constraintBottom_toTopOf="@+id/text_comment_profile"
+            app:layout_constraintEnd_toEndOf="@+id/text_comment_profile"
+            app:srcCompat="@drawable/ic_create_black_24dp" />
+
     </android.support.constraint.ConstraintLayout>
 </LinearLayout>

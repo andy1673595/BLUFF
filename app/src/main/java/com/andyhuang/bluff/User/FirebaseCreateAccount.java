@@ -1,4 +1,4 @@
-package com.andyhuang.bluff.helper;
+package com.andyhuang.bluff.User;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -91,13 +91,5 @@ public class FirebaseCreateAccount {
         //intial game result data
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
                 .setValue(new GameResult() );
-
-
-       /* dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
-                .child(Constants.WIN_TIMES).setValue(0);
-        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
-                .child(Constants.LOSE_TIMES).setValue(0);
-        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
-                .child(Constants.TOTAL_TIMES).setValue(0);*/
     }
 }

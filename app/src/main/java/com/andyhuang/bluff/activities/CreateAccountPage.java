@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.Util.Constants;
-import com.andyhuang.bluff.helper.FirebaseCreateAccount;
+import com.andyhuang.bluff.User.FirebaseCreateAccount;
 
 public class CreateAccountPage extends BaseActivity implements View.OnClickListener{
     private EditText editEmail;
