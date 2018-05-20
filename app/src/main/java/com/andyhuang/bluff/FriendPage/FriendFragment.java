@@ -1,5 +1,6 @@
 package com.andyhuang.bluff.FriendPage;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +32,7 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
     private ArrayList<FriendInformation> friendList = new ArrayList<>();
     private RecyclerView recyclerView;
     private Button mButtonStart;
+    private FragmentListener friendFragmentListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,6 +104,11 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
     }
 
     @Override
+    public void showFriendProfile(String friendUID) {
+        friendFragmentListener.showFriendProfile(friendUID);
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.image_find_friend:
@@ -118,5 +125,12 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
         Bluff.getImm().hideSoftInputFromWindow(getActivity()
                 .getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
 
+    }
+
+    //send info to MainActivity
+    @Override
+    public void onAttach(Activity activity) {
+        friendFragmentListener= (FragmentListener) activity;
+        super.onAttach(activity);
     }
 }

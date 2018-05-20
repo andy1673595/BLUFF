@@ -2,9 +2,6 @@ package com.andyhuang.bluff;
 
 public interface BluffContract {
     interface View extends BaseView {
-        void showProfilePage();
-        void showFriendPage();
-        void showMainPage();
         void showGamePage(String gameRoomID);
 
     }
@@ -12,6 +9,8 @@ public interface BluffContract {
         void transToMainPage();
         void transToFriendPage();
         void transToProfilePage();
+        void transToFriendProfile(String UID);
+        void removeFriendProfileFragment();
         void showGameInviteDialog();
         void removeGameInvite();
         void setGameInformationAndGetIntoRoom(String RoomID);

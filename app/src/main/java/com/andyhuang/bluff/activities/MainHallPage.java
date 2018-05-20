@@ -11,9 +11,10 @@ import android.view.View;
 import android.widget.ImageView;
 import com.andyhuang.bluff.BluffContract;
 import com.andyhuang.bluff.BluffPresenter;
+import com.andyhuang.bluff.FriendPage.FragmentListener;
 import com.andyhuang.bluff.R;
 
-public class MainHallPage extends BaseActivity implements BluffContract.View {
+public class MainHallPage extends BaseActivity implements BluffContract.View,FragmentListener {
     private BluffContract.Presenter mPresenter;
     private DrawerLayout myDrawerLayout;
     private NavigationView mNavigationView;
@@ -72,21 +73,6 @@ public class MainHallPage extends BaseActivity implements BluffContract.View {
     }
 
     @Override
-    public void showProfilePage() {
-
-    }
-
-    @Override
-    public void showFriendPage() {
-
-    }
-
-    @Override
-    public void showMainPage() {
-
-    }
-
-    @Override
     public void showGamePage(String gameID) {
         Intent intent = new Intent();
         intent.setClass(this,GamePage.class);
@@ -102,4 +88,8 @@ public class MainHallPage extends BaseActivity implements BluffContract.View {
         else super.onBackPressed();
     }
 
+    @Override
+    public void showFriendProfile(String friendUID) {
+        mPresenter.transToFriendProfile(friendUID);
+    }
 }

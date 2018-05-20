@@ -104,6 +104,7 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
                         mPresenter.refuseInvite(position);
                     }else {
                         //this is friend item, right icon means look friend Profile
+                        friendPageView.showFriendProfile(listFriend.get(position).getUID());
                     }
                     break;
                 case R.id.image_left_icon_friend_listitem:

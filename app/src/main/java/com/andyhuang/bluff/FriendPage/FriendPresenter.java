@@ -1,6 +1,7 @@
 package com.andyhuang.bluff.FriendPage;
 
 import com.andyhuang.bluff.Bluff;
+import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.Callback.GameInviteForFriendFragmentCallback;
 import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;

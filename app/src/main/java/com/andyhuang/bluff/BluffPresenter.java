@@ -22,6 +22,7 @@ import com.firebase.client.FirebaseError;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Map;
 
 public class BluffPresenter implements BluffContract.Presenter {
     private BluffContract.View bluffView;
@@ -29,6 +30,7 @@ public class BluffPresenter implements BluffContract.Presenter {
     private MainHallFragment mMainHallFragment;
     private ProfileFragment mProfileFragment;
     private FriendFragment mFriendFragment;
+    private ProfileFragment friendProfileFragment;
     private Firebase refUserData;
     private MainHallPage activity;
     private String UIDGameInvite = Constants.NODATA;
@@ -47,6 +49,7 @@ public class BluffPresenter implements BluffContract.Presenter {
     public static final String MAIN     = "MAIN";
     public static final String FRIEND = "FRIEND";
     public static final String PROFILE  = "PROFILE";
+    public static final String FRIEND_PROFILE  = "FRIEND_PROFILE";
 
     public BluffPresenter(BluffContract.View bluffViewInput, FragmentManager fragmentManagerInput,MainHallPage activityInput) {
         bluffView = bluffViewInput;
@@ -58,7 +61,10 @@ public class BluffPresenter implements BluffContract.Presenter {
         mFriendFragment = new FriendFragment();
         //set UID to profile fragment
         Bundle bundle = new Bundle();
-        bundle.putString("UID",UserManager.getInstance().getUserUID());//这里的values就是我们要传的值
+        bundle.putString("UID",UserManager.getInstance().getUserUID());
+        mProfileFragment.setArguments(bundle);
+        //set UID to friend fragment
+        Bundle bundleToFriendFragment = new Bundle();
         mProfileFragment.setArguments(bundle);
         //inti
         initFragment();
@@ -75,28 +81,47 @@ public class BluffPresenter implements BluffContract.Presenter {
 
     @Override
     public void transToMainPage() {
+        if(friendProfileFragment!=null) removeFriendProfileFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.hide(mProfileFragment).hide(mFriendFragment)
                 .show(mMainHallFragment).commit();
-
-        bluffView.showMainPage();
     }
 
     @Override
     public void transToFriendPage() {
+        if(friendProfileFragment!=null) removeFriendProfileFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.hide(mProfileFragment).hide(mMainHallFragment)
                 .show(mFriendFragment).commit();
-
-        bluffView.showFriendPage();
     }
 
     @Override
     public void transToProfilePage() {
+        if(friendProfileFragment!=null) removeFriendProfileFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.hide(mFriendFragment).hide(mMainHallFragment)
                 .show(mProfileFragment).commit();
-        bluffView.showProfilePage();
+    }
+
+    @Override
+    public void transToFriendProfile(String friendUID) {
+        friendProfileFragment = new ProfileFragment();
+        //set UID to profile fragment
+        Bundle bundle = new Bundle();
+        bundle.putString("UID",friendUID);
+        friendProfileFragment.setArguments(bundle);
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.mainFrameLayout,friendProfileFragment,FRIEND_PROFILE).show(friendProfileFragment)
+                    .hide(mFriendFragment).hide(mMainHallFragment).hide(mProfileFragment).commit();
+    }
+
+    @Override
+    public void removeFriendProfileFragment() {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.remove(friendProfileFragment).show(mFriendFragment)
+                .hide(mMainHallFragment).hide(mProfileFragment).commit();
+        friendProfileFragment = null;
     }
 
     @Override
