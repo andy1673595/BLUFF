@@ -236,12 +236,15 @@ public class FriendPresenter implements FriendContract.Presenter {
                             .setValue(UserManager.getInstance().getEmail());
                     myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_PHOTO_FIREBASE)
                             .setValue(UserManager.getInstance().getUserPhotoUrl());
+                    myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_NAME_FIREBASE)
+                            .setValue(UserManager.getInstance().getUserName());
                 }
 
                 //increase the gameID to server
                 refGameRoomID.setValue(gameNumber+1);
                 //open the room
                 Gamer me = new Gamer(myUID,UserManager.getInstance().getUserPhotoUrl(),UserManager.getInstance().getEmail());
+                me.setUserName(UserManager.getInstance().getUserName());
                 refGame.child(""+gameNumber).child(Constants.GAMER_FIREBASE).child(myUID).setValue(me);
                 //reset invite Information
                 UIDlistForInvite.clear();

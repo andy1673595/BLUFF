@@ -37,6 +37,7 @@ public class BluffPresenter implements BluffContract.Presenter {
     private String numberOfGameRoom = Constants.NODATA;
     private String emailFromGameInvite = Constants.NODATA;
     private String userPhotoURLGameInvite = Constants.NODATA;
+    private String nameInvite = Constants.NODATA;
     private boolean hasReadPhoto = false;
     private GameInviteDialog gameInviteDialog;
     private Firebase userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
@@ -127,6 +128,7 @@ public class BluffPresenter implements BluffContract.Presenter {
     @Override
     public void showGameInviteDialog() {
         Gamer inviter = new Gamer(UIDGameInvite,userPhotoURLGameInvite,emailFromGameInvite);
+        inviter.setUserName(nameInvite);
         gameInviteDialog = new GameInviteDialog((Activity)bluffView,this,inviter,numberOfGameRoom);
         gameInviteDialog.show();
     }
@@ -153,11 +155,14 @@ public class BluffPresenter implements BluffContract.Presenter {
                 }else if(dataSnapshot.getKey().equals(Constants.USER_PHOTO_FIREBASE)) {
                     userPhotoURLGameInvite = (String)dataSnapshot.getValue();
                     hasReadPhoto = true;
+                } else if(dataSnapshot.getKey().equals(Constants.USER_NAME_FIREBASE)) {
+                    nameInvite =  (String)dataSnapshot.getValue();
                 }
                 //get all game invite information, start to show dialog
                 if(! ( UIDGameInvite.equals(Constants.NODATA)||
                         numberOfGameRoom.equals(Constants.NODATA)||
                         emailFromGameInvite.equals(Constants.NODATA)||
+                        nameInvite.equals(Constants.NODATA)||
                         !hasReadPhoto)) {
                     showGameInviteDialog();
                 }
@@ -190,6 +195,7 @@ public class BluffPresenter implements BluffContract.Presenter {
         numberOfGameRoom = Constants.NODATA;
         emailFromGameInvite = Constants.NODATA;
         userPhotoURLGameInvite = Constants.NODATA;
+        nameInvite = Constants.NODATA;
         hasReadPhoto = false;
     }
 

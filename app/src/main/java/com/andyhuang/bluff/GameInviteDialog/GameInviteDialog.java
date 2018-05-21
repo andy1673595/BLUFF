@@ -32,7 +32,7 @@ public class GameInviteDialog extends Dialog implements View.OnClickListener{
         ((ConstraintLayout)findViewById(R.id.constraintLayout_dialog_background)).setOnClickListener(this);
         ((ImageView)findViewById(R.id.image_ok_invite_game)).setOnClickListener(this);
         ((ImageView)findViewById(R.id.image_refuse_invite_game)).setOnClickListener(this);
-        ((TextView)findViewById(R.id.text_invite_game_message_dialog)).setText(inviter.getUserEmail()+"\n邀請你進行吹牛");
+        ((TextView)findViewById(R.id.text_invite_game_message_dialog)).setText(inviter.getUserName()+"\n邀請你進行吹牛");
     }
 
     @Override

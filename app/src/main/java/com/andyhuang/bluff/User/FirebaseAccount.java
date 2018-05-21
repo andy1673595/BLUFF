@@ -99,10 +99,9 @@ public class FirebaseAccount {
                             userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
                             userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
                             userDataRef.child(userUID).child(Constants.IS_GAMING).setValue(false);
-                            //save data to sharedPrefrence
-                            saveUserData();
+                            //get user name from Firebase
+                            getUserNameFromFirebase(callback);
 
-                            callback.completed();
                         } else {
                             Toast.makeText(login, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             callback.loginFail();
@@ -110,6 +109,23 @@ public class FirebaseAccount {
                     }
                 });
 
+    }
+
+    public void getUserNameFromFirebase(final FirebaseLoginCallback callback) {
+        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                userName =dataSnapshot.child(Constants.USER_NAME_FIREBASE).getValue(String.class);
+                //save data
+                saveUserData();
+                callback.completed();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void saveUserData() {

@@ -23,6 +23,7 @@ public class GameInvitePrsenter implements GameInviteContract.presenter{
         Gamer me = new Gamer(UserManager.getInstance().getUserUID(),
                 UserManager.getInstance().getUserPhotoUrl(),
                 UserManager.getInstance().getEmail());
+        me.setUserName(UserManager.getInstance().getUserName());
         //accept , join the game
         refGameData.child(roomID).child(Constants.GAMER_FIREBASE)
                 .child(UserManager.getInstance().getUserUID()).setValue(me);

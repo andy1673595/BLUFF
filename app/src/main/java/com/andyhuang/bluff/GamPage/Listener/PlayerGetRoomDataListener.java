@@ -35,6 +35,7 @@ public class PlayerGetRoomDataListener implements ValueEventListener {
                 Gamer gamer = new Gamer((String) gamerData.child(Constants.USER_UID_FIREBASE).getValue(),
                         (String)gamerData.child("userPhotoURL").getValue(),
                         (String)gamerData.child(Constants.USER_EMAIL_FIREBASE).getValue()) ;
+                gamer.setUserName((String)gamerData.child(Constants.USER_NAME_FIREBASE).getValue());
                     gamerList.add(gamer);
             }
             //tell server have read data
