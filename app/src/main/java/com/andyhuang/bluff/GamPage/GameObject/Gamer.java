@@ -6,6 +6,7 @@ public class Gamer {
     public String userUID = Constants.USER_UID_FIREBASE;
     public String userPhotoURL = Constants.USER_PHOTO_FIREBASE;
     public String userEmail = Constants.USER_EMAIL_FIREBASE;
+
     public Gamer(String userUIDInput,String userPhotoURLInput,String userEmailInput){
         userUID = userUIDInput;
         userPhotoURL = userPhotoURLInput;

@@ -77,10 +77,12 @@ public class FirebaseCreateAccount {
                 .putString(Constants.USER_EMAIL_SHAREDPREFREENCE,userEmail)
                 .putString(Constants.USER_PASSWORD_SHAREDPREFREENCE,userPassword)
                 .putString(Constants.USER_UID_SHAREDPREFREENCE,userUID)
+                .putString(Constants.USER_NAME_SHAREDPREFREENCE,userName)
                 .commit();
         UserManager.getInstance().setEmail(userEmail);
         UserManager.getInstance().setPassword(userPassword);
         UserManager.getInstance().setUserUID(userUID);
+        UserManager.getInstance().setUserName(userName);
     }
 
     public void updateToFireBase() {

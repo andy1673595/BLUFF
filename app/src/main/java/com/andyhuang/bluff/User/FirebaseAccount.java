@@ -121,6 +121,7 @@ public class FirebaseAccount {
         UserManager.getInstance().setEmail(userEmail);
         UserManager.getInstance().setPassword(userPassword);
         UserManager.getInstance().setUserUID(userUID);
+        UserManager.getInstance().setUserName(userName);
     }
 
     public void updateToFireBase() {
@@ -156,6 +157,7 @@ public class FirebaseAccount {
                             UserManager.getInstance().setEmail(userEmail);
                             UserManager.getInstance().setFbtoken(accessToken);
                             UserManager.getInstance().setUserUID(userUID);
+                            UserManager.getInstance().setUserName(userName);
                             //check is first Create or not and update To FireBase
                             isCreate(mCheckIsCreateCallback,callback);
 

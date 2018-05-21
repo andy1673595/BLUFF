@@ -44,7 +44,7 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
         }
        FriendInformation friendInformation = listFriend.get(position);
        String friendPhoto = friendInformation.getPhotoURL();
-       holder.textEmail.setText(friendInformation.getEmail());
+       holder.textName.setText(friendInformation.getName());
 
        //reset checkboxResetList
         if(startReset && checkBoxResetList.get(position)) {
@@ -73,17 +73,24 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
             holder.imageRightIcon.setImageResource(R.drawable.ic_profile);
         }
 
+
+        if(position%2 == 0) {
+            //holder.itemView.setBackgroundColor();
+        }else {
+
+        }
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,CompoundButton.OnCheckedChangeListener{
-        TextView textEmail;
+        TextView textName;
         ImageView imageFriendPhoto;
         ImageView imageLeftIcon;
         ImageView imageRightIcon;
         CheckBox checkBoxForInviteGame;
         public ViewHolder(View itemView) {
             super(itemView);
-            textEmail = (TextView)itemView.findViewById(R.id.text_email_friend_listItem);
+            textName = (TextView)itemView.findViewById(R.id.text_name_friend_listItem);
             imageFriendPhoto = (ImageView)itemView.findViewById(R.id.image_user_photo_friend_invite);
             imageLeftIcon = (ImageView)itemView.findViewById(R.id.image_left_icon_friend_listitem);
             imageRightIcon = (ImageView)itemView.findViewById(R.id.image_righ_icon_friend_listitem);
