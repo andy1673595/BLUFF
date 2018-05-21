@@ -23,9 +23,9 @@ public class CheckWhoWin {
         String gamerBeCatched ="";
         String loserUID="";
         for(Gamer gamer : gamerList) {
-            //find Email whose be can by UID
+            //find Name whose be can by UID
             if(gamer.getUserUID().equals(currentInformation.getRecentPlayer())) {
-                gamerBeCatched = gamer.getUserEmail();
+                gamerBeCatched = gamer.getUserName();
                 loserUID =gamer.getUserUID();
                 break;
             }
@@ -35,7 +35,7 @@ public class CheckWhoWin {
 
         if(checkCatchSuccess(currentInformation)) {
             //catch successful , I win
-            String message = UserManager.getInstance().getEmail()+" 抓了 "+ gamerBeCatched +
+            String message = UserManager.getInstance().getUserName()+" 抓了 "+ gamerBeCatched +
                     "的"+currentInformation.getRecentDiceNumber()+"個"+currentInformation.getRecentDiceType()
                     +"\n總共"+ total+ "個" + currentInformation.getRecentDiceType();
             message += "\n"+gamerBeCatched+" 輸了罰一杯";
@@ -45,10 +45,10 @@ public class CheckWhoWin {
             gameEndInformation.setTextHowToEnd(message);
         } else {
             //catch fail , I lose
-            String message = UserManager.getInstance().getEmail()+" 抓了\n "+ gamerBeCatched +
+            String message = UserManager.getInstance().getUserName()+" 抓了\n "+ gamerBeCatched +
                     "的"+currentInformation.getRecentDiceNumber()+"個"+currentInformation.getRecentDiceType()
                     +"\n總共"+ total+ "個" + currentInformation.getRecentDiceType();
-            message += "\n" + UserManager.getInstance().getEmail() +" 輸了罰一杯";
+            message += "\n" + UserManager.getInstance().getUserName() +" 輸了罰一杯";
             gameEndInformation = new GameEndInformation();
             gameEndInformation.setLoserUID(UserManager.getInstance().getUserUID());
             gameEndInformation.setWinnerUID(loserUID);

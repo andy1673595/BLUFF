@@ -59,10 +59,8 @@ public class FirebaseCreateAccount {
                             userDataRef.child(userUID).child(Constants.IS_GAMING).setValue(false);
                             //save data to sharedPrefrence and Usermanage
                             saveUserData();
-                            //String myUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                             //save data to firebase
-                            updateToFireBase();
-                            callback.completed();
+                            updateToFireBase(callback);
 
                         } else {
                             Toast.makeText(mCreatePage, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -85,7 +83,7 @@ public class FirebaseCreateAccount {
         UserManager.getInstance().setUserName(userName);
     }
 
-    public void updateToFireBase() {
+    public void updateToFireBase(FirebaseLoginCallback callback) {
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_EMAIL_FIREBASE).setValue(userEmail);
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_NAME_FIREBASE).setValue(userName);
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_PHOTO_FIREBASE).setValue(userPhotoURL);
@@ -93,5 +91,7 @@ public class FirebaseCreateAccount {
         //intial game result data
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
                 .setValue(new GameResult() );
+        //completed create account , start MainActivity
+        callback.completed();
     }
 }

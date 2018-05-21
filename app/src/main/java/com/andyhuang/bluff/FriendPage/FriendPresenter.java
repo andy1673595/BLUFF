@@ -182,6 +182,7 @@ public class FriendPresenter implements FriendContract.Presenter {
         friendInviteMap.put(Constants.USER_EMAIL_FIREBASE,UserManager.getInstance().getEmail());
         friendInviteMap.put(Constants.USER_PHOTO_FIREBASE,UserManager.getInstance().getUserPhotoUrl());
         friendInviteMap.put(Constants.USER_UID_FIREBASE,UserManager.getInstance().getUserUID());
+        friendInviteMap.put(Constants.USER_NAME_FIREBASE,UserManager.getInstance().getUserName());
         //if true, this is an invite , the other is add friend
         friendInviteMap.put(Constants.FRIEND_INVITE_FIREBASE,false);
 

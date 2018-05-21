@@ -1,5 +1,6 @@
 package com.andyhuang.bluff.FriendPage;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,12 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        String colorBackgroun[] = {"#E0F2F1","#B2DFDB"};
+        String colorText[] = {"#00796B","#00695C"};
+        String colorBackground01 = "#E0F2F1";
+        String colorBackground02 = "#B2DFDB";
+        String colorText01 = "#00796B";
+        String colorText02 = "#00695C";
         if(position >= checkBoxResetList.size()) {
             checkBoxResetList.add(false);
         }
@@ -58,7 +65,7 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
       // holder.imageFriendPhoto.setOutlineProvider(new UserOutlineProvider());
         if (!friendPhoto.equals(Constants.NODATA)) {
             holder.imageFriendPhoto.setTag(friendPhoto);
-            new ImageFromLruCache().set(holder.imageFriendPhoto, friendPhoto,40f);
+            new ImageFromLruCache().set(holder.imageFriendPhoto, friendPhoto,20f);
         } else {
             holder.imageFriendPhoto.setImageResource(R.mipmap.ic_launcher_round);
         }
@@ -73,12 +80,11 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
             holder.imageRightIcon.setImageResource(R.drawable.ic_profile);
         }
 
-
-        if(position%2 == 0) {
-            //holder.itemView.setBackgroundColor();
-        }else {
-
-        }
+        //set color
+        holder.itemView.setBackgroundColor(Color.parseColor(colorBackgroun[position%2]));
+        holder.imageLeftIcon.setColorFilter(Color.parseColor(colorText[position%2]));
+        holder.imageRightIcon.setColorFilter(Color.parseColor(colorText[position%2]));
+        holder.checkBoxForInviteGame.setTextColor(Color.parseColor(colorText[position%2]));
 
     }
 

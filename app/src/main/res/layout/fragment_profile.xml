@@ -57,13 +57,13 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            style="@style/GameDataNumberInProfile"
             android:id="@+id/text_total_count_games"
+            style="@style/GameDataNumberInProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:text="100"
+            android:text="0"
             app:layout_constraintBottom_toBottomOf="@+id/line_divider_left_profile"
             app:layout_constraintEnd_toStartOf="@+id/line_divider_left_profile"
             app:layout_constraintStart_toStartOf="parent" />
@@ -107,13 +107,13 @@
             app:layout_constraintTop_toTopOf="@+id/textView5" />
 
         <TextView
-            style="@style/GameDataNumberInProfile"
             android:id="@+id/text_win_rate_profile"
+            style="@style/GameDataNumberInProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:text="50%"
+            android:text="0%"
             app:layout_constraintBottom_toBottomOf="@+id/text_total_count_games"
             app:layout_constraintEnd_toStartOf="@+id/line_divider_right_profile"
             app:layout_constraintStart_toEndOf="@+id/line_divider_left_profile" />
@@ -137,7 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:text="50"
+            android:text="0"
             app:layout_constraintBottom_toBottomOf="@+id/text_win_rate_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/line_divider_right_profile" />

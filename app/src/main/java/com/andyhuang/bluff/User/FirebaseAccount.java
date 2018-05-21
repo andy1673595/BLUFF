@@ -53,38 +53,6 @@ public class FirebaseAccount {
         userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
     }
 
-
-    public void creatAccount(final FirebaseLoginCallback callback, final String accountInput, final String passwordInput) {
-
-        mAuth.createUserWithEmailAndPassword(accountInput,passwordInput)
-                .addOnCompleteListener(login, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(login, "success", Toast.LENGTH_SHORT).show();
-                            userEmail = accountInput;
-                            userPassword = passwordInput;
-                            user = mAuth.getCurrentUser();
-                            userUID = user.getUid();
-                            //update online state
-                            userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
-                            userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
-                            userDataRef.child(userUID).child(Constants.IS_GAMING).setValue(false);
-                            //save data to sharedPrefrence and Usermanage
-                            saveUserData();
-                            //String myUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            //save data to firebase
-                            updateToFireBase();
-                            callback.completed();
-
-                        } else {
-                            Toast.makeText(login, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            callback.loginFail();
-                        }
-                    }
-                });
-    }
-
     public void login(String accountInput, String passwordInput, final FirebaseLoginCallback callback) {
         mAuth.signInWithEmailAndPassword(accountInput,passwordInput)
                 .addOnCompleteListener(login, new OnCompleteListener<AuthResult>() {
@@ -138,6 +106,7 @@ public class FirebaseAccount {
         UserManager.getInstance().setPassword(userPassword);
         UserManager.getInstance().setUserUID(userUID);
         UserManager.getInstance().setUserName(userName);
+
     }
 
     public void updateToFireBase() {

@@ -60,7 +60,6 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
         if(photoAddressInput.isEmpty()) {
             photoAddressInput= Constants.NODATA;
         }
-
         if(emailInput.isEmpty()) {
             textError.setText("email不能為空");
             return false;

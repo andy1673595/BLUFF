@@ -45,9 +45,10 @@ public class ProfilePresenter implements ProfileContract.Presenter {
             String timesForTwoPersonGame = ""+(gameResult.getLoseTimes()+gameResult.getWinTimes());
             Double winRateDoubleType =0.0;
             if ((gameResult.getLoseTimes()+gameResult.getWinTimes())>0) {
-                winRateDoubleType = Double.valueOf(gameResult.getWinTimes()/(gameResult.getLoseTimes()+gameResult.getWinTimes()));
+                winRateDoubleType = Double.valueOf(gameResult.getWinTimes())/Double.valueOf((gameResult.getLoseTimes()+gameResult.getWinTimes()));
+                winRateDoubleType *= 100;
             }
-            String winRate = ""+winRateDoubleType;
+            String winRate = String.format("%.1f", winRateDoubleType);
             mProfileView.setGameResultToUI(totalTimes,timesForTwoPersonGame,winRate);
         }
     };

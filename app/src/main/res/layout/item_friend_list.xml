@@ -9,17 +9,22 @@
         android:id="@+id/text_name_friend_listItem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:text="name"
+        android:textColor="@color/teal800"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/image_user_photo_friend_invite"
         app:layout_constraintEnd_toStartOf="@+id/checkBox_item_friend"
         app:layout_constraintStart_toEndOf="@+id/image_user_photo_friend_invite"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/image_user_photo_friend_invite" />
 
     <ImageView
         android:id="@+id/image_user_photo_friend_invite"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,10 +36,9 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="32dp"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/image_left_icon_friend_listitem"
         app:srcCompat="@drawable/ic_refuse" />
 
     <ImageView
@@ -42,18 +46,16 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="32dp"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toStartOf="@+id/image_righ_icon_friend_listitem"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/checkBox_item_friend"
         app:srcCompat="@drawable/ic_ok" />
 
     <CheckBox
         android:id="@+id/checkBox_item_friend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginEnd="4dp"
         app:layout_constraintEnd_toStartOf="@+id/image_left_icon_friend_listitem"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/text_name_friend_listItem" />
 </android.support.constraint.ConstraintLayout>
