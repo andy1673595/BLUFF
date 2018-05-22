@@ -15,6 +15,11 @@ public interface GamePageContract {
         void showEndInformation(String endText);
         void resetView(boolean isNextPlayer);
         void showOtherGamerLeaveDialog();
+        void showTwoPlayerLayout();
+        void showMutiplePlayerLayout();
+        void showVideo();
+        void closeVideo();
+        void setVideoButton(boolean show);
     }
     interface Presenter extends BasePresenter {
         void init(String RoomID,boolean isHost);
@@ -23,5 +28,9 @@ public interface GamePageContract {
         void catchPlayer();
         void clickStateButton();
         void tellServerNotInGame();
+        void initVideoData();
+        void initMultipleData();
+        void startVideo();
+        void disconnectVideo();
     }
 }

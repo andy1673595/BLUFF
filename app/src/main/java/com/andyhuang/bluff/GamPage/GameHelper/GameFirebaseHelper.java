@@ -81,6 +81,13 @@ public class GameFirebaseHelper {
         gameRef.child(Constants.GAMER_LIST).addListenerForSingleValueEvent(mPlayerGetRoomDataListener);
         //start listen current Information
         listenCurrentPlayerInformation();
+        if(gamerList.size() == 2) {
+            //this is a two person game
+            mPresenter.initVideoData();
+        }else  {
+            //this is a multiple game
+            mPresenter.initMultipleData();
+        }
     }
 
     public void listenGameState() {

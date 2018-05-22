@@ -13,13 +13,45 @@
         android:layout_weight="50"
         android:background="@color/teal200">
 
+        <RelativeLayout
+            android:id="@+id/video_back_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/image_video_backGround">
+
+            <com.andyhuang.bluff.webRTC.PercentFrameLayout
+                android:id="@+id/remote_video_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <org.webrtc.SurfaceViewRenderer
+                    android:id="@+id/remote_video_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </com.andyhuang.bluff.webRTC.PercentFrameLayout>
+
+            <com.andyhuang.bluff.webRTC.PercentFrameLayou
+                android:id="@+id/local_video_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <org.webrtc.SurfaceViewRenderer
+                    android:id="@+id/local_video_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </com.andyhuang.bluff.webRTC.PercentFrameLayou>
+        </RelativeLayout>
+
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/image_video_backGround"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -39,6 +71,36 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_home" />
 
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/layout_for_video_switch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/image_video_backGround"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <Switch
+                android:id="@+id/switchForVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/layout_for_video_switch"
+                app:layout_constraintEnd_toEndOf="@+id/layout_for_video_switch"
+                app:layout_constraintTop_toTopOf="@+id/layout_for_video_switch" />
+
+            <ImageView
+                android:id="@+id/image_video_button"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/switchForVideo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:tint="@color/teal600"
+                app:srcCompat="@drawable/ic_videocam_off" />
+        </android.support.constraint.ConstraintLayout>
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -51,7 +113,7 @@
             android:id="@+id/image_catch"
             android:layout_width="40dp"
             android:layout_height="0dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_increae_dice"
             app:layout_constraintTop_toTopOf="parent"
@@ -61,7 +123,7 @@
             android:id="@+id/image_increae_dice"
             android:layout_width="40dp"
             android:layout_height="0dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -97,6 +159,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_game_state"
+            app:layout_constraintStart_toEndOf="@+id/image_catch"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="infromation" />
 

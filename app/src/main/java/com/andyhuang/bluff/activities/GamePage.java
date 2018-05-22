@@ -2,8 +2,11 @@ package com.andyhuang.bluff.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.andyhuang.bluff.GamPage.GameEndDialog.ExitRoomCallback;
@@ -14,7 +17,16 @@ import com.andyhuang.bluff.GamPage.GamerLeaveDialog.GamerLeaveDialog;
 import com.andyhuang.bluff.GamPage.LeaveRoomDialog.ExitGameDialog;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.GamPage.GameObject.CurrentInformation;
+import com.andyhuang.bluff.Util.ConstantForWebRTC;
+import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.webRTC.PercentFrameLayout;
 
+import org.webrtc.EglBase;
+import org.webrtc.RendererCommon;
+import org.webrtc.SurfaceViewRenderer;
+import org.webrtc.VideoRenderer;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class GamePage extends BaseActivity implements View.OnClickListener ,GamePageContract.View {
@@ -32,27 +44,27 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private GameEndDialog mGameEndDialog;
     private ExitGameDialog mExitGameDialog;
     private GamePage thisActivity;
+    //layout,image,buttons.. for webRTC
+    private RelativeLayout layoutVideoBack;
+    private ConstraintLayout layoutSwitchForVideoShow;
+    private Switch switchForVideo;
+    private SurfaceViewRenderer localRender;
+    private SurfaceViewRenderer remoteRenderScreen;
+    private PercentFrameLayout localRenderLayout;
+    private PercentFrameLayout remoteRenderLayout;
+    private final List<VideoRenderer.Callbacks> remoteRenderers =
+            new ArrayList<VideoRenderer.Callbacks>();
+    private EglBase rootEglBase;
+    //variables for webRTC
+    private boolean iceConnected = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_page);
         thisActivity = this;
-        imageIncreaseDiceButton = (ImageView)findViewById(R.id.image_increae_dice);
-        imageCatchButton = (ImageView)findViewById(R.id.image_catch);
-        imageReadyStateButton = (ImageView)findViewById(R.id.image_game_state);
-        textShowInformation =(TextView)findViewById(R.id.text_show_current_info);
-        imageDiceArray = new ImageView[]{
-                (ImageView)findViewById(R.id.image_table_dice1),
-                (ImageView)findViewById(R.id.image_table_dice2),
-                (ImageView)findViewById(R.id.image_table_dice3),
-                (ImageView)findViewById(R.id.image_table_dice4),
-                (ImageView)findViewById(R.id.image_table_dice5)};
-        diceImageSourceArray = new int[] {R.drawable.table_dice1,R.drawable.table_dice2,R.drawable.table_dice3,
-                    R.drawable.table_dice4,R.drawable.table_dice5,R.drawable.table_dice6};
-        diceImageSourceForInfo = new int[] {R.drawable.dice1,R.drawable.dice2,R.drawable.dice3,
-                R.drawable.dice4,R.drawable.dice5,R.drawable.dice6};
-
-        imageHomeBackButton = (ImageView)findViewById(R.id.image_home_button_gamepage);
+        //Bind view by id and new Array
+        initView();
+        //set OnclickListener and Visibility
         imageIncreaseDiceButton.setOnClickListener(this);
         imageIncreaseDiceButton.setVisibility(View.INVISIBLE);
         imageCatchButton.setVisibility(View.INVISIBLE);
@@ -71,6 +83,65 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         isHost = intent.getBooleanExtra("isHost",false);
     }
 
+    void initView() {
+        //bind View By Id
+        imageDiceArray = new ImageView[]{
+                (ImageView)findViewById(R.id.image_table_dice1),
+                (ImageView)findViewById(R.id.image_table_dice2),
+                (ImageView)findViewById(R.id.image_table_dice3),
+                (ImageView)findViewById(R.id.image_table_dice4),
+                (ImageView)findViewById(R.id.image_table_dice5)};
+        imageIncreaseDiceButton = (ImageView)findViewById(R.id.image_increae_dice);
+        imageCatchButton = (ImageView)findViewById(R.id.image_catch);
+        imageReadyStateButton = (ImageView)findViewById(R.id.image_game_state);
+        textShowInformation =(TextView)findViewById(R.id.text_show_current_info);
+        imageHomeBackButton = (ImageView)findViewById(R.id.image_home_button_gamepage);
+        //view for video
+        layoutVideoBack = (RelativeLayout)findViewById(R.id.video_back_layout);
+        layoutSwitchForVideoShow = (ConstraintLayout)findViewById(R.id.layout_for_video_switch);
+        switchForVideo = (Switch)findViewById(R.id.switchForVideo);
+        localRender = (SurfaceViewRenderer) findViewById(R.id.local_video_view);
+        remoteRenderScreen = (SurfaceViewRenderer) findViewById(R.id.remote_video_view);
+        localRenderLayout = (PercentFrameLayout) findViewById(R.id.local_video_layout);
+        remoteRenderLayout = (PercentFrameLayout) findViewById(R.id.remote_video_layout);
+        remoteRenderers.add(remoteRenderScreen);
+        //init dice Array
+        diceImageSourceArray = new int[] {R.drawable.table_dice1,R.drawable.table_dice2,R.drawable.table_dice3,
+                R.drawable.table_dice4,R.drawable.table_dice5,R.drawable.table_dice6};
+        diceImageSourceForInfo = new int[] {R.drawable.dice1,R.drawable.dice2,R.drawable.dice3,
+                R.drawable.dice4,R.drawable.dice5,R.drawable.dice6};
+    }
+
+    private void creatVideoRenders() {
+        // Create video renderers.
+        rootEglBase = EglBase.create();
+        localRender.init(rootEglBase.getEglBaseContext(), null);
+        remoteRenderScreen.init(rootEglBase.getEglBaseContext(), null);
+        localRender.setZOrderMediaOverlay(true);
+    }
+
+    private void updateVideoView() {
+        RendererCommon.ScalingType scalingType = RendererCommon.ScalingType.SCALE_ASPECT_FILL;
+        remoteRenderLayout.setPosition(ConstantForWebRTC.REMOTE_X, ConstantForWebRTC.REMOTE_Y
+                , ConstantForWebRTC.REMOTE_WIDTH, ConstantForWebRTC.REMOTE_HEIGHT);
+        remoteRenderScreen.setScalingType(scalingType);
+        remoteRenderScreen.setMirror(false);
+
+        if (iceConnected) {
+            localRenderLayout.setPosition(
+                    ConstantForWebRTC.LOCAL_X_CONNECTED, ConstantForWebRTC.LOCAL_Y_CONNECTED
+                    , ConstantForWebRTC.LOCAL_WIDTH_CONNECTED, ConstantForWebRTC.LOCAL_HEIGHT_CONNECTED);
+            localRender.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
+        } else {
+            localRenderLayout.setPosition(
+                    ConstantForWebRTC.LOCAL_X_CONNECTING, ConstantForWebRTC.LOCAL_Y_CONNECTING
+                    , ConstantForWebRTC.LOCAL_WIDTH_CONNECTING, ConstantForWebRTC.LOCAL_HEIGHT_CONNECTING);
+            localRender.setScalingType(scalingType);
+        }
+        localRender.setMirror(true);
+        localRender.requestLayout();
+        remoteRenderScreen.requestLayout();
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -161,6 +232,31 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     public void showOtherGamerLeaveDialog() {
         GamerLeaveDialog gamerLeaveDialog = new GamerLeaveDialog(this,mExitRoomCallback);
         gamerLeaveDialog.show();
+    }
+
+    @Override
+    public void showTwoPlayerLayout() {
+
+    }
+
+    @Override
+    public void showMutiplePlayerLayout() {
+
+    }
+
+    @Override
+    public void showVideo() {
+
+    }
+
+    @Override
+    public void closeVideo() {
+
+    }
+
+    @Override
+    public void setVideoButton(boolean show) {
+
     }
 
     private ExitRoomCallback mExitRoomCallback = new ExitRoomCallback() {

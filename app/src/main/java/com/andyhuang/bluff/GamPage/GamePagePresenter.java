@@ -93,6 +93,28 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     }
 
     @Override
+    public void initVideoData() {
+        gamePgaeView.setVideoButton(true);
+        gamePgaeView.showVideo();
+    }
+
+    @Override
+    public void initMultipleData() {
+        gamePgaeView.setVideoButton(false);
+        gamePgaeView.s
+    }
+
+    @Override
+    public void startVideo() {
+
+    }
+
+    @Override
+    public void disconnectVideo() {
+
+    }
+
+    @Override
     public void reset() {
         hasTellOne =false;
         isplaying = false;
