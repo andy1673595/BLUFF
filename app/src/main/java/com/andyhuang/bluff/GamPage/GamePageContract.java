@@ -19,7 +19,8 @@ public interface GamePageContract {
         void showMutiplePlayerLayout();
         void showVideo();
         void closeVideo();
-        void setVideoButton(boolean show);
+        void setVideoElement(boolean show);
+        void freshSwitchUI(boolean shouldOpen);
     }
     interface Presenter extends BasePresenter {
         void init(String RoomID,boolean isHost);
@@ -32,5 +33,6 @@ public interface GamePageContract {
         void initMultipleData();
         void startVideo();
         void disconnectVideo();
+        void touchVideoSwitch();
     }
 }

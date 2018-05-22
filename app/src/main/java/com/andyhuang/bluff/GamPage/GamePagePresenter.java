@@ -15,6 +15,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     private GameFirebaseHelper firebaseHelper;
     private IncreaseDiceDialog mDialog;
     private boolean hasTellOne = false;
+    private boolean isVideoSwitchOn = false;
 
     @Override
     public void start() {
@@ -94,14 +95,14 @@ public class GamePagePresenter implements GamePageContract.Presenter{
 
     @Override
     public void initVideoData() {
-        gamePgaeView.setVideoButton(true);
+        gamePgaeView.setVideoElement(true);
         gamePgaeView.showVideo();
     }
 
     @Override
     public void initMultipleData() {
-        gamePgaeView.setVideoButton(false);
-        gamePgaeView.s
+        gamePgaeView.setVideoElement(false);
+
     }
 
     @Override
@@ -113,7 +114,23 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     public void disconnectVideo() {
 
     }
+    //when touch Video chat swtich , it will call this method,and judge what to do
+    @Override
+    public void touchVideoSwitch() {
+        if(isVideoSwitchOn) {
+            //switch is On , close the Video
+            isVideoSwitchOn = false;
+            gamePgaeView.freshSwitchUI(isVideoSwitchOn);
+            gamePgaeView.closeVideo();
+        } else {
+            //switch is Off, start to video chat
+            isVideoSwitchOn = true;
+            gamePgaeView.freshSwitchUI(isVideoSwitchOn);
+            gamePgaeView.showVideo();
+        }
+    }
 
+    //when each game is end ,reset game variables
     @Override
     public void reset() {
         hasTellOne =false;

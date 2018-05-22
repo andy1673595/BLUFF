@@ -48,6 +48,8 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private RelativeLayout layoutVideoBack;
     private ConstraintLayout layoutSwitchForVideoShow;
     private Switch switchForVideo;
+    private ImageView imageVideoIcon;
+    private ImageView imageVideobackground;
     private SurfaceViewRenderer localRender;
     private SurfaceViewRenderer remoteRenderScreen;
     private PercentFrameLayout localRenderLayout;
@@ -97,14 +99,20 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         textShowInformation =(TextView)findViewById(R.id.text_show_current_info);
         imageHomeBackButton = (ImageView)findViewById(R.id.image_home_button_gamepage);
         //view for video
+        imageVideobackground = (ImageView)findViewById(R.id.image_video_background);
         layoutVideoBack = (RelativeLayout)findViewById(R.id.video_back_layout);
         layoutSwitchForVideoShow = (ConstraintLayout)findViewById(R.id.layout_for_video_switch);
         switchForVideo = (Switch)findViewById(R.id.switchForVideo);
+        switchForVideo.setClickable(false);
+        imageVideoIcon = (ImageView)findViewById(R.id.image_video_button);
         localRender = (SurfaceViewRenderer) findViewById(R.id.local_video_view);
         remoteRenderScreen = (SurfaceViewRenderer) findViewById(R.id.remote_video_view);
         localRenderLayout = (PercentFrameLayout) findViewById(R.id.local_video_layout);
         remoteRenderLayout = (PercentFrameLayout) findViewById(R.id.remote_video_layout);
         remoteRenderers.add(remoteRenderScreen);
+        //set INVISIBLE first, if game is two persons' game set visible
+        layoutSwitchForVideoShow.setVisibility(View.INVISIBLE);
+        layoutVideoBack.setVisibility(View.INVISIBLE);
         //init dice Array
         diceImageSourceArray = new int[] {R.drawable.table_dice1,R.drawable.table_dice2,R.drawable.table_dice3,
                 R.drawable.table_dice4,R.drawable.table_dice5,R.drawable.table_dice6};
@@ -157,6 +165,9 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
             case R.id.image_home_button_gamepage:
                 mExitGameDialog = new ExitGameDialog(this,mExitRoomCallback);
                 mExitGameDialog.show();
+                break;
+            case R.id.layout_for_video_switch:
+                mPrsenter.touchVideoSwitch();
                 break;
         }
     }
@@ -211,7 +222,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         mGameEndDialog = new GameEndDialog(this,endText,mExitRoomCallback);
         mGameEndDialog.show();
     }
-
+    //set the game element View and button for start a new game
     @Override
     public void resetView(boolean isNextPlayer) {
         imageReadyStateButton.setImageResource(R.drawable.ready_button_gamepage);
@@ -255,8 +266,25 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     }
 
     @Override
-    public void setVideoButton(boolean show) {
+    public void setVideoElement(boolean show) {
+        if(show) {
+          //this is two persons' game, show Video element
+            layoutVideoBack.setVisibility(View.VISIBLE);
+            //hide the background picture
+            imageVideobackground.setVisibility(View.INVISIBLE);
+            layoutSwitchForVideoShow.setVisibility(View.VISIBLE);
+            layoutSwitchForVideoShow.setOnClickListener(this);
+        } else {
+          //TODO not two persons' game , set another UI
 
+        }
+
+    }
+
+    @Override
+    public void freshSwitchUI(boolean shouldOpen) {
+        switchForVideo.setChecked(shouldOpen);
+        imageVideoIcon.setImageResource(shouldOpen?R.drawable.ic_videocam:R.drawable.ic_videocam_off);
     }
 
     private ExitRoomCallback mExitRoomCallback = new ExitRoomCallback() {

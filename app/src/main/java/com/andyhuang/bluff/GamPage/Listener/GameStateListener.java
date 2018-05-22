@@ -19,7 +19,6 @@ public class GameStateListener implements ValueEventListener {
     private GamePageContract.View gamePageView;
     private String myUID = UserManager.getInstance().getUserUID();
     private Firebase gameRef;
-
     public GameStateListener(GameFirebaseHelper firebaseHelperInput,Dice diceInput,Firebase gameRefInput,
                              GamePagePresenter mPresenterInput,GamePageContract.View gamePageViewInput) {
         firebaseHelper = firebaseHelperInput;
