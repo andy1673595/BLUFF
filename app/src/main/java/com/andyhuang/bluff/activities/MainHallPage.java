@@ -14,6 +14,12 @@ import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.FriendPage.FragmentListener;
 import com.andyhuang.bluff.R;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+
 public class MainHallPage extends BaseActivity implements BluffContract.View,FragmentListener {
     private BluffContract.Presenter mPresenter;
     private DrawerLayout myDrawerLayout;
