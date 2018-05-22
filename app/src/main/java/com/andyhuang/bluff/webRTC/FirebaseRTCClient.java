@@ -64,7 +64,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
         }
 
         if(!dataSnapshot.hasChild(roomID)) {
-            database.child( CHANNEL_VIDEO).child(roomID).child("connected").setValue(true);
+            database.child("/channels/firebase").child(roomID).child("connected").setValue(true);
             //Connected
             handler.post(new Runnable() {
                 @Override
@@ -145,7 +145,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
         if (connectionParameters.loopback) {
             Log.d(TAG, "Loopback connections aren't supported by FirebaseRTCClient.");
         }
-        database.child( CHANNEL_VIDEO).addValueEventListener(this);
+        database.child("/channels/firebase").addValueEventListener(this);
     }
 
     private SessionDescription getSdp(DataSnapshot db) {
@@ -158,13 +158,13 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     @Override
     public void sendOfferSdp(SessionDescription sdp) {
         Log.d(TAG, "send offer sdp");
-        database.child( CHANNEL_VIDEO).child(roomID).child("sdp").setValue(sdp);
+        database.child("/channels/firebase").child(roomID).child("sdp").setValue(sdp);
     }
 
     @Override
     public void sendAnswerSdp(SessionDescription sdp) {
         Log.d(TAG, "send answer sdp");
-        database.child( CHANNEL_VIDEO).child(roomID).child("sdp").setValue(sdp);
+        database.child("/channels/firebase").child(roomID).child("sdp").setValue(sdp);
     }
 
     private IceCandidate getIceCandidate(DataSnapshot db) {
@@ -178,7 +178,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     @Override
     public void sendLocalIceCandidate(IceCandidate candidate) {
         Log.d(TAG, "send local ice candidate: " + candidate);
-        database.child( CHANNEL_VIDEO).child(roomID).child("icecandidate").child("" + candidate.hashCode()).setValue(candidate);
+        database.child("/channels/firebase").child(roomID).child("icecandidate").child("" + candidate.hashCode()).setValue(candidate);
     }
 
     @Override
@@ -186,16 +186,16 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
         Log.d(TAG, "send local ice candidate removal");
 
         for(IceCandidate candidate:candidates) {
-            database.child( CHANNEL_VIDEO).child(roomID).child("icecandidate").child("" + candidate.hashCode()).removeValue();
+            database.child("/channels/firebase").child(roomID).child("icecandidate").child("" + candidate.hashCode()).removeValue();
         }
     }
 
     @Override
     public void disconnectFromRoom() {
         Log.d(TAG, "disconnect from room");
-        database.child( CHANNEL_VIDEO).child(roomID).removeValue();
-        database.child( CHANNEL_VIDEO).child("disconnect").setValue(true);
-        database.child( CHANNEL_VIDEO).removeEventListener(this);
+        database.child("/channels/firebase").child(roomID).removeValue();
+        database.child("/channels/firebase").child("disconnect").setValue(true);
+        database.child("/channels/firebase").removeEventListener(this);
         sdpAdded.clear();
     }
 

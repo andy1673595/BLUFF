@@ -5,6 +5,7 @@ import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
 import com.andyhuang.bluff.GamPage.IncreaseDiceDialog.IncreaseDiceDialog;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.activities.GamePage;
+import com.andyhuang.bluff.webRTC.WebRTC;
 
 public class GamePagePresenter implements GamePageContract.Presenter{
     private GamePageContract.View gamePgaeView;
@@ -16,6 +17,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     private IncreaseDiceDialog mDialog;
     private boolean hasTellOne = false;
     private boolean isVideoSwitchOn = false;
+    private WebRTC mWebRTC;
 
     @Override
     public void start() {
@@ -107,7 +109,10 @@ public class GamePagePresenter implements GamePageContract.Presenter{
 
     @Override
     public void startVideo() {
+        gamePgaeView.creatVideoRenders();
+        mWebRTC = new WebRTC(this,(GamePage) gamePgaeView,roomID);
 
+        mWebRTC.startCall();
     }
 
     @Override

@@ -133,15 +133,16 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
                 R.drawable.dice4,R.drawable.dice5,R.drawable.dice6};
     }
 
-    private void creatVideoRenders() {
+    public void creatVideoRenders() {
         // Create video renderers.
         rootEglBase = EglBase.create();
         localRender.init(rootEglBase.getEglBaseContext(), null);
         remoteRenderScreen.init(rootEglBase.getEglBaseContext(), null);
         localRender.setZOrderMediaOverlay(true);
+        updateVideoView();
     }
 
-    private void updateVideoView() {
+    public void updateVideoView() {
         RendererCommon.ScalingType scalingType = RendererCommon.ScalingType.SCALE_ASPECT_FILL;
         remoteRenderLayout.setPosition(ConstantForWebRTC.REMOTE_X, ConstantForWebRTC.REMOTE_Y
                 , ConstantForWebRTC.REMOTE_WIDTH, ConstantForWebRTC.REMOTE_HEIGHT);
@@ -387,5 +388,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         return rootEglBase;
     }
 
-
+    public void setIceConnected(boolean iceConnected) {
+        this.iceConnected = iceConnected;
+    }
 }

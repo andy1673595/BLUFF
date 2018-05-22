@@ -22,10 +22,14 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
     private EglBase rootEglBase;
     private FirebaseRTCClient client;
     private AppRTCAudioManager audioManager = null;
+    private WebRTC mWebRTC;
 
-    AppRTCSingalEvent(GamePage gamePage) {
+    AppRTCSingalEvent(GamePage gamePage,WebRTC webRTC) {
+        mWebRTC = webRTC;
         mGamePageView = gamePage;
-        callStartedTimeMs = System.currentTimeMillis();
+    }
+    public void setCallStartedTimeMs (long time) {
+        callStartedTimeMs = time;
     }
     public void setFirebaseClient(FirebaseRTCClient clientInput) {
         client = clientInput;
@@ -97,25 +101,7 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
     }
 
     private void disconnect() {
-        if (client != null) {
-            client.disconnectFromRoom();
-            client = null;
-        }
-        if (peerConnectionClient != null) {
-            peerConnectionClient.close();
-            peerConnectionClient = null;
-        }
-        mGamePageView.releaseSurfaceView();
-
-        if (audioManager != null) {
-            audioManager.close();
-            audioManager = null;
-        }
-     // TODO  if (iceConnected && !isError) {
-     //       setResult(RESULT_OK);
-     //   } else {
-     //       setResult(RESULT_CANCELED);
-     //   }
+        mWebRTC.disconnectReset();
         mGamePageView.releaseSurfaceView();
         mGamePageView.closeVideo();
     }
@@ -134,7 +120,7 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
 
     private void onConnectedToRoomInternal(final SignalingParameters params) {
         final long delta = System.currentTimeMillis() - callStartedTimeMs;
-
+        mWebRTC.setSignalingParameters(params);
         signalingParameters = params;
         VideoCapturer videoCapturer = createVideoCapturer();
         peerConnectionClient.createPeerConnection(

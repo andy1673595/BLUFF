@@ -118,7 +118,7 @@ public class PeerConnectionClient {
     // remote descriptions are set. Similarly local ICE candidates are sent to
     // remote peer after both local and remote description are set.
     private LinkedList<IceCandidate> queuedRemoteCandidates;
-    private PeerConnectionEvents events;
+    private PeerConnectionEvent events;
     private boolean isInitiator;
     private SessionDescription localSdp; // either offer or answer SDP
     private MediaStream mediaStream;
@@ -244,9 +244,11 @@ public class PeerConnectionClient {
     }
 
     public void createPeerConnectionFactory(final Context context,
-                                            final PeerConnectionParameters peerConnectionParameters, final PeerConnectionEvents events) {
+                                            final PeerConnectionParameters peerConnectionParameters, final PeerConnectionEvent events) {
         this.peerConnectionParameters = peerConnectionParameters;
         this.events = events;
+        //bind PeerConnectionClient to it's event
+        this.events.setPeerConnectionClient(this);
         videoCallEnabled = peerConnectionParameters.videoCallEnabled;
         // Reset variables to initial states.
         this.context = null;
