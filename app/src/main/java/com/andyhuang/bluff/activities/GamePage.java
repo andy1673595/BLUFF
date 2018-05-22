@@ -1,13 +1,19 @@
 package com.andyhuang.bluff.activities;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andyhuang.bluff.GamPage.GameEndDialog.ExitRoomCallback;
 import com.andyhuang.bluff.GamPage.GameEndDialog.GameEndDialog;
@@ -29,6 +35,14 @@ import org.webrtc.VideoRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
+
+@RuntimePermissions
 public class GamePage extends BaseActivity implements View.OnClickListener ,GamePageContract.View {
     private String roomID;
     private boolean isHost;
@@ -257,7 +271,14 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
 
     @Override
     public void showVideo() {
-
+        //check Android Version
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            //Version < Android 6 , directly start Video call
+            startVideoCall();
+        } else {
+            //Version > Android 6, before video call should take the permission
+            GamePagePermissionsDispatcher.startVideoCallWithPermissionCheck(this);
+        }
     }
 
     @Override
@@ -299,5 +320,47 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     public void onBackPressed() {
         mExitGameDialog = new ExitGameDialog(this,mExitRoomCallback);
         mExitGameDialog.show();
+    }
+
+    @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO})
+    void startVideoCall() {
+        mPrsenter.startVideo();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        GamePagePermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @OnShowRationale({Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO})
+    void onShowRationale(final PermissionRequest request) {
+        new AlertDialog.Builder(GamePage.this)
+                .setMessage("未允許「" + getString(R.string.app_name) + "」相機及音訊權限，將使「"
+                        + getString(R.string.app_name) + "」無法正常運作，是否重新設定權限？")
+                .setPositiveButton("重新設定權限", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.cancel();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    @OnPermissionDenied({Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO})
+    void onPermissionDenied() {
+        Toast.makeText(this, "權限被拒絕", Toast.LENGTH_LONG).show();
+    }
+
+    @OnNeverAskAgain({Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO})
+    void onNeverAskAgain() {
+        Toast.makeText(this, "可能無法使用視訊功能", Toast.LENGTH_LONG).show();
     }
 }
