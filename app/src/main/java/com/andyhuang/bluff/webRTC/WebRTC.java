@@ -59,7 +59,7 @@ public class WebRTC {
                         false);
         commandLineRun = false;
         //user Firebase as communication channel
-        mAppRTCSingalEvent = new AppRTCSingalEvent();
+        mAppRTCSingalEvent = new AppRTCSingalEvent(mGamePageView);
         mFirebaseRTCClient = new FirebaseRTCClient(mAppRTCSingalEvent,roomID);
     }
 

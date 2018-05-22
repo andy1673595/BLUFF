@@ -34,7 +34,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     private String roomID;
     private static final String TAG = "FirebaseRTCClient";
     DatabaseReference database;
-    SignalingEvents events;
+    AppRTCSingalEvent events;
     //use for get into channel,it's the same with Game room ID
 
     private boolean is_initiator = false;
@@ -44,9 +44,11 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     private final Handler handler;
     private Hashtable<String, Boolean> sdpAdded = new Hashtable<String, Boolean>();
 
-    public FirebaseRTCClient(SignalingEvents events,String roomIDInput) {
+    public FirebaseRTCClient( AppRTCSingalEvent events,String roomIDInput) {
         database = FirebaseDatabase.getInstance().getReference();
         this.events = events;
+        //bind firebaseClient to events
+        this.events.setFirebaseClient(this);
         roomID = roomIDInput;
         final HandlerThread handlerThread = new HandlerThread(TAG);
         handlerThread.start();

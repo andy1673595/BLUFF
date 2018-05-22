@@ -21,6 +21,7 @@ public interface GamePageContract {
         void closeVideo();
         void setVideoElement(boolean show);
         void freshSwitchUI(boolean shouldOpen);
+        void releaseSurfaceView();
     }
     interface Presenter extends BasePresenter {
         void init(String RoomID,boolean isHost);

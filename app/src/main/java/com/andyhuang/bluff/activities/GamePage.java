@@ -24,7 +24,6 @@ import com.andyhuang.bluff.GamPage.LeaveRoomDialog.ExitGameDialog;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.GamPage.GameObject.CurrentInformation;
 import com.andyhuang.bluff.Util.ConstantForWebRTC;
-import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.webRTC.PercentFrameLayout;
 
 import org.webrtc.EglBase;
@@ -287,6 +286,16 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     }
 
     @Override
+    public void releaseSurfaceView() {
+        if (localRender != null) {
+            localRender.release();
+        }
+        if (remoteRenderScreen != null) {
+            remoteRenderScreen.release();
+        }
+    }
+
+    @Override
     public void setVideoElement(boolean show) {
         if(show) {
           //this is two persons' game, show Video element
@@ -363,4 +372,20 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     void onNeverAskAgain() {
         Toast.makeText(this, "可能無法使用視訊功能", Toast.LENGTH_LONG).show();
     }
+
+    //return video sufaceView for creating PeerConnection
+    public SurfaceViewRenderer getLocalRender() {
+        return localRender;
+    }
+    public SurfaceViewRenderer getRemoteRenderScreen() {
+        return remoteRenderScreen;
+    }
+    public List<VideoRenderer.Callbacks> getRemoteRenderers() {
+        return remoteRenderers;
+    }
+    public EglBase getRootEglBase() {
+        return rootEglBase;
+    }
+
+
 }
