@@ -6,4 +6,8 @@
     <string name="login_password">密碼</string>
     <string name="login">登入</string>
     <string name="creat">建立</string>
+
+    <!--  Use for WebRTC  -->
+    <string name="pref_speakerphone_key">speakerphone_preference</string>
+    <string name="pref_speakerphone_default">auto</string>
 </resources>

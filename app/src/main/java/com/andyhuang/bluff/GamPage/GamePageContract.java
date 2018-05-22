@@ -16,7 +16,7 @@ public interface GamePageContract {
         void resetView(boolean isNextPlayer);
         void showOtherGamerLeaveDialog();
         void showTwoPlayerLayout();
-        void showMutiplePlayerLayout();
+        void showMultiplePlayerLayout();
         void showVideo();
         void closeVideo();
         void setVideoElement(boolean show);

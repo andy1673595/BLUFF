@@ -265,7 +265,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     }
 
     @Override
-    public void showMutiplePlayerLayout() {
+    public void showMultiplePlayerLayout() {
 
     }
 
