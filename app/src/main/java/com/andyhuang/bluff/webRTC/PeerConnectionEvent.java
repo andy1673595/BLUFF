@@ -105,7 +105,6 @@ public class PeerConnectionEvent implements  PeerConnectionClient.PeerConnection
 
     private void disconnect() {
         mWebRTC.disconnectReset();
-        mGamePageView.releaseSurfaceView();
         mGamePageView.closeVideo();
     }
 

@@ -135,10 +135,13 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
 
     public void creatVideoRenders() {
         // Create video renderers.
-        rootEglBase = EglBase.create();
-        localRender.init(rootEglBase.getEglBaseContext(), null);
-        remoteRenderScreen.init(rootEglBase.getEglBaseContext(), null);
-        localRender.setZOrderMediaOverlay(true);
+        if(rootEglBase== null) {
+            rootEglBase = EglBase.create();
+            localRender.init(rootEglBase.getEglBaseContext(), null);
+            remoteRenderScreen.init(rootEglBase.getEglBaseContext(), null);
+            localRender.setZOrderMediaOverlay(true);
+          //  updateVideoView();
+        }
         updateVideoView();
     }
 
@@ -283,7 +286,8 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
 
     @Override
     public void closeVideo() {
-
+        //releaseSurfaceView();
+        freshSwitchUI(false);
     }
 
     @Override
@@ -322,6 +326,11 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         @Override
         public void exitRoom() {
             mPrsenter.tellServerNotInGame();
+            if(switchForVideo.isChecked()) {
+                //video is show ,set it disconnect from server
+                mPrsenter.disconnectVideo();
+            }
+            releaseSurfaceView();
             thisActivity.finish();
         }
     };
@@ -387,7 +396,6 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     public EglBase getRootEglBase() {
         return rootEglBase;
     }
-
     public void setIceConnected(boolean iceConnected) {
         this.iceConnected = iceConnected;
     }

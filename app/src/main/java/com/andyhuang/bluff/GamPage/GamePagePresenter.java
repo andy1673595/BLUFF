@@ -98,7 +98,6 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     @Override
     public void initVideoData() {
         gamePgaeView.setVideoElement(true);
-        gamePgaeView.showVideo();
     }
 
     @Override
@@ -111,13 +110,12 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     public void startVideo() {
         gamePgaeView.creatVideoRenders();
         mWebRTC = new WebRTC(this,(GamePage) gamePgaeView,roomID);
-
         mWebRTC.startCall();
     }
 
     @Override
     public void disconnectVideo() {
-
+        mWebRTC.disconnectReset();
     }
     //when touch Video chat swtich , it will call this method,and judge what to do
     @Override
@@ -126,6 +124,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
             //switch is On , close the Video
             isVideoSwitchOn = false;
             gamePgaeView.freshSwitchUI(isVideoSwitchOn);
+            disconnectVideo();
             gamePgaeView.closeVideo();
         } else {
             //switch is Off, start to video chat

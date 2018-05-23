@@ -102,7 +102,6 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
 
     private void disconnect() {
         mWebRTC.disconnectReset();
-        mGamePageView.releaseSurfaceView();
         mGamePageView.closeVideo();
     }
 

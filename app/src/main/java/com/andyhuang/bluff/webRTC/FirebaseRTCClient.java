@@ -32,6 +32,7 @@ import static com.andyhuang.bluff.Util.ConstantForWebRTC.CHANNEL_VIDEO;
 
 public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     private String roomID;
+    private String gameRoomID;
     private static final String TAG = "FirebaseRTCClient";
     DatabaseReference database;
     AppRTCSingalEvent events;
@@ -44,12 +45,12 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     private final Handler handler;
     private Hashtable<String, Boolean> sdpAdded = new Hashtable<String, Boolean>();
 
-    public FirebaseRTCClient( AppRTCSingalEvent events,String roomIDInput) {
+    public FirebaseRTCClient( AppRTCSingalEvent events,String gameRoomIDInput) {
         database = FirebaseDatabase.getInstance().getReference();
         this.events = events;
         //bind firebaseClient to events
         this.events.setFirebaseClient(this);
-     //   roomID = roomIDInput;
+        gameRoomID = gameRoomIDInput;
         final HandlerThread handlerThread = new HandlerThread(TAG);
         handlerThread.start();
         handler = new Handler(handlerThread.getLooper());
@@ -64,7 +65,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
         }
 
         if(!dataSnapshot.hasChild(roomID)) {
-            database.child("/channels/firebase").child(roomID).child("connected").setValue(true);
+            database.child(CHANNEL_VIDEO).child(gameRoomID).child(roomID).child("connected").setValue(true);
             //Connected
             handler.post(new Runnable() {
                 @Override
@@ -146,7 +147,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
             Log.d(TAG, "Loopback connections aren't supported by FirebaseRTCClient.");
         }
         roomID = Build.SERIAL;
-        database.child("/channels/firebase").addValueEventListener(this);
+        database.child(CHANNEL_VIDEO).child(gameRoomID).addValueEventListener(this);
     }
 
     private SessionDescription getSdp(DataSnapshot db) {
@@ -159,13 +160,13 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     @Override
     public void sendOfferSdp(SessionDescription sdp) {
         Log.d(TAG, "send offer sdp");
-        database.child("/channels/firebase").child(roomID).child("sdp").setValue(sdp);
+        database.child(CHANNEL_VIDEO).child(gameRoomID).child(roomID).child("sdp").setValue(sdp);
     }
 
     @Override
     public void sendAnswerSdp(SessionDescription sdp) {
         Log.d(TAG, "send answer sdp");
-        database.child("/channels/firebase").child(roomID).child("sdp").setValue(sdp);
+        database.child(CHANNEL_VIDEO).child(gameRoomID).child(roomID).child("sdp").setValue(sdp);
     }
 
     private IceCandidate getIceCandidate(DataSnapshot db) {
@@ -179,7 +180,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     @Override
     public void sendLocalIceCandidate(IceCandidate candidate) {
         Log.d(TAG, "send local ice candidate: " + candidate);
-        database.child("/channels/firebase").child(roomID).child("icecandidate").child("" + candidate.hashCode()).setValue(candidate);
+        database.child(CHANNEL_VIDEO).child(gameRoomID).child(roomID).child("icecandidate").child("" + candidate.hashCode()).setValue(candidate);
     }
 
     @Override
@@ -187,16 +188,16 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
         Log.d(TAG, "send local ice candidate removal");
 
         for(IceCandidate candidate:candidates) {
-            database.child("/channels/firebase").child(roomID).child("icecandidate").child("" + candidate.hashCode()).removeValue();
+            database.child(CHANNEL_VIDEO).child(gameRoomID).child(roomID).child("icecandidate").child("" + candidate.hashCode()).removeValue();
         }
     }
 
     @Override
     public void disconnectFromRoom() {
         Log.d(TAG, "disconnect from room");
-        database.child("/channels/firebase").child(roomID).removeValue();
-        database.child("/channels/firebase").child("disconnect").setValue(true);
-        database.child("/channels/firebase").removeEventListener(this);
+        database.child(CHANNEL_VIDEO).child(gameRoomID).child(roomID).removeValue();
+        database.child(CHANNEL_VIDEO).child(gameRoomID).child("disconnect").setValue(true);
+        database.child(CHANNEL_VIDEO).child(gameRoomID).removeEventListener(this);
         sdpAdded.clear();
     }
 
