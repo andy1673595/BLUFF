@@ -49,7 +49,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
         this.events = events;
         //bind firebaseClient to events
         this.events.setFirebaseClient(this);
-        roomID = roomIDInput;
+     //   roomID = roomIDInput;
         final HandlerThread handlerThread = new HandlerThread(TAG);
         handlerThread.start();
         handler = new Handler(handlerThread.getLooper());
@@ -145,6 +145,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
         if (connectionParameters.loopback) {
             Log.d(TAG, "Loopback connections aren't supported by FirebaseRTCClient.");
         }
+        roomID = Build.SERIAL;
         database.child("/channels/firebase").addValueEventListener(this);
     }
 

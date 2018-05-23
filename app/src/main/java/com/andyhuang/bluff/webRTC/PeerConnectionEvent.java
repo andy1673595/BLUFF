@@ -11,15 +11,14 @@ import org.webrtc.StatsReport;
 
 public class PeerConnectionEvent implements  PeerConnectionClient.PeerConnectionEvents {
     private PeerConnectionClient mPeerConnectionClient;
-    private FirebaseRTCClient mFirebaseRTCClient;
+    private  AppRTCClient mFirebaseRTCClient;
     private GamePage mGamePageView;
     private long callStartedTimeMs =0;
-    private AppRTCClient.SignalingParameters mSignalingParameters;
     private PeerConnectionParameters mPeerConnectionParameters;
     private boolean iceConnected;
     private WebRTC mWebRTC;
     public PeerConnectionEvent(GamePage gamePage, PeerConnectionParameters peerParameters
-            , FirebaseRTCClient firebaseRTCClientInput,WebRTC webRTC) {
+            ,  AppRTCClient firebaseRTCClientInput,WebRTC webRTC) {
         mGamePageView = gamePage;
         mPeerConnectionParameters = peerParameters;
         mFirebaseRTCClient =firebaseRTCClientInput;
@@ -39,7 +38,7 @@ public class PeerConnectionEvent implements  PeerConnectionClient.PeerConnection
             @Override
             public void run() {
                 if (mFirebaseRTCClient != null) {
-                    if (mSignalingParameters.initiator) {
+                    if (mWebRTC.getSignalingParameters().initiator) {
                         mFirebaseRTCClient.sendOfferSdp(sdp);
                     } else {
                         mFirebaseRTCClient.sendAnswerSdp(sdp);
@@ -123,9 +122,5 @@ public class PeerConnectionEvent implements  PeerConnectionClient.PeerConnection
     @Override
     public void onPeerConnectionError(String description) {
 
-    }
-
-    public void setSignalingParameters(SignalingParameters signalingParameters) {
-        mSignalingParameters = signalingParameters;
     }
 }

@@ -16,7 +16,6 @@ import com.andyhuang.bluff.webRTC.AppRTCClient.SignalingParameters;
 
 public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
     GamePage mGamePageView;
-    private SignalingParameters signalingParameters;
     private long callStartedTimeMs = 0;
     private PeerConnectionClient peerConnectionClient;
     private EglBase rootEglBase;
@@ -58,7 +57,8 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
                     return;
                 }
                 peerConnectionClient.setRemoteDescription(sdp);
-                if (!signalingParameters.initiator) {
+                AppRTCClient.SignalingParameters peer = mWebRTC.getSignalingParameters();
+                if (!mWebRTC.getSignalingParameters().initiator) {
                     // Create answer. Answer SDP will be sent to offering client in
                     // PeerConnectionEvents.onLocalDescription event.
                     peerConnectionClient.createAnswer();
@@ -121,13 +121,12 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
     private void onConnectedToRoomInternal(final SignalingParameters params) {
         final long delta = System.currentTimeMillis() - callStartedTimeMs;
         mWebRTC.setSignalingParameters(params);
-        signalingParameters = params;
         VideoCapturer videoCapturer = createVideoCapturer();
         peerConnectionClient.createPeerConnection(
                 mGamePageView.getRootEglBase().getEglBaseContext(),mGamePageView.getLocalRender()
-                ,mGamePageView.getRemoteRenderers(), videoCapturer, signalingParameters);
+                ,mGamePageView.getRemoteRenderers(), videoCapturer, mWebRTC.getSignalingParameters());
 
-        if (signalingParameters.initiator) {
+        if (params.initiator) {
             // Create offer. Offer SDP will be sent to answering client in
             // PeerConnectionEvents.onLocalDescription event.
             peerConnectionClient.createOffer();

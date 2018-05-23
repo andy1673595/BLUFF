@@ -32,7 +32,7 @@ public class WebRTC {
     private PeerConnectionClient peerConnectionClient;
     private PeerConnectionEvent mPeerConnectionEvent;
     private String roomID;
-    private FirebaseRTCClient mFirebaseRTCClient;
+    private AppRTCClient mFirebaseRTCClient;
     private AppRTCSingalEvent mAppRTCSingalEvent;
     private long callStartedTimeMs = 0;
     private AppRTCClient.RoomConnectionParameters roomConnectionParameters;
@@ -130,6 +130,9 @@ public class WebRTC {
 
     public void setSignalingParameters(SignalingParameters signalingParametersInput) {
         signalingParameters = signalingParametersInput;
-        mPeerConnectionEvent.setSignalingParameters(signalingParametersInput);
+    }
+
+    public SignalingParameters getSignalingParameters() {
+        return signalingParameters;
     }
 }
