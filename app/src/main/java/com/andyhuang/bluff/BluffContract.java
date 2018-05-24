@@ -2,7 +2,7 @@ package com.andyhuang.bluff;
 
 public interface BluffContract {
     interface View extends BaseView {
-        void showGamePage(String gameRoomID);
+        void showGamePage(String gameRoomID,int gamerInvitedTotal);
 
     }
     interface Presenter extends BasePresenter {
@@ -13,7 +13,7 @@ public interface BluffContract {
         void removeFriendProfileFragment();
         void showGameInviteDialog();
         void removeGameInvite();
-        void setGameInformationAndGetIntoRoom(String RoomID);
+        void setGameInformationAndGetIntoRoom(String RoomID,int playerInvitedTotal);
         void setDisconnectWhenGetOutline();
     }
 }

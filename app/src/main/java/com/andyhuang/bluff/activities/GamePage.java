@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.andyhuang.bluff.GamPage.GameEndDialog.ExitRoomCallback;
 import com.andyhuang.bluff.GamPage.GameEndDialog.GameEndDialog;
+import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.GamPage.GamePageContract;
 import com.andyhuang.bluff.GamPage.GamePagePresenter;
 import com.andyhuang.bluff.GamPage.GamerLeaveDialog.GamerLeaveDialog;
@@ -68,6 +69,11 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private final List<VideoRenderer.Callbacks> remoteRenderers =
             new ArrayList<VideoRenderer.Callbacks>();
     private EglBase rootEglBase;
+    //show player list layout elements
+    private TextView textPlayerCountRightNow;
+    private ConstraintLayout layoutPlayerList;
+    int countForPlayerInviteTotal;
+    private ArrayList<Gamer> playerJoinedList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +89,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         imageCatchButton.setOnClickListener(this);
         imageReadyStateButton.setOnClickListener(this);
         imageHomeBackButton.setOnClickListener(this);
+        layoutPlayerList.setOnClickListener(this);
         //read bundle from MainActivity
         readIntent();
         mPrsenter = new GamePagePresenter(this);
@@ -93,6 +100,8 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         Intent intent = this.getIntent();
         roomID = intent.getStringExtra("gameID");
         isHost = intent.getBooleanExtra("isHost",false);
+        countForPlayerInviteTotal = intent.getIntExtra("playerCount",0);
+
     }
 
     void initView() {
@@ -119,6 +128,8 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         remoteRenderScreen = (SurfaceViewRenderer) findViewById(R.id.remote_video_view);
         localRenderLayout = (PercentFrameLayout) findViewById(R.id.local_video_layout);
         remoteRenderLayout = (PercentFrameLayout) findViewById(R.id.remote_video_layout);
+        textPlayerCountRightNow = (TextView)findViewById(R.id.text_show_playerlist_button);
+        layoutPlayerList = (ConstraintLayout)findViewById(R.id.layout_show_player_list);
         remoteRenderers.add(remoteRenderScreen);
         //set INVISIBLE first, if game is two persons' game set visible
         layoutSwitchForVideoShow.setVisibility(View.INVISIBLE);
@@ -149,6 +160,14 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         updateVideoView();
 
     }
+
+    @Override
+    public void updatePlayerHaveJoinedText(ArrayList<Gamer> joinedList,Gamer newGamer) {
+        playerJoinedList = joinedList;
+        textPlayerCountRightNow.setText(joinedList.size()+"/"+countForPlayerInviteTotal);
+        Toast.makeText(thisActivity, "玩家 "+newGamer.getUserName()+" 已加入", Toast.LENGTH_SHORT).show();
+    }
+
     public void updateVideoView() {
         RendererCommon.ScalingType scalingType = RendererCommon.ScalingType.SCALE_ASPECT_FILL;
         remoteRenderLayout.setPosition(ConstantForWebRTC.REMOTE_X, ConstantForWebRTC.REMOTE_Y
@@ -191,6 +210,9 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
                 break;
             case R.id.layout_for_video_switch:
                 mPrsenter.touchVideoSwitch();
+                break;
+            case R.id.layout_show_player_list:
+                //TODO show player dialog
                 break;
         }
     }

@@ -13,7 +13,7 @@ public interface FriendContract {
         void addItem(FriendInformation friendInformation);
         void removeItem(int positon);
         void updateItemInvite(int positon,boolean isInvite);
-        void showGamePage(String GameRoomID);
+        void showGamePage(String GameRoomID,int playerInvitedTotal);
         void showErrorDialog(String message);
         void showFriendProfile(String friendUID);
     }

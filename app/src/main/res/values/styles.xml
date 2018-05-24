@@ -40,4 +40,9 @@
         <item name="android:textSize">26sp</item>
         <item name="android:textColor">@color/tealA100</item>
     </style>
+
+    <style name="TextPlayerJoinedForGamePage">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/teal500</item>
+    </style>
 </resources>

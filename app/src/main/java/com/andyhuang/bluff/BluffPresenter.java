@@ -200,8 +200,8 @@ public class BluffPresenter implements BluffContract.Presenter {
     }
 
     @Override
-    public void setGameInformationAndGetIntoRoom(String RoomID) {
-        bluffView.showGamePage(RoomID);
+    public void setGameInformationAndGetIntoRoom(String RoomID,int playerInvitedTotal) {
+        bluffView.showGamePage(RoomID,playerInvitedTotal);
     }
 
     @Override

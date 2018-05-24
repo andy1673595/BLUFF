@@ -4,10 +4,13 @@ import android.util.Log;
 import com.andyhuang.bluff.GamPage.GameHelper.CheckWhoWin;
 import com.andyhuang.bluff.GamPage.GameObject.GameEndInformation;
 import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
+import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.GamPage.IncreaseDiceDialog.IncreaseDiceDialog;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.activities.GamePage;
 import com.andyhuang.bluff.webRTC.WebRTC;
+
+import java.util.ArrayList;
 
 public class GamePagePresenter implements GamePageContract.Presenter{
     private GamePageContract.View gamePgaeView;
@@ -20,6 +23,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     private boolean hasTellOne = false;
     private boolean isVideoSwitchOn = false;
     private WebRTC mWebRTC;
+    private ArrayList<Gamer> playerHaveJoinedList = new ArrayList<>();
 
     @Override
     public void start() {
@@ -51,6 +55,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
         firebaseHelper.listenGameState();
         //tell other I'm gaming
         firebaseHelper.setIsGaming(true);
+        firebaseHelper.listenToPlayerJoinedEvent();
     }
 
     @Override
@@ -96,6 +101,8 @@ public class GamePagePresenter implements GamePageContract.Presenter{
         firebaseHelper.setCurrentState(Constants.EXIT_GAME);
         firebaseHelper.setGameState(Constants.EVERYONE_EXIT_GAME);
         firebaseHelper.setIsGaming(false);
+        //remove all listener
+        firebaseHelper.removeListener();
     }
 
     @Override
@@ -151,6 +158,13 @@ public class GamePagePresenter implements GamePageContract.Presenter{
         }else {
             return mWebRTC.getIceConnected();
         }
+    }
+
+
+    @Override
+    public void updatePlayerHaveJoinedList(ArrayList<Gamer> joinedList,Gamer newGamer) {
+        playerHaveJoinedList = joinedList;
+        gamePgaeView.updatePlayerHaveJoinedText(joinedList,newGamer);
     }
 
     //when each game is end ,reset game variables

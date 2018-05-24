@@ -13,7 +13,6 @@ public class CurrentStateHelper {
     public CurrentStateHelper(GameFirebaseHelper firebaseHelperInput, int playerTotalInput) {
         firebaseHelper = firebaseHelperInput;
         playerTotal = playerTotalInput;
-
     }
     public void dealCurrentState(String state) {
         switch (state) {
@@ -22,7 +21,6 @@ public class CurrentStateHelper {
                 //all player read Room data
                 if(countForCompletedRead >= playerTotal) {
                     firebaseHelper.setGameState(Constants.WAIT_READY);
-
                 }
                 break;
             case "get ready" :

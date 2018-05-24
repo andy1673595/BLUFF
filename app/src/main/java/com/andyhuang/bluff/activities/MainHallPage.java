@@ -2,7 +2,6 @@ package com.andyhuang.bluff.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.UserManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -17,12 +16,6 @@ import com.andyhuang.bluff.FriendPage.FragmentListener;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.helper.ImageFromLruCache;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
 
 public class MainHallPage extends BaseActivity implements BluffContract.View,FragmentListener {
     private BluffContract.Presenter mPresenter;
@@ -97,12 +90,13 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
     }
 
     @Override
-    public void showGamePage(String gameID) {
+    public void showGamePage(String gameID,int gamerInvitedTotal) {
         Intent intent = new Intent();
         intent.setClass(this,GamePage.class);
         intent.putExtra("gameID",gameID);
         //I am invitee , set is Host false
         intent.putExtra("isHost",false);
+        intent.putExtra("playerCount",gamerInvitedTotal);
         startActivity(intent);
     }
 

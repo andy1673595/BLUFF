@@ -3,6 +3,7 @@ package com.andyhuang.bluff.GamPage.GameHelper;
 import com.andyhuang.bluff.Callback.DiceTotalListenerCallback;
 import com.andyhuang.bluff.Callback.EndGameListenerCallback;
 import com.andyhuang.bluff.Callback.PlayerGetRoomDataCallback;
+import com.andyhuang.bluff.Callback.PlayerJoinedListenerCallback;
 import com.andyhuang.bluff.Callback.RoomListenerCallback;
 import com.andyhuang.bluff.GamPage.GameObject.CurrentInformation;
 import com.andyhuang.bluff.GamPage.GameObject.Dice;
@@ -15,6 +16,7 @@ import com.andyhuang.bluff.GamPage.Listener.DiceTotalListener;
 import com.andyhuang.bluff.GamPage.Listener.GameStateListener;
 import com.andyhuang.bluff.GamPage.Listener.PlayerCurrentStateListener;
 import com.andyhuang.bluff.GamPage.Listener.PlayerGetRoomDataListener;
+import com.andyhuang.bluff.GamPage.Listener.PlayerHaveJoinedListener;
 import com.andyhuang.bluff.GamPage.Listener.RoomDataListener;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.User.UserManager;
@@ -50,6 +52,8 @@ public class GameFirebaseHelper {
     private DiceTotalListener mDiceTotalListener;
     private CurrentPlayerInformationListener mCurrentPlayerInformationListener;
     private EndGameListener mEndGameListener;
+    private ArrayList<Gamer> mPlayerJoinedList = new ArrayList<>();
+    private PlayerHaveJoinedListener mPlayerHaveJoinedListener;
 
 
     public GameFirebaseHelper(String roomID,GamePageContract.View gamePageViewInput,
@@ -66,6 +70,7 @@ public class GameFirebaseHelper {
                                                             gamePageView,mPlayerGetRoomDataCallback);
         mDiceTotalListener = new DiceTotalListener(mDiceTotalListenerCallback);
         mEndGameListener = new EndGameListener(mEndGameListenerCallback);
+        mPlayerHaveJoinedListener = new PlayerHaveJoinedListener(mPlayerJoinedListenerCallback);
     }
 
     public void setGameState(String gameState) {
@@ -81,8 +86,9 @@ public class GameFirebaseHelper {
         gameRef.child(Constants.GAMER_LIST).addListenerForSingleValueEvent(mPlayerGetRoomDataListener);
         //start listen current Information
         listenCurrentPlayerInformation();
-
     }
+
+
 
     public void listenGameState() {
         gameRef.child(Constants.GAME_STATE).addValueEventListener(gameStateListener);
@@ -94,6 +100,11 @@ public class GameFirebaseHelper {
 
     public void setCurrentState(String state) {
         gameRef.child(Constants.CURRENT_STATE_LIST).child(myUID).setValue(state);
+    }
+
+    public void listenToPlayerJoinedEvent() {
+        gameRef.child(Constants.GAMER_FIREBASE).addChildEventListener(mPlayerHaveJoinedListener);
+
     }
 
     //host collect each player's dice set and caculate total,then update it to server
@@ -187,6 +198,15 @@ public class GameFirebaseHelper {
         }
     };
 
+    public PlayerJoinedListenerCallback mPlayerJoinedListenerCallback = new PlayerJoinedListenerCallback() {
+        @Override
+        public void freshShowPlayerCountUI(ArrayList<Gamer> gamersJoinedListInput,Gamer newGamer) {
+            mPlayerJoinedList = gamersJoinedListInput;
+            mPresenter.updatePlayerHaveJoinedList(mPlayerJoinedList,newGamer);
+        }
+    };
+
+
     public void setCurrentInformation(CurrentInformation currentInformationInput) {
         currentInformation = currentInformationInput;
         //one has been called
@@ -253,5 +273,14 @@ public class GameFirebaseHelper {
     public void setIsGaming(boolean isGaming) {
         Firebase userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
         userDataRef.child(myUID).child(Constants.IS_GAMING).setValue(isGaming);
+    }
+
+    public void removeListener() {
+        if(gameStateListener!=null)
+            gameRef.child(Constants.GAME_STATE).removeEventListener(gameStateListener);
+        if(mPlayerCurrentStateListener!=null)
+            gameRef.child(Constants.CURRENT_STATE_LIST).removeEventListener(mPlayerCurrentStateListener);
+        if(mCurrentPlayerInformationListener!=null)
+            gameRef.child(Constants.NEXT_PLAYER_INFORMATION).removeEventListener(mCurrentPlayerInformationListener);
     }
 }

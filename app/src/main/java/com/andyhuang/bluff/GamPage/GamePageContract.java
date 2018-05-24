@@ -3,8 +3,10 @@ package com.andyhuang.bluff.GamPage;
 import com.andyhuang.bluff.BasePresenter;
 import com.andyhuang.bluff.BaseView;
 import com.andyhuang.bluff.GamPage.GameObject.CurrentInformation;
+import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.webRTC.WebRTC;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface GamePageContract {
@@ -24,6 +26,7 @@ public interface GamePageContract {
         void freshSwitchUI(boolean shouldOpen);
         void releaseSurfaceView();
         void creatVideoRenders();
+        void updatePlayerHaveJoinedText(ArrayList<Gamer> joinedList,Gamer newGamer);
     }
     interface Presenter extends BasePresenter {
         void init(String RoomID,boolean isHost);
@@ -38,5 +41,6 @@ public interface GamePageContract {
         void disconnectVideo();
         void touchVideoSwitch();
         boolean getIceConnectedInWebRTC();
+        void updatePlayerHaveJoinedList(ArrayList<Gamer> joinedList,Gamer newGamer);
     }
 }

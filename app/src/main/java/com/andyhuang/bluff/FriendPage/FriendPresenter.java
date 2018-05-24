@@ -206,6 +206,9 @@ public class FriendPresenter implements FriendContract.Presenter {
             }
         });
     }
+    public int getPlayerListCount() {
+        return UIDlistForInvite.size();
+    }
 
     public void openGameRoom() {
         //check and invite friend with room ID
@@ -248,10 +251,11 @@ public class FriendPresenter implements FriendContract.Presenter {
                 me.setUserName(UserManager.getInstance().getUserName());
                 refGame.child(""+gameNumber).child(Constants.GAMER_FIREBASE).child(myUID).setValue(me);
                 //reset invite Information
+                int playerInvitedTotal = UIDlistForInvite.size();
                 UIDlistForInvite.clear();
                 adapter.resetCheck();
                 creatRoom = true;
-                friendPageView.showGamePage(""+gameNumber);
+                friendPageView.showGamePage(""+gameNumber,playerInvitedTotal+1);
             } else {
                 //reset invite Information
                 UIDlistForInvite.clear();

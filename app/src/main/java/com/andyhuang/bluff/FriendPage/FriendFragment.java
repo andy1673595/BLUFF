@@ -89,11 +89,12 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
 
 
     @Override
-    public void showGamePage(String gameID) {
+    public void showGamePage(String gameID,int playerInvitedTotal) {
         Intent intent = new Intent();
         intent.setClass((MainHallPage)getActivity(),GamePage.class);
         intent.putExtra("gameID",gameID);
         intent.putExtra("isHost",true);
+        intent.putExtra("playerCount",playerInvitedTotal);
         startActivity(intent);
     }
 
