@@ -132,6 +132,14 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
 
     public void creatVideoRenders() {
         // Create video renderers.
+        if(localRender ==null) {
+            localRender = new SurfaceViewRenderer(this);
+            localRender = (SurfaceViewRenderer) findViewById(R.id.local_video_view);
+        }
+        if( remoteRenderScreen == null) {
+            remoteRenderScreen = new SurfaceViewRenderer(this);
+            remoteRenderScreen = (SurfaceViewRenderer) findViewById(R.id.remote_video_view);
+        }
         if(rootEglBase== null) {
             rootEglBase = EglBase.create();
             localRender.init(rootEglBase.getEglBaseContext(), null);
@@ -271,6 +279,8 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
 
     @Override
     public void showVideo() {
+        layoutVideoBack.setVisibility(View.VISIBLE);
+        imageVideobackground.setVisibility(View.INVISIBLE);
         //check Android Version
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             //Version < Android 6 , directly start Video call
@@ -285,16 +295,27 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     public void closeVideo() {
         releaseSurfaceView();
         freshSwitchUI(false);
+        layoutVideoBack.setVisibility(View.INVISIBLE);
+        imageVideobackground.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void releaseSurfaceView() {
         if (localRender != null) {
             localRender.release();
+            localRender = null;
         }
         if (remoteRenderScreen != null) {
             remoteRenderScreen.release();
+            remoteRenderScreen = null;
         }
+        if(rootEglBase != null) {
+            rootEglBase.releaseSurface();
+            rootEglBase.release();
+            rootEglBase = null;
+
+        }
+
     }
 
     @Override

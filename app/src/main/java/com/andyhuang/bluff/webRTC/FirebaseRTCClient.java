@@ -44,6 +44,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     private final Handler handler;
     private Hashtable<String, Boolean> sdpAdded = new Hashtable<String, Boolean>();
     private WebRTC mWebRTC;
+    private boolean isConnected = false;
 
     public FirebaseRTCClient( AppRTCSingalEvent events,String gameRoomIDInput,WebRTC webRTC) {
         database = FirebaseDatabase.getInstance().getReference();
@@ -65,12 +66,14 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
         }
 
         if(!dataSnapshot.hasChild(roomID)) {
-          /*  if(isConnected) {
+            if(isConnected) {
                 disconnectFromRoom();
                 //無資料但我還在連線->對方斷線, 因此離開房間
                 mWebRTC.showDisconnectMessage();
-            }*/
+                return;
+            }
             database.child(CHANNEL_VIDEO).child(gameRoomID).child(roomID).child("connected").setValue(true);
+            isConnected = true;
             //Connected
             handler.post(new Runnable() {
                 @Override
@@ -199,6 +202,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
 
     @Override
     public void disconnectFromRoom() {
+        isConnected = false;
         database.child(CHANNEL_VIDEO).child(gameRoomID).removeValue();
     //    database.child(CHANNEL_VIDEO).child(gameRoomID).child("disconnect").setValue(true);
         database.child(CHANNEL_VIDEO).child(gameRoomID).removeEventListener(this);

@@ -26,4 +26,6 @@ public class DisconnectDialog extends Dialog implements View.OnClickListener{
         mCallback.confirm();
         dismiss();
     }
+
+
 }
