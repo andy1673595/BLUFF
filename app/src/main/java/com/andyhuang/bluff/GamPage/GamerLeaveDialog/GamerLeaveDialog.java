@@ -17,7 +17,7 @@ public class GamerLeaveDialog extends Dialog implements View.OnClickListener {
         super(context, R.style.MyDialogStyle);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.gamer_leave_dialog);
-        buttonConfirm = findViewById(R.id.button_confirm_disconnect);
+        buttonConfirm = findViewById(R.id.button_confirm_player_joined);
         buttonConfirm.setOnClickListener(this);
         mCallback =callbackInput;
     }

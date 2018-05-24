@@ -14,6 +14,7 @@ import com.andyhuang.bluff.GamPage.Listener.EndGameListener;
 import com.andyhuang.bluff.GamPage.Listener.CurrentPlayerInformationListener;
 import com.andyhuang.bluff.GamPage.Listener.DiceTotalListener;
 import com.andyhuang.bluff.GamPage.Listener.GameStateListener;
+import com.andyhuang.bluff.GamPage.Listener.LoadPlayerTotalInvitedListener;
 import com.andyhuang.bluff.GamPage.Listener.PlayerCurrentStateListener;
 import com.andyhuang.bluff.GamPage.Listener.PlayerGetRoomDataListener;
 import com.andyhuang.bluff.GamPage.Listener.PlayerHaveJoinedListener;
@@ -54,7 +55,7 @@ public class GameFirebaseHelper {
     private EndGameListener mEndGameListener;
     private ArrayList<Gamer> mPlayerJoinedList = new ArrayList<>();
     private PlayerHaveJoinedListener mPlayerHaveJoinedListener;
-
+    private LoadPlayerTotalInvitedListener mLoadPlayerTotalInvitedListener;
 
     public GameFirebaseHelper(String roomID,GamePageContract.View gamePageViewInput,
                               boolean isHostInput,GamePagePresenter mPresenterInput) {
@@ -71,6 +72,7 @@ public class GameFirebaseHelper {
         mDiceTotalListener = new DiceTotalListener(mDiceTotalListenerCallback);
         mEndGameListener = new EndGameListener(mEndGameListenerCallback);
         mPlayerHaveJoinedListener = new PlayerHaveJoinedListener(mPlayerJoinedListenerCallback);
+        mLoadPlayerTotalInvitedListener = new LoadPlayerTotalInvitedListener(mPresenter);
     }
 
     public void setGameState(String gameState) {
@@ -282,5 +284,17 @@ public class GameFirebaseHelper {
             gameRef.child(Constants.CURRENT_STATE_LIST).removeEventListener(mPlayerCurrentStateListener);
         if(mCurrentPlayerInformationListener!=null)
             gameRef.child(Constants.NEXT_PLAYER_INFORMATION).removeEventListener(mCurrentPlayerInformationListener);
+        if(mPlayerHaveJoinedListener != null)
+            gameRef.child(Constants.GAMER_FIREBASE).removeEventListener(mPlayerHaveJoinedListener);
+
+    }
+
+    public void loadPlayerInvitedTotal() {
+        gameRef.child(Constants.PLAYED_TOTAL_INVITED).addListenerForSingleValueEvent(mLoadPlayerTotalInvitedListener);
+
+    }
+
+    public void updatePlayInvitedCount(int count) {
+        gameRef.child(Constants.PLAYED_TOTAL_INVITED).setValue(count);
     }
 }

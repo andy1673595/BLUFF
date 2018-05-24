@@ -27,6 +27,7 @@ public class Constants {
     public static String GAME_INVITE = "gameInvite";
     public static String GAME ="gameInformaiton";
     public static String GAME_ROOM = "gameRoom";
+    public static String PLAYED_TOTAL_INVITED = "player total invited";
 
     //Tag for Game firebase
     public static String GAME_ROOM_ID_REF = "https://myproject-556f6.firebaseio.com/GameRoomID/";

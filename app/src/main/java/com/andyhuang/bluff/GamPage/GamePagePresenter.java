@@ -11,6 +11,7 @@ import com.andyhuang.bluff.activities.GamePage;
 import com.andyhuang.bluff.webRTC.WebRTC;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GamePagePresenter implements GamePageContract.Presenter{
     private GamePageContract.View gamePgaeView;
@@ -167,6 +168,22 @@ public class GamePagePresenter implements GamePageContract.Presenter{
         gamePgaeView.updatePlayerHaveJoinedText(joinedList,newGamer);
     }
 
+    public ArrayList<String> getPlayerJoinedNameList() {
+        ArrayList<String> plyerList = new ArrayList<>();
+        for(Gamer gamer:playerHaveJoinedList) {
+            plyerList.add(gamer.getUserName());
+        }
+        return plyerList;
+    }
+
+    public ArrayList<String> getPlayerJoinedPhotoURLList() {
+        ArrayList<String> plyerList = new ArrayList<>();
+        for(Gamer gamer:playerHaveJoinedList) {
+            plyerList.add(gamer.getUserPhotoURL());
+        }
+        return plyerList;
+    }
+
     //when each game is end ,reset game variables
     @Override
     public void reset() {
@@ -180,4 +197,17 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     }
     public void setIsplaying(boolean isplayingInput) {isplaying = isplayingInput;}
     public void sethasTellOne(boolean hasTellOneInput) {hasTellOne = hasTellOneInput;}
+
+    public void loadPlayerInvitedTotal() {
+        firebaseHelper.loadPlayerInvitedTotal();
+    }
+
+    @Override
+    public void updatePlayInvitedCountToUI(int count) {
+        gamePgaeView.inviteeSetTotalPlayerInivted(count);
+    }
+
+    public void updatePlayInvitedCountToFirebase(int count) {
+        firebaseHelper.updatePlayInvitedCount(count);
+    }
 }

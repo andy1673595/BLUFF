@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
-        android:id="@+id/gamer_leave_dialog_background"
+        android:id="@+id/image_player_joined_dialog_back"
         android:layout_width="329dp"
         android:layout_height="250dp"
         android:layout_marginBottom="12dp"
@@ -28,13 +28,13 @@
         android:text="對方關閉視訊連線\n將關閉我方視訊"
         android:textColor="@color/teal800"
         android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/button_confirm_disconnect"
-        app:layout_constraintEnd_toEndOf="@+id/gamer_leave_dialog_background"
-        app:layout_constraintStart_toStartOf="@+id/gamer_leave_dialog_background" />
+        app:layout_constraintBottom_toTopOf="@+id/button_confirm_player_joined"
+        app:layout_constraintEnd_toEndOf="@+id/image_player_joined_dialog_back"
+        app:layout_constraintStart_toStartOf="@+id/image_player_joined_dialog_back" />
 
 
     <Button
-        android:id="@+id/button_confirm_disconnect"
+        android:id="@+id/button_confirm_player_joined"
         style="@style/MyButtonInDiceDialog"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
         android:layout_marginStart="8dp"
         android:text="確認"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/gamer_leave_dialog_background"
+        app:layout_constraintBottom_toBottomOf="@+id/image_player_joined_dialog_back"
         app:layout_constraintEnd_toEndOf="@+id/text_show_disconnect_message"
         app:layout_constraintStart_toStartOf="@+id/text_show_disconnect_message" />
 
@@ -59,6 +59,6 @@
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="@+id/text_show_disconnect_message"
         app:layout_constraintStart_toStartOf="@+id/text_show_disconnect_message"
-        app:layout_constraintTop_toTopOf="@+id/gamer_leave_dialog_background" />
+        app:layout_constraintTop_toTopOf="@+id/image_player_joined_dialog_back" />
 
 </android.support.constraint.ConstraintLayout>

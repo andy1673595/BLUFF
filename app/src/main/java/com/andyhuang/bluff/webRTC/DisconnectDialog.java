@@ -18,7 +18,7 @@ public class DisconnectDialog extends Dialog implements View.OnClickListener{
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.disconnect_dialog_layout);
         mCallback = callback;
-        comfirmButton = findViewById(R.id.button_confirm_disconnect);
+        comfirmButton = findViewById(R.id.button_confirm_player_joined);
         comfirmButton.setOnClickListener(this);
     }
     @Override

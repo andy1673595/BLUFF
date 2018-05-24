@@ -27,6 +27,7 @@ public interface GamePageContract {
         void releaseSurfaceView();
         void creatVideoRenders();
         void updatePlayerHaveJoinedText(ArrayList<Gamer> joinedList,Gamer newGamer);
+        void inviteeSetTotalPlayerInivted(int count);
     }
     interface Presenter extends BasePresenter {
         void init(String RoomID,boolean isHost);
@@ -42,5 +43,8 @@ public interface GamePageContract {
         void touchVideoSwitch();
         boolean getIceConnectedInWebRTC();
         void updatePlayerHaveJoinedList(ArrayList<Gamer> joinedList,Gamer newGamer);
+        void loadPlayerInvitedTotal();
+        void updatePlayInvitedCountToUI(int count);
+        void updatePlayInvitedCountToFirebase(int count);
     }
 }

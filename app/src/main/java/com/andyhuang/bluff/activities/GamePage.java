@@ -2,6 +2,10 @@ package com.andyhuang.bluff.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -21,6 +25,7 @@ import com.andyhuang.bluff.GamPage.GamePageContract;
 import com.andyhuang.bluff.GamPage.GamePagePresenter;
 import com.andyhuang.bluff.GamPage.GamerLeaveDialog.GamerLeaveDialog;
 import com.andyhuang.bluff.GamPage.LeaveRoomDialog.ExitGameDialog;
+import com.andyhuang.bluff.GamPage.GamerJoinedDialog.PlayerJoinedDialog;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.GamPage.GameObject.CurrentInformation;
 import com.andyhuang.bluff.Util.ConstantForWebRTC;
@@ -164,8 +169,19 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     @Override
     public void updatePlayerHaveJoinedText(ArrayList<Gamer> joinedList,Gamer newGamer) {
         playerJoinedList = joinedList;
-        textPlayerCountRightNow.setText(joinedList.size()+"/"+countForPlayerInviteTotal);
-        Toast.makeText(thisActivity, "玩家 "+newGamer.getUserName()+" 已加入", Toast.LENGTH_SHORT).show();
+        if(countForPlayerInviteTotal == 0 ){
+            mPrsenter.loadPlayerInvitedTotal();
+        }else {
+            //set count to firebase For invitee use
+            mPrsenter.updatePlayInvitedCountToFirebase(countForPlayerInviteTotal);
+            textPlayerCountRightNow.setText(joinedList.size()+"/"+countForPlayerInviteTotal);
+            Toast.makeText(thisActivity, "玩家 "+newGamer.getUserName()+" 已加入", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void inviteeSetTotalPlayerInivted(int count) {
+        countForPlayerInviteTotal = count;
+        textPlayerCountRightNow.setText(playerJoinedList.size()+"/"+countForPlayerInviteTotal);
     }
 
     public void updateVideoView() {
@@ -212,9 +228,28 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
                 mPrsenter.touchVideoSwitch();
                 break;
             case R.id.layout_show_player_list:
-                //TODO show player dialog
+                showPlayerJoinedDialog();
                 break;
         }
+    }
+
+    private void showPlayerJoinedDialog() {
+        PlayerJoinedDialog playerJoinedDialog = new PlayerJoinedDialog();
+        Bundle args = new Bundle();
+        //add playerList infomation to dialog
+        args.putStringArrayList("nameList",mPrsenter.getPlayerJoinedNameList());
+        args.putStringArrayList("photoList",mPrsenter.getPlayerJoinedPhotoURLList());
+        playerJoinedDialog.setArguments(args);
+        //create FragmentTransaction for show dialog
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        // Create and show the dialog.
+        DialogFragment dialogFragment =playerJoinedDialog;
+        dialogFragment.show(ft, "dialogPlayerJoined");
     }
 
     @Override

@@ -19,7 +19,8 @@ public class GameInviteDialog extends Dialog implements View.OnClickListener{
     private BluffPresenter bluffPresenter;
     private Gamer inviter;
     private String roomID;
-    public GameInviteDialog(@NonNull Context context, BluffPresenter bluffPresenterInput, Gamer inviterInput,String roomIDInput) {
+    public GameInviteDialog(@NonNull Context context, BluffPresenter bluffPresenterInput,
+                            Gamer inviterInput,String roomIDInput) {
         super(context,R.style.MyDialogStyle);
         inviter = inviterInput;
         roomID = roomIDInput;

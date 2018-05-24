@@ -109,16 +109,16 @@
             app:layout_constraintStart_toEndOf="@+id/image_home_button_gamepage">
 
             <TextView
-                style="@style/TextPlayerJoinedForGamePage"
                 android:id="@+id/text_show_playerlist_button"
+                style="@style/TextPlayerJoinedForGamePage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:text="0/3"
-                android:textStyle="italic"
                 android:textColor="@color/Cyan900"
                 android:textSize="18sp"
+                android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_total_right_noew"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -224,7 +224,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="40"
+        android:layout_weight="36"
         android:background="@color/teal300">
 
         <ImageView
