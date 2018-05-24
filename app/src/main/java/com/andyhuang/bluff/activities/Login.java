@@ -1,6 +1,7 @@
 package com.andyhuang.bluff.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.Callback.FacebookLoginCallback;
 import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
 import com.andyhuang.bluff.Callback.GetFacebookUserDataCallback;
@@ -53,7 +55,7 @@ public class Login extends BaseActivity implements View.OnClickListener{
         textCreateButton = findViewById(R.id.text_create_account);
         accountInput = (EditText)findViewById(R.id.edit_login_account);
         passwordInput = (EditText)findViewById(R.id.edit_login_password);
-
+        checkSharedPrefrence();
         imageLoginButton.setOnClickListener(this);
         textCreateButton.setOnClickListener(this);
         layoutFBLogin.setOnClickListener(this);
@@ -63,6 +65,29 @@ public class Login extends BaseActivity implements View.OnClickListener{
 
         callbackManager = CallbackManager.Factory.create();
         login(callback);
+    }
+
+    private void checkSharedPrefrence() {
+        if( Bluff.getContext().getSharedPreferences(Constants.TAG_FOR_SHAREDPREFREENCE,MODE_PRIVATE)
+                .contains(Constants.USER_PASSWORD_SHAREDPREFREENCE)) {
+            //it has password in sharedprefrence
+            String password = Bluff.getContext().getSharedPreferences(Constants.TAG_FOR_SHAREDPREFREENCE,MODE_PRIVATE)
+                    .getString(Constants.USER_PASSWORD_SHAREDPREFREENCE,Constants.NODATA);
+            String email =  Bluff.getContext().getSharedPreferences(Constants.TAG_FOR_SHAREDPREFREENCE,MODE_PRIVATE)
+                    .getString(Constants.USER_EMAIL_SHAREDPREFREENCE,Constants.NODATA);
+            if(password.equals(Constants.NODATA)) {
+                //this is facebook account,don't show
+                accountInput.setText("");
+                passwordInput.setText("");
+                accountInput.setHint("請輸入信箱");
+                passwordInput.setHint("請輸入帳號");
+            } else {
+                //email account , show sharedprefrence
+                accountInput.setText(email);
+                passwordInput.setText(password);
+            }
+
+        }
     }
 
 
@@ -107,6 +132,7 @@ public class Login extends BaseActivity implements View.OnClickListener{
                 }
                 userDataAPI.getUserData(userDataCallback(),accessToken,Login.this);
                 firebaseAccount.facebookLogin(accessToken,callback);
+
 
             }
 

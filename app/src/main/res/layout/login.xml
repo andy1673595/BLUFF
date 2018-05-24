@@ -66,7 +66,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:layout_marginStart="8dp"
-        android:text="abc555abc666"
+        android:hint="請輸入密碼登入"
+        android:inputType="textPassword"
         android:textColor="@color/teal600"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout_fb_login"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout_fb_login" />
@@ -76,7 +77,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="abc@abc.abc"
+        android:hint="請輸入信箱登入"
         android:textColor="@color/teal600"
         app:layout_constraintBottom_toTopOf="@+id/edit_login_password"
         app:layout_constraintEnd_toEndOf="@+id/edit_login_password"

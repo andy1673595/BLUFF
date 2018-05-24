@@ -15,13 +15,14 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
     private EditText editEmail;
     private EditText editPassword;
     private EditText editName;
-    private EditText editPhoto_address;
     private TextView textCompleted;
+    private EditText editConfirmPassword;
     private TextView textError;
     private String emailInput;
     private String passwordInput;
     private String nameInput;
     private String photoAddressInput;
+    private String passwordConfirm;
     private FirebaseCreateAccount mFirebaseCreateAccount;
 
 
@@ -32,7 +33,7 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
         editEmail = findViewById(R.id.edit_email_create_account);
         editPassword = findViewById(R.id.edit_password_create_account);
         editName = findViewById(R.id.edit_name_create_account);
-        editPhoto_address = findViewById(R.id.edit_photo_create_account);
+        editConfirmPassword = findViewById(R.id.edit_password_confirm);
         textCompleted = findViewById(R.id.text_completed_create_account);
         textError = findViewById(R.id.text_error_message_create_account);
         textCompleted.setOnClickListener(this);
@@ -45,21 +46,21 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.text_completed_create_account:
-                if(checkEditNull()) {
+                if(checkEditError()) {
                     mFirebaseCreateAccount.creatAccount(firebaseCallback(),emailInput,passwordInput,nameInput,photoAddressInput);
                 }
                 break;
         }
     }
 
-    public boolean checkEditNull() {
+    public boolean checkEditError() {
         emailInput = String.valueOf(editEmail.getText());
         passwordInput = String.valueOf(editPassword.getText());
         nameInput = String.valueOf(editName.getText());
-        photoAddressInput = String.valueOf(editPhoto_address.getText());
-        if(photoAddressInput.isEmpty()) {
-            photoAddressInput= Constants.NODATA;
-        }
+        passwordConfirm = String.valueOf(editConfirmPassword.getText());
+        //TODO  let user set photo,get user photoURL
+        photoAddressInput= Constants.NODATA;
+
         if(emailInput.isEmpty()) {
             textError.setText("email不能為空");
             return false;
@@ -69,7 +70,15 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
         } else if (nameInput.isEmpty()) {
             textError.setText("名字不能為空");
             return false;
-        } else return true;
+        } else if(passwordConfirm.isEmpty()){
+            textError.setText("密碼確認不能為空");
+            return false;
+        }else if (!passwordInput.equals(passwordConfirm)) {
+            textError.setText("密碼必須相同");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private FirebaseLoginCallback firebaseCallback() {

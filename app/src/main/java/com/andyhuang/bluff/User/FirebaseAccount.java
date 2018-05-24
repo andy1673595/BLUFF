@@ -53,7 +53,7 @@ public class FirebaseAccount {
         userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
     }
 
-    public void login(String accountInput, String passwordInput, final FirebaseLoginCallback callback) {
+    public void login(String accountInput, final String passwordInput, final FirebaseLoginCallback callback) {
         mAuth.signInWithEmailAndPassword(accountInput,passwordInput)
                 .addOnCompleteListener(login, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -63,6 +63,12 @@ public class FirebaseAccount {
                             user = mAuth.getCurrentUser();
                             userUID = user.getUid();
                             userEmail= user.getEmail();
+                            userPassword = passwordInput;
+                            saveUserData();
+                            //sharedPrefrence is use for email and password login ,
+                            // so set hint password to tell app that is not real email account
+                            Bluff.getContext().getSharedPreferences(Constants.TAG_FOR_SHAREDPREFREENCE,Login.MODE_PRIVATE).edit()
+                                    .putString(Constants.USER_PASSWORD_SHAREDPREFREENCE,Constants.FACEBOOK_HINT).commit();
                             //update online state
                             userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
                             userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
