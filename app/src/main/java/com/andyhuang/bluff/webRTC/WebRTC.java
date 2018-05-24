@@ -27,8 +27,6 @@ public class WebRTC {
     }
 
     private boolean iceConnected;
-    private boolean activityRunning;
-    private boolean isError;
     private boolean commandLineRun =false;
     private GamePagePresenter mPresenter;
     private GamePage mGamePageView;
@@ -93,8 +91,7 @@ public class WebRTC {
         mFirebaseRTCClient.connectToRoom(roomConnectionParameters);
 
         audioManager = AppRTCAudioManager.create(mGamePageView, new Runnable() {
-            // This method will be called each time the audio state (number and
-            // type of devices) has been changed.
+           //Audio Manager的Method
             @Override
             public void run() {
                 //onAudioManagerChangedState();

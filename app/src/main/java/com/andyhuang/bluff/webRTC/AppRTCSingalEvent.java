@@ -1,14 +1,12 @@
 package com.andyhuang.bluff.webRTC;
 
 
-import android.util.Log;
 import android.widget.Toast;
 
 import com.andyhuang.bluff.activities.GamePage;
 
 import org.webrtc.Camera1Enumerator;
 import org.webrtc.CameraEnumerator;
-import org.webrtc.EglBase;
 import org.webrtc.IceCandidate;
 import org.webrtc.SessionDescription;
 import org.webrtc.VideoCapturer;
@@ -18,8 +16,6 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
     GamePage mGamePageView;
     private long callStartedTimeMs = 0;
     private PeerConnectionClient peerConnectionClient;
-    private FirebaseRTCClient client;
-    private AppRTCAudioManager audioManager = null;
     private WebRTC mWebRTC;
 
     AppRTCSingalEvent(GamePage gamePage,WebRTC webRTC) {
@@ -28,9 +24,6 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
     }
     public void setCallStartedTimeMs (long time) {
         callStartedTimeMs = time;
-    }
-    public void setFirebaseClient(FirebaseRTCClient clientInput) {
-        client = clientInput;
     }
     public void setPeerConnectionClient(PeerConnectionClient peerConnectionClientInput) {
         peerConnectionClient = peerConnectionClientInput;
@@ -48,7 +41,6 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
 
     @Override
     public void onRemoteDescription(final SessionDescription sdp) {
-        final long delta = System.currentTimeMillis() - callStartedTimeMs;
         mGamePageView.runOnUiThread(new Runnable() {
             @Override
             public void run() {

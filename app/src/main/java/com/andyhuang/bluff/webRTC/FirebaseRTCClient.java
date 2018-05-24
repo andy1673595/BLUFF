@@ -38,8 +38,6 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     AppRTCSingalEvent events;
     //use for get into channel,it's the same with Game room ID
     private boolean is_initiator = false;
-    ValueEventListener sdpeventsListener = null;
-    ValueEventListener icecandidateListener = null;
     private static final int TURN_HTTP_TIMEOUT_MS = 5000;
     private final Handler handler;
     private Hashtable<String, Boolean> sdpAdded = new Hashtable<String, Boolean>();
@@ -51,7 +49,6 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
         this.events = events;
         mWebRTC = webRTC;
         //bind firebaseClient to events
-        this.events.setFirebaseClient(this);
         gameRoomID = gameRoomIDInput;
         final HandlerThread handlerThread = new HandlerThread(TAG);
         handlerThread.start();
@@ -67,6 +64,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
 
         if(!dataSnapshot.hasChild(roomID)) {
             if(isConnected) {
+                isConnected =false;
                 disconnectFromRoom();
                 //無資料但我還在連線->對方斷線, 因此離開房間
                 mWebRTC.showDisconnectMessage();
@@ -204,7 +202,6 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     public void disconnectFromRoom() {
         isConnected = false;
         database.child(CHANNEL_VIDEO).child(gameRoomID).removeValue();
-    //    database.child(CHANNEL_VIDEO).child(gameRoomID).child("disconnect").setValue(true);
         database.child(CHANNEL_VIDEO).child(gameRoomID).removeEventListener(this);
         sdpAdded.clear();
     }

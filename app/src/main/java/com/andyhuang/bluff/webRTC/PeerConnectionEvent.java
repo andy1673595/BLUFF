@@ -1,9 +1,6 @@
 package com.andyhuang.bluff.webRTC;
 
-import android.util.Log;
-
 import com.andyhuang.bluff.activities.GamePage;
-import com.andyhuang.bluff.webRTC.AppRTCClient.SignalingParameters;
 import com.andyhuang.bluff.webRTC.PeerConnectionClient.PeerConnectionParameters;
 import org.webrtc.IceCandidate;
 import org.webrtc.SessionDescription;
@@ -32,7 +29,6 @@ public class PeerConnectionEvent implements  PeerConnectionClient.PeerConnection
     }
     @Override
     public void onLocalDescription(final SessionDescription sdp) {
-        final long delta = System.currentTimeMillis() - callStartedTimeMs;
         mGamePageView.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -76,13 +72,11 @@ public class PeerConnectionEvent implements  PeerConnectionClient.PeerConnection
 
     @Override
     public void onIceConnected() {
-        final long delta = System.currentTimeMillis() - callStartedTimeMs;
         mWebRTC.setIceConnected(true);
         callConnected();
     }
 
     private void callConnected() {
-        final long delta = System.currentTimeMillis() - callStartedTimeMs;
         if (mPeerConnectionClient == null ) {
             return;
         }
@@ -98,20 +92,12 @@ public class PeerConnectionEvent implements  PeerConnectionClient.PeerConnection
         mWebRTC.disconnect();
     }
 
-
+    @Override
+    public void onPeerConnectionClosed() { }
 
     @Override
-    public void onPeerConnectionClosed() {
-
-    }
+    public void onPeerConnectionStatsReady(StatsReport[] reports) {}
 
     @Override
-    public void onPeerConnectionStatsReady(StatsReport[] reports) {
-        //ready
-    }
-
-    @Override
-    public void onPeerConnectionError(String description) {
-
-    }
+    public void onPeerConnectionError(String description) {   }
 }

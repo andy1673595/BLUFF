@@ -23,8 +23,13 @@ public class DisconnectDialog extends Dialog implements View.OnClickListener{
     }
     @Override
     public void onClick(View v) {
-        mCallback.confirm();
         dismiss();
+    }
+
+    @Override
+    public void dismiss() {
+       mCallback.confirm();
+       super.dismiss();
     }
 
 

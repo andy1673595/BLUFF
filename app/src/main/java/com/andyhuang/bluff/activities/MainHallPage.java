@@ -2,6 +2,7 @@ package com.andyhuang.bluff.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.UserManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -9,10 +10,13 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import com.andyhuang.bluff.BluffContract;
 import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.FriendPage.FragmentListener;
 import com.andyhuang.bluff.R;
+import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.helper.ImageFromLruCache;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,14 +29,18 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
     private DrawerLayout myDrawerLayout;
     private NavigationView mNavigationView;
     private ImageView imageMenuButton;
+    private ImageView imageUserPhotoForDrawer;
+    private TextView textNameForDrawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_hall_page);
         myDrawerLayout = (DrawerLayout)findViewById(R.id.drawrlayout_main);
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
         imageMenuButton = (ImageView)findViewById(R.id.image_menu_button);
-
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+        textNameForDrawer = (TextView)mNavigationView.getHeaderView(0).findViewById(R.id.textUserNameInDrawer);
+        imageUserPhotoForDrawer = (ImageView)mNavigationView.getHeaderView(0).findViewById(R.id.imageUserPhotoInDrawer);
         mPresenter = new BluffPresenter(this,getFragmentManager(),this);
         mNavigationView.setNavigationItemSelectedListener(navigationViewListener());
         imageMenuButton.setOnClickListener(mainClickListener);
@@ -43,6 +51,16 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
     public void setDrawerLayout() {
         myDrawerLayout.setFitsSystemWindows(true);
         myDrawerLayout.setClipToPadding(false);
+        textNameForDrawer.setText(com.andyhuang.bluff.User.UserManager.getInstance().getUserName());
+        String photoURL = com.andyhuang.bluff.User.UserManager.getInstance().getUserPhotoUrl();
+        if (!photoURL.equals(Constants.NODATA)) {
+            imageUserPhotoForDrawer.setTag(photoURL);
+            new ImageFromLruCache().set(imageUserPhotoForDrawer, photoURL,100f);
+        } else {
+            imageUserPhotoForDrawer.setImageResource(R.mipmap.ic_launcher_round);
+        }
+
+
     }
 
     private NavigationView.OnNavigationItemSelectedListener navigationViewListener() {
