@@ -2,7 +2,6 @@ package com.andyhuang.bluff.GamPage.GamerLeaveDialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
@@ -18,7 +17,7 @@ public class GamerLeaveDialog extends Dialog implements View.OnClickListener {
         super(context, R.style.MyDialogStyle);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.gamer_leave_dialog);
-        buttonConfirm = findViewById(R.id.button_confirm_gamer_leave);
+        buttonConfirm = findViewById(R.id.button_confirm_disconnect);
         buttonConfirm.setOnClickListener(this);
         mCallback =callbackInput;
     }

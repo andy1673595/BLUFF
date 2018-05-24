@@ -3,6 +3,7 @@ package com.andyhuang.bluff.GamPage;
 import com.andyhuang.bluff.BasePresenter;
 import com.andyhuang.bluff.BaseView;
 import com.andyhuang.bluff.GamPage.GameObject.CurrentInformation;
+import com.andyhuang.bluff.webRTC.WebRTC;
 
 import java.util.List;
 
@@ -36,5 +37,6 @@ public interface GamePageContract {
         void startVideo();
         void disconnectVideo();
         void touchVideoSwitch();
+        boolean getIceConnectedInWebRTC();
     }
 }

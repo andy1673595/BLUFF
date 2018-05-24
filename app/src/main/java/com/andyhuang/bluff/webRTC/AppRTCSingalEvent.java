@@ -18,7 +18,6 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
     GamePage mGamePageView;
     private long callStartedTimeMs = 0;
     private PeerConnectionClient peerConnectionClient;
-    private EglBase rootEglBase;
     private FirebaseRTCClient client;
     private AppRTCAudioManager audioManager = null;
     private WebRTC mWebRTC;
@@ -97,12 +96,7 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
 
     @Override
     public void onChannelClose() {
-        disconnect();
-    }
-
-    private void disconnect() {
-        mWebRTC.disconnectReset();
-        mGamePageView.closeVideo();
+        mWebRTC.disconnect();
     }
 
     @Override
@@ -114,7 +108,6 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
                 Toast.makeText(mGamePageView,"發生錯誤: "+description, Toast.LENGTH_LONG).show();
             }
         });
-        disconnect();
     }
 
     private void onConnectedToRoomInternal(final SignalingParameters params) {

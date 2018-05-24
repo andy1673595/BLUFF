@@ -2,8 +2,10 @@ package com.andyhuang.bluff.webRTC;
 
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.andyhuang.bluff.Callback.DisconnectDialogCallback;
 import com.andyhuang.bluff.GamPage.GamePagePresenter;
 import com.andyhuang.bluff.activities.GamePage;
 import com.andyhuang.bluff.webRTC.AppRTCClient.SignalingParameters;
@@ -19,6 +21,9 @@ public class WebRTC {
 
     public void setIceConnected(boolean iceConnected) {
         this.iceConnected = iceConnected;
+    }
+    public boolean getIceConnected(){
+        return iceConnected;
     }
 
     private boolean iceConnected;
@@ -71,7 +76,7 @@ public class WebRTC {
         commandLineRun = false;
         //user Firebase as communication channel
         mAppRTCSingalEvent = new AppRTCSingalEvent(mGamePageView,this);
-        mFirebaseRTCClient = new FirebaseRTCClient(mAppRTCSingalEvent,roomID);
+        mFirebaseRTCClient = new FirebaseRTCClient(mAppRTCSingalEvent,roomID,this);
         roomConnectionParameters = new AppRTCClient.RoomConnectionParameters(roomUri.toString(), roomID, false);
         peerConnectionClient = PeerConnectionClient.getInstance();
         mPeerConnectionEvent = new PeerConnectionEvent(mGamePageView,peerConnectionParameters,mFirebaseRTCClient,this);
@@ -103,18 +108,22 @@ public class WebRTC {
             mFirebaseRTCClient.disconnectFromRoom();
             mFirebaseRTCClient = null;
         }
+        Log.d("errorTEST","endWebRTC close Firebase end");
         if (peerConnectionClient != null) {
             peerConnectionClient.close();
             peerConnectionClient = null;
+            Log.d("errorTEST","endWebRTC peerConnection=null end ");
         }
         if (audioManager != null) {
             audioManager.close();
             audioManager = null;
-        } if (iceConnected && !isError) {
+        }
+        Log.d("errorTEST","endWebRTC audio = null end");
+        /* if (iceConnected && !isError) {
             mGamePageView.setResult(RESULT_OK);
         } else {
             mGamePageView.setResult(RESULT_CANCELED);
-        }
+        }*/
     }
     void checkPermissions() {
         // Check for mandatory permissions.
@@ -135,4 +144,21 @@ public class WebRTC {
     public SignalingParameters getSignalingParameters() {
         return signalingParameters;
     }
+
+    public void showDisconnectMessage() {
+        //show Disconnect confirm dialog
+        new DisconnectDialog(mGamePageView,new DisconnectDialogCallback() {
+            @Override
+            public void confirm() {
+                //disconnect all element and reset some variables
+                mGamePageView.freshSwitchUI(false);
+                mPresenter.disconnectVideo();
+            }
+        }).show();
+    }
+
+    public void disconnect() {
+        mPresenter.disconnectVideo();
+    }
+
 }

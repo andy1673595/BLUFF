@@ -1,4 +1,6 @@
 package com.andyhuang.bluff.GamPage;
+import android.util.Log;
+
 import com.andyhuang.bluff.GamPage.GameHelper.CheckWhoWin;
 import com.andyhuang.bluff.GamPage.GameObject.GameEndInformation;
 import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
@@ -23,6 +25,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     public void start() {
 
     }
+
 
     public GamePagePresenter(GamePageContract.View gamePgaeViewInput) {
         gamePgaeView = gamePgaeViewInput;
@@ -115,7 +118,14 @@ public class GamePagePresenter implements GamePageContract.Presenter{
 
     @Override
     public void disconnectVideo() {
+        Log.d("errorTEST","presenter.disconnect");
+        isVideoSwitchOn = false;
         mWebRTC.disconnectReset();
+        mWebRTC =null;
+        Log.d("errorTEST","webRTC = null");
+        gamePgaeView.freshSwitchUI(isVideoSwitchOn);
+        gamePgaeView.closeVideo();
+        Log.d("errorTEST","close video");
     }
     //when touch Video chat swtich , it will call this method,and judge what to do
     @Override
@@ -131,6 +141,15 @@ public class GamePagePresenter implements GamePageContract.Presenter{
             isVideoSwitchOn = true;
             gamePgaeView.freshSwitchUI(isVideoSwitchOn);
             gamePgaeView.showVideo();
+        }
+    }
+
+    @Override
+    public boolean getIceConnectedInWebRTC() {
+        if(mWebRTC == null) {
+            return false;
+        }else {
+            return mWebRTC.getIceConnected();
         }
     }
 

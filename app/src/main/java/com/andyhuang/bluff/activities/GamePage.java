@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.andyhuang.bluff.GamPage.GameEndDialog.ExitRoomCallback;
 import com.andyhuang.bluff.GamPage.GameEndDialog.GameEndDialog;
 import com.andyhuang.bluff.GamPage.GamePageContract;
@@ -25,7 +24,6 @@ import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.GamPage.GameObject.CurrentInformation;
 import com.andyhuang.bluff.Util.ConstantForWebRTC;
 import com.andyhuang.bluff.webRTC.PercentFrameLayout;
-
 import org.webrtc.EglBase;
 import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
@@ -70,8 +68,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private final List<VideoRenderer.Callbacks> remoteRenderers =
             new ArrayList<VideoRenderer.Callbacks>();
     private EglBase rootEglBase;
-    //variables for webRTC
-    private boolean iceConnected = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,11 +137,10 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
             localRender.init(rootEglBase.getEglBaseContext(), null);
             remoteRenderScreen.init(rootEglBase.getEglBaseContext(), null);
             localRender.setZOrderMediaOverlay(true);
-          //  updateVideoView();
         }
         updateVideoView();
-    }
 
+    }
     public void updateVideoView() {
         RendererCommon.ScalingType scalingType = RendererCommon.ScalingType.SCALE_ASPECT_FILL;
         remoteRenderLayout.setPosition(ConstantForWebRTC.REMOTE_X, ConstantForWebRTC.REMOTE_Y
@@ -152,7 +148,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         remoteRenderScreen.setScalingType(scalingType);
         remoteRenderScreen.setMirror(false);
 
-        if (iceConnected) {
+        if (mPrsenter.getIceConnectedInWebRTC()) {
             localRenderLayout.setPosition(
                     ConstantForWebRTC.LOCAL_X_CONNECTED, ConstantForWebRTC.LOCAL_Y_CONNECTED
                     , ConstantForWebRTC.LOCAL_WIDTH_CONNECTED, ConstantForWebRTC.LOCAL_HEIGHT_CONNECTED);
@@ -162,6 +158,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
                     ConstantForWebRTC.LOCAL_X_CONNECTING, ConstantForWebRTC.LOCAL_Y_CONNECTING
                     , ConstantForWebRTC.LOCAL_WIDTH_CONNECTING, ConstantForWebRTC.LOCAL_HEIGHT_CONNECTING);
             localRender.setScalingType(scalingType);
+
         }
         localRender.setMirror(true);
         localRender.requestLayout();
@@ -286,7 +283,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
 
     @Override
     public void closeVideo() {
-        //releaseSurfaceView();
+        releaseSurfaceView();
         freshSwitchUI(false);
     }
 
@@ -395,8 +392,5 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     }
     public EglBase getRootEglBase() {
         return rootEglBase;
-    }
-    public void setIceConnected(boolean iceConnected) {
-        this.iceConnected = iceConnected;
     }
 }

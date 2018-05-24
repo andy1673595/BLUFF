@@ -15,7 +15,6 @@ public class PeerConnectionEvent implements  PeerConnectionClient.PeerConnection
     private GamePage mGamePageView;
     private long callStartedTimeMs =0;
     private PeerConnectionParameters mPeerConnectionParameters;
-    private boolean iceConnected;
     private WebRTC mWebRTC;
     public PeerConnectionEvent(GamePage gamePage, PeerConnectionParameters peerParameters
             ,  AppRTCClient firebaseRTCClientInput,WebRTC webRTC) {
@@ -78,9 +77,7 @@ public class PeerConnectionEvent implements  PeerConnectionClient.PeerConnection
     @Override
     public void onIceConnected() {
         final long delta = System.currentTimeMillis() - callStartedTimeMs;
-        iceConnected = true;
-        mWebRTC.setIceConnected(iceConnected);
-        mGamePageView.setIceConnected(iceConnected);
+        mWebRTC.setIceConnected(true);
         callConnected();
     }
 
@@ -97,16 +94,11 @@ public class PeerConnectionEvent implements  PeerConnectionClient.PeerConnection
 
     @Override
     public void onIceDisconnected() {
-        iceConnected = false;
-        mWebRTC.setIceConnected(iceConnected);
-        mGamePageView.setIceConnected(iceConnected);
-        disconnect();
+        mWebRTC.setIceConnected(false);
+        mWebRTC.disconnect();
     }
 
-    private void disconnect() {
-        mWebRTC.disconnectReset();
-        mGamePageView.closeVideo();
-    }
+
 
     @Override
     public void onPeerConnectionClosed() {

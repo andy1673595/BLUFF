@@ -322,7 +322,9 @@ public class AppRTCAudioManager {
 
     /** Unregister receiver for broadcasted ACTION_HEADSET_PLUG intent. */
     private void unregisterForWiredHeadsetIntentBroadcast() {
-        apprtcContext.unregisterReceiver(wiredHeadsetReceiver);
+        if(apprtcContext!= null&&wiredHeadsetReceiver!=null) {
+            apprtcContext.unregisterReceiver(wiredHeadsetReceiver);
+        }
         wiredHeadsetReceiver = null;
     }
 
