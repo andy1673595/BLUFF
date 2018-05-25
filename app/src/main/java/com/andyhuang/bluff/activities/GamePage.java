@@ -359,12 +359,6 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
 
     @Override
     public void releaseSurfaceView() {
-        RendererCommon.ScalingType scalingType = RendererCommon.ScalingType.SCALE_ASPECT_FILL;
-        localRenderLayout.setPosition(
-                ConstantForWebRTC.LOCAL_X_CONNECTING, ConstantForWebRTC.LOCAL_Y_CONNECTING
-                , ConstantForWebRTC.LOCAL_WIDTH_CONNECTING, ConstantForWebRTC.LOCAL_HEIGHT_CONNECTING);
-        localRender.setScalingType(scalingType);
-
         if (localRender != null) {
             localRender.release();
             localRender = null;

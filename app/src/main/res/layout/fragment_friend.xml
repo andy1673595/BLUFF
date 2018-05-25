@@ -49,7 +49,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="abc@abc.abc"
+            android:hint="輸入信箱搜尋好友"
             android:textColor="@color/teal600"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_find_friend"
