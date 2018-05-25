@@ -75,7 +75,8 @@ public class Login extends BaseActivity implements View.OnClickListener{
                     .getString(Constants.USER_PASSWORD_SHAREDPREFREENCE,Constants.NODATA);
             String email =  Bluff.getContext().getSharedPreferences(Constants.TAG_FOR_SHAREDPREFREENCE,MODE_PRIVATE)
                     .getString(Constants.USER_EMAIL_SHAREDPREFREENCE,Constants.NODATA);
-            if(password.equals(Constants.NODATA)) {
+
+            if(password.equals(Constants.FACEBOOK_HINT)) {
                 //this is facebook account,don't show
                 accountInput.setText("");
                 passwordInput.setText("");
@@ -118,7 +119,7 @@ public class Login extends BaseActivity implements View.OnClickListener{
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
-
+    //facebook login
     public void login(final FacebookLoginCallback callback) {
         callbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {

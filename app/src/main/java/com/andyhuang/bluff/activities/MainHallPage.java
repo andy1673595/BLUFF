@@ -45,10 +45,11 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
         myDrawerLayout.setFitsSystemWindows(true);
         myDrawerLayout.setClipToPadding(false);
         textNameForDrawer.setText(com.andyhuang.bluff.User.UserManager.getInstance().getUserName());
+        //set userphoto in drawer
         String photoURL = com.andyhuang.bluff.User.UserManager.getInstance().getUserPhotoUrl();
         if (!photoURL.equals(Constants.NODATA)) {
             imageUserPhotoForDrawer.setTag(photoURL);
-            new ImageFromLruCache().set(imageUserPhotoForDrawer, photoURL,100f);
+            new ImageFromLruCache().set(imageUserPhotoForDrawer, photoURL,2000f);
         } else {
             imageUserPhotoForDrawer.setImageResource(R.mipmap.ic_launcher_round);
         }

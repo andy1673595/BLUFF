@@ -138,7 +138,7 @@ public class BluffPresenter implements BluffContract.Presenter {
         transaction.add(R.id.mainFrameLayout, mMainHallFragment, MAIN)
                 .add(R.id.mainFrameLayout, mProfileFragment, PROFILE)
                 .add(R.id.mainFrameLayout, mFriendFragment, FRIEND)
-                .hide(mProfileFragment).hide(mFriendFragment).show(mMainHallFragment).commit();
+                .hide(mProfileFragment).show(mFriendFragment).hide(mMainHallFragment).commit();
     }
 
     public void listenGameInvite() {

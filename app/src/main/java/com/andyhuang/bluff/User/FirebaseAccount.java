@@ -53,6 +53,7 @@ public class FirebaseAccount {
         userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
     }
 
+    //use email and password to log in
     public void login(String accountInput, final String passwordInput, final FirebaseLoginCallback callback) {
         mAuth.signInWithEmailAndPassword(accountInput,passwordInput)
                 .addOnCompleteListener(login, new OnCompleteListener<AuthResult>() {
@@ -64,16 +65,11 @@ public class FirebaseAccount {
                             userUID = user.getUid();
                             userEmail= user.getEmail();
                             userPassword = passwordInput;
-                            saveUserData();
-                            //sharedPrefrence is use for email and password login ,
-                            // so set hint password to tell app that is not real email account
-                            Bluff.getContext().getSharedPreferences(Constants.TAG_FOR_SHAREDPREFREENCE,Login.MODE_PRIVATE).edit()
-                                    .putString(Constants.USER_PASSWORD_SHAREDPREFREENCE,Constants.FACEBOOK_HINT).commit();
                             //update online state
                             userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
                             userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
                             userDataRef.child(userUID).child(Constants.IS_GAMING).setValue(false);
-                            //get user name from Firebase
+                            //get user name and photoURL from Firebase
                             getUserNameFromFirebase(callback);
 
                         } else {
@@ -90,6 +86,7 @@ public class FirebaseAccount {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userName =dataSnapshot.child(Constants.USER_NAME_FIREBASE).getValue(String.class);
+                userPhotoURL = dataSnapshot.child(Constants.USER_PHOTO_FIREBASE).getValue(String.class);
                 //save data
                 saveUserData();
                 callback.completed();
@@ -112,7 +109,7 @@ public class FirebaseAccount {
         UserManager.getInstance().setPassword(userPassword);
         UserManager.getInstance().setUserUID(userUID);
         UserManager.getInstance().setUserName(userName);
-
+        UserManager.getInstance().setUserPhotoUrl(userPhotoURL);
     }
 
     public void updateToFireBase() {
@@ -123,7 +120,6 @@ public class FirebaseAccount {
         //intial game result data
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
                 .setValue(new GameResult() );
-
     }
 
     public void facebookLogin(final AccessToken accessToken, final FacebookLoginCallback callback) {
@@ -144,6 +140,10 @@ public class FirebaseAccount {
                             userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
                             userDataRef.child(userUID).child(Constants.IS_GAMING).setValue(false);
                             saveUserData();
+                            //sharedPrefrence is use for email and password login ,
+                            // so set hint password to tell app that is not real email account
+                            Bluff.getContext().getSharedPreferences(Constants.TAG_FOR_SHAREDPREFREENCE,Login.MODE_PRIVATE).edit()
+                                    .putString(Constants.USER_PASSWORD_SHAREDPREFREENCE,Constants.FACEBOOK_HINT).commit();
                             //save to UserManager
                             UserManager.getInstance().setEmail(userEmail);
                             UserManager.getInstance().setFbtoken(accessToken);
@@ -151,8 +151,6 @@ public class FirebaseAccount {
                             UserManager.getInstance().setUserName(userName);
                             //check is first Create or not and update To FireBase
                             isCreate(mCheckIsCreateCallback,callback);
-
-
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
