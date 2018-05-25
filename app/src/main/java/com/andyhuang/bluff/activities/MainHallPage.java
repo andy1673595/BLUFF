@@ -49,11 +49,10 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
         String photoURL = com.andyhuang.bluff.User.UserManager.getInstance().getUserPhotoUrl();
         if (!photoURL.equals(Constants.NODATA)) {
             imageUserPhotoForDrawer.setTag(photoURL);
-            new ImageFromLruCache().set(imageUserPhotoForDrawer, photoURL,2000f);
+            new ImageFromLruCache().set(imageUserPhotoForDrawer, photoURL,10000f);
         } else {
             imageUserPhotoForDrawer.setImageResource(R.mipmap.ic_launcher_round);
         }
-
 
     }
 

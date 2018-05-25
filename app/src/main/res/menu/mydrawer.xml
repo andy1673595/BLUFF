@@ -2,13 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
+
             android:id="@+id/item_one"
-            android:title="大廳"></item>
+            android:icon="@drawable/ic_home"
+            android:iconTint="@color/teal600"
+            android:title="大廳"
+            ></item>
         <item
             android:id="@+id/item_two"
+            android:icon="@drawable/ic_friend_page"
+            android:iconTint="@color/teal600"
             android:title="朋友列表"></item>
         <item
             android:id="@+id/item_three"
+            android:icon="@drawable/ic_profile_page"
+            android:iconTint="@color/teal600"
             android:title="我的資料"></item>
     </group>
 </menu>

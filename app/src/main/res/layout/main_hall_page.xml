@@ -37,7 +37,12 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/mydrawer_top"
         app:menu="@menu/mydrawer"
-        app:theme="@style/DrawerMenuItem"/>
-
+        app:theme="@style/DrawerMenuItem">
+        <ListView
+            android:id="@+id/lst_menu_items"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

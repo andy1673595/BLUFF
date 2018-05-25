@@ -80,7 +80,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Pr
     @Override
     public void setUserDataToUI(String userName, String userEmail, String photoUrl, String comment) {
         imageUserPhoto.setTag(photoUrl);
-        new ImageFromLruCache().set(imageUserPhoto, photoUrl,20f);
+        new ImageFromLruCache().set(imageUserPhoto, photoUrl,10000f);
         textUserName.setText(userName);
         textComment.setText(comment);
         textUserEmail.setText(userEmail);

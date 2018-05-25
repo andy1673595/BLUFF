@@ -39,7 +39,6 @@ public class PlayerJoinedDialog extends DialogFragment implements View.OnClickLi
        //setadapter
        PlayerJoinedAdapter adapter = new PlayerJoinedAdapter(nameList,photoList);
        recyclerView.setAdapter(adapter);
-
        return v;
    }
 
