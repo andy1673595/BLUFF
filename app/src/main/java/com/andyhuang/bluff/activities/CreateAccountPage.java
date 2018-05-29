@@ -1,11 +1,14 @@
 package com.andyhuang.bluff.activities;
 
 import android.content.Intent;
+import android.net.wifi.aware.AttachCallback;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.andyhuang.bluff.Callback.CloseLoginPageCallback;
 import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.Util.Constants;
@@ -24,12 +27,13 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
     private String photoAddressInput;
     private String passwordConfirm;
     private FirebaseCreateAccount mFirebaseCreateAccount;
-
+    private CloseLoginPageCallback mCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_create_login_page);
+        mCallback = (CloseLoginPageCallback)getIntent().getSerializableExtra("callback");
         editEmail = findViewById(R.id.edit_email_create_account);
         editPassword = findViewById(R.id.edit_password_create_account);
         editName = findViewById(R.id.edit_name_create_account);
@@ -101,7 +105,20 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
         intent.setClass(CreateAccountPage.this,MainHallPage.class);
         //切換Activity
         startActivity(intent);
+        //關掉Login
+        mCallback.closeLoginPage();
         //關掉activity
         this.finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent();
+        setResult(Constants.CLOSE_ACTIVITY,intent);
+        this.finish();
+        super.onBackPressed();
+    }
+
+
+
 }

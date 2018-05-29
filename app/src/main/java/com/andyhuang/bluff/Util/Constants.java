@@ -71,4 +71,7 @@ public class Constants {
     public static String LOSE_TIMES = "loseTimes";
     public static String WIN_TIMES = "winTimes";
     public static String TOTAL_TIMES = "totalTimes";
+
+    //Constant for Login activity callback request code
+    public static int CLOSE_ACTIVITY = 2;
 }

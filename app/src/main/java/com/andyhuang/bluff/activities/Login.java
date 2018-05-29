@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
@@ -12,8 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andyhuang.bluff.Bluff;
+import com.andyhuang.bluff.Callback.CloseLoginPageCallback;
 import com.andyhuang.bluff.Callback.FacebookLoginCallback;
 import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
 import com.andyhuang.bluff.Callback.GetFacebookUserDataCallback;
@@ -107,7 +110,14 @@ public class Login extends BaseActivity implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.image_login_button:
                 UserManager.getInstance().reset();
-                firebaseAccount.login(String.valueOf(accountInput.getText()),String.valueOf(passwordInput.getText()),firebaseCallback());
+                String accountEmail = String.valueOf(accountInput.getText());
+                String password  = String.valueOf(passwordInput.getText());
+                if(accountEmail.isEmpty()||password.isEmpty()) {
+                    Toast.makeText(this,"帳號或密碼不得為空白",Toast.LENGTH_SHORT).show();
+                }else {
+                    firebaseAccount.login(accountEmail,password,firebaseCallback());
+                }
+
                 break;
             case R.id.text_create_account:
                 UserManager.getInstance().reset();
@@ -127,7 +137,12 @@ public class Login extends BaseActivity implements View.OnClickListener{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == Constants.CLOSE_ACTIVITY) {
+            //close login page
+            this.finish();
+        }
     }
+
     //facebook login
     public void login(final FacebookLoginCallback callback) {
         callbackManager = CallbackManager.Factory.create();
@@ -142,8 +157,6 @@ public class Login extends BaseActivity implements View.OnClickListener{
                 }
                 userDataAPI.getUserData(userDataCallback(),accessToken,Login.this);
                 firebaseAccount.facebookLogin(accessToken,callback);
-
-
             }
 
             @Override
@@ -212,8 +225,6 @@ public class Login extends BaseActivity implements View.OnClickListener{
         intent.setClass(Login.this,CreateAccountPage.class);
         //切換Activity
         startActivity(intent);
-        //關掉activity
-        this.finish();
     }
 
 }
