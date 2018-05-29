@@ -51,11 +51,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Pr
         imageEditCommentButton = root.findViewById(R.id.image_modify_comment_button);
         imageEditCommentButton.setOnClickListener(this);
         imageUserPhoto = root.findViewById(R.id.image_user_photo_profile);
-        imageEmailIcon = root.findViewById(R.id.image_email_icon_profile);
-        //set icon to round rectangle imageView
-        Bitmap iconEmail = BitmapFactory.decodeResource(Bluff.getContext().getResources(),
-                R.drawable.email_profile);
-        imageEmailIcon.setImageBitmap(getRoundedCornerBitmap(iconEmail,20f));
         mPresenter = new ProfilePresenter(this,userUID);
         mPresenter.loadUserData();
         return root;
