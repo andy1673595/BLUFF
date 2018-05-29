@@ -61,20 +61,14 @@
         android:layout_weight="10"
         android:background="@color/tealA100">
 
-        <Button
-            android:id="@+id/button_start_game"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/button_rounde"
+        <TextView
+            android:id="@+id/text_open_room_friend_page"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/tealA200"
+            android:gravity="center"
             android:text="開遊戲房間"
             android:textColor="@color/teal800"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="22sp" />
     </android.support.constraint.ConstraintLayout>
 </LinearLayout>

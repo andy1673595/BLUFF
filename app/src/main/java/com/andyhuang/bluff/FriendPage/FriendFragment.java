@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.BluffPresenter;
@@ -31,7 +32,7 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
     private FriendPageAdapter mAdapter;
     private ArrayList<FriendInformation> friendList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private Button mButtonStart;
+    private TextView textOpenRoom;
     private FragmentListener friendFragmentListener;
 
     @Override
@@ -46,8 +47,8 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
         editEmailToFindFriend = (EditText)root.findViewById(R.id.edit_find_friend);
         imageFindButton = (ImageView)root.findViewById(R.id.image_find_friend);
         imageFindButton.setOnClickListener(this);
-        mButtonStart= (Button)root.findViewById(R.id.button_start_game);
-        mButtonStart.setOnClickListener(this);
+        textOpenRoom = (TextView)root.findViewById(R.id.text_open_room_friend_page);
+        textOpenRoom.setOnClickListener(this);
         recyclerView = (RecyclerView)root.findViewById(R.id.recyclerview_friend_page);
         recyclerView.setLayoutManager(new LinearLayoutManager(Bluff.getContext()));
         mAdapter = new FriendPageAdapter(friendList,mPresenter,this);
@@ -116,7 +117,7 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
                 mPresenter.inviteFriend(String.valueOf(editEmailToFindFriend.getText()));
                 hideSoftInput();
                 break;
-            case R.id.button_start_game:
+            case R.id.text_open_room_friend_page:
                 mPresenter.getNumberOfGameRoom(mAdapter);
                 break;
         }

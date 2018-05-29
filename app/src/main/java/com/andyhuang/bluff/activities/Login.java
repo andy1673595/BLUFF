@@ -107,7 +107,6 @@ public class Login extends BaseActivity implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.image_login_button:
                 UserManager.getInstance().reset();
-
                 firebaseAccount.login(String.valueOf(accountInput.getText()),String.valueOf(passwordInput.getText()),firebaseCallback());
                 break;
             case R.id.text_create_account:
