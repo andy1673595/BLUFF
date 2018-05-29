@@ -52,6 +52,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="4dp"
             android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,8 +64,7 @@
             android:id="@+id/image_home_button_gamepage"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:scaleType="fitXY"
             android:tint="@color/teal600"
             app:layout_constraintStart_toStartOf="parent"
@@ -104,17 +104,15 @@
             android:id="@+id/layout_show_player_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toTopOf="@+id/video_back_layout"
-            app:layout_constraintStart_toEndOf="@+id/image_home_button_gamepage">
+            app:layout_constraintEnd_toStartOf="@+id/layout_for_video_switch">
 
             <TextView
                 android:id="@+id/text_show_playerlist_button"
                 style="@style/TextPlayerJoinedForGamePage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
                 android:text="0/3"
                 android:textColor="@color/Cyan900"
                 android:textSize="18sp"
@@ -125,8 +123,8 @@
 
             <ImageView
                 android:id="@+id/image_show_player_list"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_letter_person"
@@ -154,7 +152,8 @@
                 android:text="目前玩家"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>
@@ -169,10 +168,11 @@
             android:id="@+id/image_catch"
             android:layout_width="40dp"
             android:layout_height="0dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="36dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_increae_dice"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/hand" />
 
         <ImageView
@@ -209,15 +209,42 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginEnd="4dp"
-            android:gravity="center"
+            android:gravity="center|end"
             android:textColor="@color/teal800"
             android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_game_state"
-            app:layout_constraintStart_toEndOf="@+id/image_catch"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="infromation" />
+            tools:text="資訊" />
+
+        <TextView
+            android:id="@+id/text_increase_dice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="喊"
+            android:textSize="18sp"
+            android:textColor="@color/teal800"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_increae_dice"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_catch_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="抓"
+            android:textSize="18sp"
+            android:textColor="@color/teal800"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_catch"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -230,19 +257,21 @@
         <ImageView
             android:id="@+id/image_table_dice1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintBottom_toTopOf="@+id/image_table_dice3"
             app:layout_constraintEnd_toStartOf="@+id/image_table_dice2"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_tell_player_information"
             app:srcCompat="@drawable/table_random_dice" />
 
         <ImageView
             android:id="@+id/image_table_dice3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_table_dice4"
             app:layout_constraintHorizontal_bias="0.5"
@@ -253,33 +282,51 @@
         <ImageView
             android:id="@+id/image_table_dice4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/image_table_dice3"
             app:layout_constraintEnd_toStartOf="@+id/image_table_dice5"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/image_table_dice3"
             app:layout_constraintTop_toTopOf="@+id/image_table_dice3"
+            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/table_random_dice" />
 
         <ImageView
             android:id="@+id/image_table_dice5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/image_table_dice4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/image_table_dice4"
             app:layout_constraintTop_toTopOf="@+id/image_table_dice4"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/table_random_dice" />
 
         <ImageView
             android:id="@+id/image_table_dice2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="40dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/image_table_dice1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/image_table_dice1"
             app:layout_constraintTop_toTopOf="@+id/image_table_dice1"
             app:srcCompat="@drawable/table_random_dice" />
+
+        <TextView
+            android:id="@+id/text_tell_player_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="下列是你的骰子"
+            android:textColor="@color/teal800"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>
