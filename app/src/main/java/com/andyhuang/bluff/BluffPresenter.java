@@ -85,7 +85,7 @@ public class BluffPresenter implements BluffContract.Presenter {
         if(friendProfileFragment!=null) removeFriendProfileFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.hide(mProfileFragment).hide(mFriendFragment)
-                .show(mMainHallFragment).commit();
+                .show(mMainHallFragment).addToBackStack(null).commit();
     }
 
     @Override
@@ -101,7 +101,7 @@ public class BluffPresenter implements BluffContract.Presenter {
         if(friendProfileFragment!=null) removeFriendProfileFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.hide(mFriendFragment).hide(mMainHallFragment)
-                .show(mProfileFragment).commit();
+                .show(mProfileFragment).addToBackStack(null).commit();
     }
 
     @Override
@@ -114,7 +114,8 @@ public class BluffPresenter implements BluffContract.Presenter {
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.mainFrameLayout,friendProfileFragment,FRIEND_PROFILE).show(friendProfileFragment)
-                    .hide(mFriendFragment).hide(mMainHallFragment).hide(mProfileFragment).commit();
+                    .hide(mFriendFragment).hide(mMainHallFragment).hide(mProfileFragment)
+                    .addToBackStack(null).commit();
     }
 
     @Override
@@ -133,12 +134,12 @@ public class BluffPresenter implements BluffContract.Presenter {
         gameInviteDialog.show();
     }
 
-    public void initFragment(){
+    public void initFragment() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.mainFrameLayout, mMainHallFragment, MAIN)
                 .add(R.id.mainFrameLayout, mProfileFragment, PROFILE)
-                .add(R.id.mainFrameLayout, mFriendFragment, FRIEND)
-                .hide(mProfileFragment).show(mFriendFragment).hide(mMainHallFragment).commit();
+                .add(R.id.mainFrameLayout, mFriendFragment, FRIEND).hide(mProfileFragment).hide(mMainHallFragment)
+                .show(mFriendFragment).commit();
     }
 
     public void listenGameInvite() {
