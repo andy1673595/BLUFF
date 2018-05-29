@@ -2,6 +2,8 @@ package com.andyhuang.bluff.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
@@ -20,6 +22,7 @@ import com.andyhuang.bluff.User.FacebookUserData;
 import com.andyhuang.bluff.User.FirebaseAccount;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.helper.ImageUtils;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -45,8 +48,7 @@ public class Login extends BaseActivity implements View.OnClickListener{
     private FacebookLoginCallback callback = loginCallback();
     private FacebookUserData userDataAPI;
     private ConstraintLayout layoutFBLogin;
-    private GetFacebookUserDataCallback facebookUserDataCallback = userDataCallback();
-    private FirebaseLoginCallback firebaseLoginCallback = firebaseCallback();
+    private ImageView imageFBLoginIcon;
 
 
     @Override
@@ -58,6 +60,11 @@ public class Login extends BaseActivity implements View.OnClickListener{
         textCreateButton = findViewById(R.id.text_create_account);
         accountInput = (EditText)findViewById(R.id.edit_login_account);
         passwordInput = (EditText)findViewById(R.id.edit_login_password);
+        imageFBLoginIcon = (ImageView)findViewById(R.id.image_fb_icon);
+        Bitmap bitmapIconFBLogin = BitmapFactory.decodeResource(Bluff.getContext().getResources(),
+                R.drawable.facebook_icon);
+        //set round corner
+        imageFBLoginIcon.setImageBitmap(ImageUtils.toRoundCorner(bitmapIconFBLogin,50,5));
         checkSharedPrefrence();
         imageLoginButton.setOnClickListener(this);
         textCreateButton.setOnClickListener(this);
@@ -83,8 +90,8 @@ public class Login extends BaseActivity implements View.OnClickListener{
                 //this is facebook account,don't show
                 accountInput.setText("");
                 passwordInput.setText("");
-                accountInput.setHint("請輸入信箱");
-                passwordInput.setHint("請輸入帳號");
+                accountInput.setHint("請輸入信箱登入");
+                passwordInput.setHint("請輸入密碼登入");
             } else {
                 //email account , show sharedprefrence
                 accountInput.setText(email);

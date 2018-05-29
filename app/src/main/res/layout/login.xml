@@ -28,23 +28,25 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout_fb_login"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginStart="24dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/text_fb_login_loginpage"
             android:layout_width="234dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="12dp"
-            android:background="@color/teal100"
+            android:background="@drawable/bg_text_fblogin"
             android:gravity="center"
-            android:text="使用Facebook登入"
+            android:text="使用 Facebook 登入"
             android:textColor="@color/teal500"
-            android:textSize="22sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_fb_icon" />
@@ -53,7 +55,6 @@
             android:id="@+id/image_fb_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="12dp"
             app:layout_constraintBottom_toBottomOf="@+id/text_fb_login_loginpage"
             app:layout_constraintEnd_toStartOf="@+id/text_fb_login_loginpage"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,12 +66,14 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginStart="8dp"
         android:hint="請輸入密碼登入"
         android:inputType="textPassword"
         android:textColor="@color/teal600"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout_fb_login"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout_fb_login" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/edit_login_account"
@@ -85,11 +88,11 @@
 
     <ImageView
         android:id="@+id/image_login_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="32dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_login_password"
+        app:layout_constraintBottom_toTopOf="@+id/text_create_account"
         app:layout_constraintStart_toEndOf="@+id/edit_login_account"
         app:srcCompat="@drawable/image_login_icon" />
 
@@ -97,12 +100,22 @@
         android:id="@+id/text_create_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:autoLink="web"
-        android:text="沒有帳號嗎?"
+        android:text="沒有帳號嗎? 創建一個帳號吧"
         android:textColor="@color/teal500"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/edit_login_password"
+        app:layout_constraintStart_toStartOf="@+id/edit_login_password"
         app:layout_constraintTop_toBottomOf="@+id/edit_login_password" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="366dp">
+
+    </android.support.constraint.ConstraintLayout>
 
 
 </android.support.constraint.ConstraintLayout>

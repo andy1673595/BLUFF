@@ -211,4 +211,9 @@ public class BluffPresenter implements BluffContract.Presenter {
         userDataRef.child(UserManager.getInstance().getUserUID()).child(Constants.IS_GAMING).onDisconnect().setValue(false);
     }
 
+    @Override
+    public void transToPrivacyPolicy() {
+
+    }
+
 }

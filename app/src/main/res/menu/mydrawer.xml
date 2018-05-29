@@ -3,20 +3,21 @@
     <group android:checkableBehavior="single">
         <item
 
-            android:id="@+id/item_one"
+            android:id="@+id/item_home"
             android:icon="@drawable/ic_home"
             android:iconTint="@color/teal600"
             android:title="大廳"
             ></item>
         <item
-            android:id="@+id/item_two"
+            android:id="@+id/item_friend"
             android:icon="@drawable/ic_friend_page"
             android:iconTint="@color/teal600"
             android:title="朋友列表"></item>
         <item
-            android:id="@+id/item_three"
+            android:id="@+id/item_profile"
             android:icon="@drawable/ic_profile_page"
             android:iconTint="@color/teal600"
             android:title="我的資料"></item>
     </group>
+
 </menu>

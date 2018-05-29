@@ -25,7 +25,6 @@ import static com.andyhuang.bluff.helper.ImageRounder.getRoundedCornerBitmap;
 public class ProfileFragment extends Fragment implements View.OnClickListener,ProfileContract.View {
     private ProfilePresenter mPresenter;
     private ImageView imageUserPhoto;
-    private String userPhotoURL = "https://graph.facebook.com/2164912640192440/picture?type=large";
     private TextView textTotalTimes;
     private TextView textTotalTwoPersonTimes;
     private TextView textWinRate;

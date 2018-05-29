@@ -95,6 +95,8 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         imageReadyStateButton.setOnClickListener(this);
         imageHomeBackButton.setOnClickListener(this);
         layoutPlayerList.setOnClickListener(this);
+        //set switch un clickable to avoid too frequency click
+        switchForVideo.setClickable(false);
         //read bundle from MainActivity
         readIntent();
         mPrsenter = new GamePagePresenter(this);

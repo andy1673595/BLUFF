@@ -61,13 +61,13 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.item_one:
+                    case R.id.item_home:
                         mPresenter.transToMainPage();
                         break;
-                    case R.id.item_two:
+                    case R.id.item_friend:
                         mPresenter.transToFriendPage();
                         break;
-                    case R.id.item_three:
+                    case R.id.item_profile:
                         mPresenter.transToProfilePage();
                         break;
                 }

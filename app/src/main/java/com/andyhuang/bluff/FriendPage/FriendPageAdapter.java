@@ -42,10 +42,6 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         String colorBackgroun[] = {"#E0F2F1","#B2DFDB"};
         String colorText[] = {"#00796B","#00695C"};
-        String colorBackground01 = "#E0F2F1";
-        String colorBackground02 = "#B2DFDB";
-        String colorText01 = "#00796B";
-        String colorText02 = "#00695C";
         if(position >= checkBoxResetList.size()) {
             checkBoxResetList.add(false);
         }
@@ -62,6 +58,12 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
            }
         }
 
+        if(checkBoxResetList.get(position)) {
+            holder.checkBoxForInviteGame.setChecked(true);
+        }else {
+            holder.checkBoxForInviteGame.setChecked(false);
+        }
+
       // holder.imageFriendPhoto.setOutlineProvider(new UserOutlineProvider());
         if (!friendPhoto.equals(Constants.NODATA)) {
             holder.imageFriendPhoto.setTag(friendPhoto);
@@ -72,12 +74,14 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
 
         if(friendInformation.isFriendInvite()) {
             //this is friend invite item
-            holder.imageLeftIcon.setImageResource(R.drawable.ic_ok);
-            holder.imageRightIcon.setImageResource(R.drawable.ic_refuse);
+            holder.imageLeftIcon.setVisibility(View.VISIBLE);
+            holder.imageRightIcon.setVisibility(View.VISIBLE);
+            holder.checkBoxForInviteGame.setVisibility(View.INVISIBLE);
         }else {
             //this is friend item
-            holder.imageLeftIcon.setImageResource(R.drawable.ic_drink);
-            holder.imageRightIcon.setImageResource(R.drawable.ic_profile);
+            holder.imageLeftIcon.setVisibility(View.INVISIBLE);
+            holder.imageRightIcon.setVisibility(View.INVISIBLE);
+            holder.checkBoxForInviteGame.setVisibility(View.VISIBLE);
         }
 
         //set color
@@ -104,6 +108,7 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
             checkBoxForInviteGame.setOnCheckedChangeListener(this);
             imageLeftIcon.setOnClickListener(this);
             imageRightIcon.setOnClickListener(this);
+            imageFriendPhoto.setOnClickListener(this);
         }
 
         @Override
@@ -115,9 +120,6 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
                     if(listFriend.get(position).isFriendInvite()) {
                         //this is friend invite, right icon means cancel
                         mPresenter.refuseInvite(position);
-                    }else {
-                        //this is friend item, right icon means look friend Profile
-                        friendPageView.showFriendProfile(listFriend.get(position).getUID());
                     }
                     break;
                 case R.id.image_left_icon_friend_listitem:
@@ -125,6 +127,10 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
                         //this is friend invite ,left icon means accept
                         mPresenter.acceptInvite(position);
                     }
+                    break;
+                case R.id.image_user_photo_friend_invite:
+                    //click photo to  look friend Profile
+                    friendPageView.showFriendProfile(listFriend.get(position).getUID());
                     break;
             }
         }
