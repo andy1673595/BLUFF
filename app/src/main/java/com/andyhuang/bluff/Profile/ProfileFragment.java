@@ -77,7 +77,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Pr
         new ImageFromLruCache().set(imageUserPhoto, photoUrl,10000f);
         textUserName.setText(userName);
         textComment.setText(comment);
-        textUserEmail.setText(userEmail);
+        textUserEmail.setText("Email : "+userEmail);
     }
 
     @Override

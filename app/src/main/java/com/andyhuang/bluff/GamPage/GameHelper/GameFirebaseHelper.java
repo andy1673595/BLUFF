@@ -242,7 +242,6 @@ public class GameFirebaseHelper {
         if(gamerList.size()==2) {
             gameResult.updateToFirebase(gamerList,gameEndInformation);
         }
-
         gameResult.updateOnlyTimesToFirebase(gamerList);
 
 

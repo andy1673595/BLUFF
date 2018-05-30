@@ -194,10 +194,11 @@
             android:id="@+id/imageView4"
             android:layout_width="385dp"
             android:layout_height="259dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/profile_comment_background"
-            tools:layout_editor_absoluteY="90dp" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+            app:srcCompat="@drawable/profile_comment_background" />
 
         <TextView
             android:id="@+id/text_comment_profile"

@@ -29,6 +29,7 @@ import com.andyhuang.bluff.GamPage.GamerJoinedDialog.PlayerJoinedDialog;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.GamPage.GameObject.CurrentInformation;
 import com.andyhuang.bluff.Util.ConstantForWebRTC;
+import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.webRTC.PercentFrameLayout;
 import org.webrtc.EglBase;
 import org.webrtc.RendererCommon;
@@ -51,7 +52,9 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private boolean isHost;
     private GamePagePresenter mPrsenter;
     private ImageView imageIncreaseDiceButton;
+    private ConstraintLayout layoutIncreaseDice;
     private ImageView imageCatchButton;
+    private ConstraintLayout layoutCatch;
     private ImageView imageReadyStateButton;
     private ImageView[] imageDiceArray;
     private int[] diceImageSourceArray;
@@ -120,7 +123,9 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
                 (ImageView)findViewById(R.id.image_table_dice4),
                 (ImageView)findViewById(R.id.image_table_dice5)};
         imageIncreaseDiceButton = (ImageView)findViewById(R.id.image_increae_dice);
+        layoutIncreaseDice = (ConstraintLayout)findViewById(R.id.layout_increase_dice);
         imageCatchButton = (ImageView)findViewById(R.id.image_catch);
+        layoutCatch = (ConstraintLayout)findViewById(R.id.layout_catch);
         imageReadyStateButton = (ImageView)findViewById(R.id.image_game_state);
         textShowInformation =(TextView)findViewById(R.id.text_show_current_info);
         imageHomeBackButton = (ImageView)findViewById(R.id.image_home_button_gamepage);
@@ -286,11 +291,19 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
 
     @Override
     public void refreshCatchAndIncreaseUI(boolean increaseVisible, boolean catchVisible) {
-        if(increaseVisible)  imageIncreaseDiceButton.setVisibility(View.VISIBLE);
-        else  imageIncreaseDiceButton.setVisibility(View.INVISIBLE);
+        if(increaseVisible)  {
+            layoutIncreaseDice.setVisibility(View.VISIBLE);
+        }
+        else  {
+            layoutIncreaseDice.setVisibility(View.INVISIBLE);
+        }
 
-        if(catchVisible) imageCatchButton.setVisibility(View.VISIBLE);
-        else imageCatchButton.setVisibility(View.INVISIBLE);
+        if(catchVisible) {
+            layoutCatch.setVisibility(View.VISIBLE);
+        }
+        else {
+            layoutCatch.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
