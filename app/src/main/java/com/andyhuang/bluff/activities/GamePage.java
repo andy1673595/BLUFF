@@ -92,8 +92,8 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         initView();
         //set OnclickListener and Visibility
         imageIncreaseDiceButton.setOnClickListener(this);
-        imageIncreaseDiceButton.setVisibility(View.INVISIBLE);
-        imageCatchButton.setVisibility(View.INVISIBLE);
+        layoutIncreaseDice.setVisibility(View.INVISIBLE);
+        layoutCatch.setVisibility(View.INVISIBLE);
         imageCatchButton.setOnClickListener(this);
         imageReadyStateButton.setOnClickListener(this);
         imageHomeBackButton.setOnClickListener(this);

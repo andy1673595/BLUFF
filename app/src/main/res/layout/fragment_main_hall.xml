@@ -590,7 +590,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/bronze_trophy" />
-
             <ImageView
                 android:id="@+id/image_user_photo_win_number3"
                 android:layout_width="36dp"

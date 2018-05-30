@@ -21,15 +21,11 @@ public class UpdateGameResult {
                     if(dataSnapshot.getKey().equals(gameEndInformation.getWinnerUID())) {
                         int countWinTimes = (int)(long)dataSnapshot.child(Constants.GAME_RESULT)
                                 .child(Constants.WIN_TIMES).getValue();
-                        int countLoseTimes = (int)(long)dataSnapshot.child(Constants.GAME_RESULT)
-                                .child(Constants.WIN_TIMES).getValue();
                         //update win times +1
                         userDataRef.child(gamer.getUserUID()).child(Constants.GAME_RESULT)
                                 .child(Constants.WIN_TIMES).setValue(countWinTimes+1);
 
                     } else {
-                        int countWinTimes = (int)(long)dataSnapshot.child(Constants.GAME_RESULT)
-                                .child(Constants.WIN_TIMES).getValue();
                         int countLoseTimes = (int)(long)dataSnapshot.child(Constants.GAME_RESULT)
                                 .child(Constants.LOSE_TIMES).getValue();
                         //update lose times +1
