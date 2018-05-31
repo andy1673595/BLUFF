@@ -5,6 +5,7 @@ import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.Callback.GameInviteForFriendFragmentCallback;
 import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
+import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.Object.MapFromFirebaseToFriendList;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
@@ -232,7 +233,14 @@ public class FriendPresenter implements FriendContract.Presenter {
             if(creatRoom) {
                 for(String friendUID : UIDlistForInvite) {
                     //send game invite
-                    myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_INVITE)
+                    InviteInformation inviteInformation = new InviteInformation();
+                    inviteInformation.setGameInvite(myUID);
+                    inviteInformation.setGameRoom(gameNumber+myUID);
+                    inviteInformation.setUserEmail(UserManager.getInstance().getEmail());
+                    inviteInformation.setUserPhoto(UserManager.getInstance().getUserPhotoUrl());
+                    inviteInformation.setUserName(UserManager.getInstance().getUserName());
+                    myRef.child(friendUID).child(Constants.GAME).setValue(inviteInformation);
+                /*    myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_INVITE)
                             .setValue(myUID);
                     myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_ROOM)
                             .setValue(""+gameNumber+myUID);
@@ -241,7 +249,7 @@ public class FriendPresenter implements FriendContract.Presenter {
                     myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_PHOTO_FIREBASE)
                             .setValue(UserManager.getInstance().getUserPhotoUrl());
                     myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_NAME_FIREBASE)
-                            .setValue(UserManager.getInstance().getUserName());
+                            .setValue(UserManager.getInstance().getUserName());*/
                 }
 
                 //increase the gameID to server

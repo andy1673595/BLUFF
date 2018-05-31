@@ -8,6 +8,7 @@ import android.support.annotation.StringDef;
 
 import com.andyhuang.bluff.FriendPage.FriendFragment;
 import com.andyhuang.bluff.Dialog.GameInviteDialog.GameInviteDialog;
+import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.RankPage.RankPageFragment;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Profile.ProfileFragment;
@@ -157,27 +158,16 @@ public class BluffPresenter implements BluffContract.Presenter {
 
     public void listenGameInvite() {
         refUserData.child(UserManager.getInstance().getUserUID())
-                .child(Constants.GAME).addChildEventListener(new ChildEventListener() {
+                .addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if(dataSnapshot.getKey().equals(Constants.GAME_INVITE)) {
-                    UIDGameInvite = (String) dataSnapshot.getValue();
-                }else if(dataSnapshot.getKey().equals(Constants.GAME_ROOM)) {
-                    numberOfGameRoom = (String) dataSnapshot.getValue();
-                }else if(dataSnapshot.getKey().equals(Constants.USER_EMAIL_FIREBASE)) {
-                    emailFromGameInvite = (String)dataSnapshot.getValue();
-                }else if(dataSnapshot.getKey().equals(Constants.USER_PHOTO_FIREBASE)) {
-                    userPhotoURLGameInvite = (String)dataSnapshot.getValue();
-                    hasReadPhoto = true;
-                } else if(dataSnapshot.getKey().equals(Constants.USER_NAME_FIREBASE)) {
-                    nameInvite =  (String)dataSnapshot.getValue();
-                }
-                //get all game invite information, start to show dialog
-                if(! ( UIDGameInvite.equals(Constants.NODATA)||
-                        numberOfGameRoom.equals(Constants.NODATA)||
-                        emailFromGameInvite.equals(Constants.NODATA)||
-                        nameInvite.equals(Constants.NODATA)||
-                        !hasReadPhoto)) {
+                if(dataSnapshot.getKey().equals(Constants.GAME)) {
+                    InviteInformation inviteInformation = dataSnapshot.getValue(InviteInformation.class);
+                    UIDGameInvite = inviteInformation.getGameInvite();
+                    numberOfGameRoom = inviteInformation.getGameRoom();
+                    emailFromGameInvite = inviteInformation.getUserEmail();
+                    userPhotoURLGameInvite = inviteInformation.getUserPhoto();
+                    nameInvite = inviteInformation.getUserName();
                     showGameInviteDialog();
                 }
             }
