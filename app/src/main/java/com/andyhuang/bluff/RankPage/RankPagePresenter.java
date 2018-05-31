@@ -1,17 +1,16 @@
-package com.andyhuang.bluff.MainHallPage;
+package com.andyhuang.bluff.RankPage;
 
 import com.andyhuang.bluff.Object.UserDataForRank;
-import com.andyhuang.bluff.activities.MainHallPage;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainHallPresenter implements MainHallContract.presenter {
-    MainHallContract.view mainHallview;
-    MainHallFirebaseHelper mFirebaseHelper;
-    public MainHallPresenter(MainHallContract.view view) {
+public class RankPagePresenter implements RankPageContract.presenter {
+    RankPageContract.view mainHallview;
+    RankPageFirebaseHelper mFirebaseHelper;
+    public RankPagePresenter(RankPageContract.view view) {
         mainHallview = view;
-        mFirebaseHelper = new MainHallFirebaseHelper(this);
+        mFirebaseHelper = new RankPageFirebaseHelper(this);
     }
     @Override
     public void start() {

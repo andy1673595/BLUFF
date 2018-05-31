@@ -27,10 +27,6 @@ public class GameInvitePrsenter implements GameInviteContract.presenter{
         //accept , join the game
         refGameData.child(roomID).child(Constants.GAMER_FIREBASE)
                 .child(UserManager.getInstance().getUserUID()).setValue(me);
-        //dismiss the dialog view
-       // dialog.dismiss();
-
-
     }
 
 

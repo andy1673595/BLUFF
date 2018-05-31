@@ -5,11 +5,10 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.StringDef;
-import android.util.Log;
 
 import com.andyhuang.bluff.FriendPage.FriendFragment;
 import com.andyhuang.bluff.GameInviteDialog.GameInviteDialog;
-import com.andyhuang.bluff.MainHallPage.MainHallFragment;
+import com.andyhuang.bluff.RankPage.RankPageFragment;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Profile.ProfileFragment;
 import com.andyhuang.bluff.RandomGame.RandomGameHelper;
@@ -23,12 +22,11 @@ import com.firebase.client.FirebaseError;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.Map;
 
 public class BluffPresenter implements BluffContract.Presenter {
     private BluffContract.View bluffView;
     private FragmentManager fragmentManager;
-    private MainHallFragment mMainHallFragment;
+    private RankPageFragment mRankPageFragment;
     private ProfileFragment mProfileFragment;
     private FriendFragment mFriendFragment;
     private ProfileFragment friendProfileFragment;
@@ -58,7 +56,7 @@ public class BluffPresenter implements BluffContract.Presenter {
         fragmentManager = fragmentManagerInput;
         activity = activityInput;
         bluffView.setPresenter(this);
-        mMainHallFragment = new MainHallFragment();
+        mRankPageFragment = new RankPageFragment();
         mProfileFragment = new ProfileFragment();
         mFriendFragment = new FriendFragment();
         //set UID to profile fragment
@@ -87,14 +85,14 @@ public class BluffPresenter implements BluffContract.Presenter {
         if(friendProfileFragment!=null) removeFriendProfileFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.hide(mProfileFragment).hide(mFriendFragment)
-                .show(mMainHallFragment).addToBackStack(null).commit();
+                .show(mRankPageFragment).addToBackStack(null).commit();
     }
 
     @Override
     public void transToFriendPage() {
         if(friendProfileFragment!=null) removeFriendProfileFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.hide(mProfileFragment).hide(mMainHallFragment)
+        transaction.hide(mProfileFragment).hide(mRankPageFragment)
                 .show(mFriendFragment).commit();
     }
 
@@ -102,7 +100,7 @@ public class BluffPresenter implements BluffContract.Presenter {
     public void transToProfilePage() {
         if(friendProfileFragment!=null) removeFriendProfileFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.hide(mFriendFragment).hide(mMainHallFragment)
+        transaction.hide(mFriendFragment).hide(mRankPageFragment)
                 .show(mProfileFragment).addToBackStack(null).commit();
     }
 
@@ -116,7 +114,7 @@ public class BluffPresenter implements BluffContract.Presenter {
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.mainFrameLayout,friendProfileFragment,FRIEND_PROFILE).show(friendProfileFragment)
-                    .hide(mFriendFragment).hide(mMainHallFragment).hide(mProfileFragment)
+                    .hide(mFriendFragment).hide(mRankPageFragment).hide(mProfileFragment)
                     .addToBackStack(null).commit();
     }
 
@@ -124,7 +122,7 @@ public class BluffPresenter implements BluffContract.Presenter {
     public void removeFriendProfileFragment() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.remove(friendProfileFragment).show(mFriendFragment)
-                .hide(mMainHallFragment).hide(mProfileFragment).commit();
+                .hide(mRankPageFragment).hide(mProfileFragment).commit();
         friendProfileFragment = null;
     }
 
@@ -134,13 +132,25 @@ public class BluffPresenter implements BluffContract.Presenter {
         inviter.setUserName(nameInvite);
         gameInviteDialog = new GameInviteDialog((Activity)bluffView,this,inviter,numberOfGameRoom);
         gameInviteDialog.show();
+        removeSequenceForRandomGame();
+    }
+
+    public void removeSequenceForRandomGame() {
+        String sequenceID = UserManager.getInstance().getSequenceID();
+        if(!sequenceID.equals(Constants.NODATA)) {
+            //if I am invited from random game , remove the sequence from server
+            Firebase randomGameRef =
+                    new Firebase("https://myproject-556f6.firebaseio.com/"+ Constants.RANDOM_GAME);
+            randomGameRef.child(sequenceID).removeValue();
+            UserManager.getInstance().setSequenceID(Constants.NODATA);
+        }
     }
 
     public void initFragment() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.mainFrameLayout, mMainHallFragment, MAIN)
+        transaction.add(R.id.mainFrameLayout, mRankPageFragment, MAIN)
                 .add(R.id.mainFrameLayout, mProfileFragment, PROFILE)
-                .add(R.id.mainFrameLayout, mFriendFragment, FRIEND).hide(mProfileFragment).hide(mMainHallFragment)
+                .add(R.id.mainFrameLayout, mFriendFragment, FRIEND).hide(mProfileFragment).hide(mRankPageFragment)
                 .show(mFriendFragment).commit();
     }
 
@@ -204,7 +214,7 @@ public class BluffPresenter implements BluffContract.Presenter {
 
     @Override
     public void setGameInformationAndGetIntoRoom(String RoomID,int playerInvitedTotal) {
-        bluffView.showGamePage(RoomID,playerInvitedTotal);
+        bluffView.showGamePage(RoomID,playerInvitedTotal,false);
     }
 
     @Override
@@ -223,8 +233,17 @@ public class BluffPresenter implements BluffContract.Presenter {
     public void startRandomGame() {
         RandomGameHelper randomGameHelper = new RandomGameHelper(this);
         randomGameHelper.updateMyDataToRandomSequence();
+    }
 
+    @Override
+    public void showGamePageFromRandom(String gameRoomID, int personTotal) {
+        //I'm the inviter from random game
+        bluffView.showGamePage(gameRoomID,personTotal,true);
+    }
 
+    @Override
+    public void showErrorDialogFromRandom(String message) {
+        bluffView.showErrorInviteDialogFromRandom(message);
     }
 
 }

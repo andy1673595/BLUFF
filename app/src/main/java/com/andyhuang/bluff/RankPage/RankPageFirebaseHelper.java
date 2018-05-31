@@ -1,6 +1,5 @@
-package com.andyhuang.bluff.MainHallPage;
+package com.andyhuang.bluff.RankPage;
 
-import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Object.UserDataForRank;
 import com.andyhuang.bluff.Util.Constants;
 import com.firebase.client.DataSnapshot;
@@ -10,14 +9,14 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.LinkedList;
 
-public class MainHallFirebaseHelper {
-    MainHallPresenter mPresenter;
+public class RankPageFirebaseHelper {
+    RankPagePresenter mPresenter;
     private Firebase userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData/");
     //list for three type rank
     LinkedList<UserDataForRank> userListWinRank = new LinkedList<>();
     LinkedList<UserDataForRank> userListTotalRank= new LinkedList<>();
     LinkedList<UserDataForRank> userListRateRank= new LinkedList<>();
-    public MainHallFirebaseHelper(MainHallPresenter presenter) {
+    public RankPageFirebaseHelper(RankPagePresenter presenter) {
         mPresenter = presenter;
     }
 

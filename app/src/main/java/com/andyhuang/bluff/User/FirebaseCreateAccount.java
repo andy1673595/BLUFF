@@ -57,11 +57,8 @@ public class FirebaseCreateAccount {
                             userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
                             userDataRef.child(userUID).child(Constants.ONLINE_STATE).setValue(true);
                             userDataRef.child(userUID).child(Constants.IS_GAMING).setValue(false);
-                            //save data to sharedPrefrence and Usermanage
-                            saveUserData();
                             //save data to firebase
                             updateToFireBase(callback);
-
                         } else {
                             Toast.makeText(mCreatePage, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             callback.loginFail();
@@ -70,7 +67,7 @@ public class FirebaseCreateAccount {
                 });
     }
 
-    public void saveUserData() {
+    public void saveUserData(FirebaseLoginCallback callback) {
         Bluff.getContext().getSharedPreferences(Constants.TAG_FOR_SHAREDPREFREENCE,mCreatePage.MODE_PRIVATE).edit()
                 .putString(Constants.USER_EMAIL_SHAREDPREFREENCE,userEmail)
                 .putString(Constants.USER_PASSWORD_SHAREDPREFREENCE,userPassword)
@@ -81,17 +78,19 @@ public class FirebaseCreateAccount {
         UserManager.getInstance().setPassword(userPassword);
         UserManager.getInstance().setUserUID(userUID);
         UserManager.getInstance().setUserName(userName);
+        callback.completed();
     }
 
     public void updateToFireBase(FirebaseLoginCallback callback) {
-        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_EMAIL_FIREBASE).setValue(userEmail);
-        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_NAME_FIREBASE).setValue(userName);
-        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_PHOTO_FIREBASE).setValue(userPhotoURL);
-        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.USER_COMMENT_FIREBASE).setValue(Constants.NODATA);
+        userDataRef.child(userUID).child(Constants.USER_EMAIL_FIREBASE).setValue(userEmail);
+        userDataRef.child(userUID).child(Constants.USER_NAME_FIREBASE).setValue(userName);
+        userDataRef.child(userUID).child(Constants.USER_PHOTO_FIREBASE).setValue(userPhotoURL);
+        userDataRef.child(userUID).child(Constants.USER_COMMENT_FIREBASE).setValue(Constants.NODATA);
         //intial game result data
-        dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT)
+        userDataRef.child(userUID).child(Constants.GAME_RESULT)
                 .setValue(new GameResult() );
         //completed create account , start MainActivity
-        callback.completed();
+        saveUserData(callback);
+
     }
 }

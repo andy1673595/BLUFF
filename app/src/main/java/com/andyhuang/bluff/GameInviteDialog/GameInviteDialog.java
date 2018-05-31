@@ -49,7 +49,7 @@ public class GameInviteDialog extends Dialog implements View.OnClickListener{
                 dismiss();
                 break;
             case R.id.image_refuse_invite_game:
-              //  mPresenter.refuseInvite();
+              // TODO mPresenter.refuseInvite();
                 dismiss();
                 break;
             default:

@@ -2,8 +2,8 @@ package com.andyhuang.bluff;
 
 public interface BluffContract {
     interface View extends BaseView {
-        void showGamePage(String gameRoomID,int gamerInvitedTotal);
-
+        void showGamePage(String gameRoomID,int gamerInvitedTotal,boolean isHost);
+        void showErrorInviteDialogFromRandom(String message);
     }
     interface Presenter extends BasePresenter {
         void transToMainPage();
@@ -17,5 +17,7 @@ public interface BluffContract {
         void setDisconnectWhenGetOutline();
         void transToPrivacyPolicy();
         void startRandomGame();
+        void showGamePageFromRandom(String s, int i);
+        void showErrorDialogFromRandom(String message);
     }
 }

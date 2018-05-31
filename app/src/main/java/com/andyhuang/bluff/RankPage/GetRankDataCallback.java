@@ -1,4 +1,4 @@
-package com.andyhuang.bluff.MainHallPage;
+package com.andyhuang.bluff.RankPage;
 
 import com.andyhuang.bluff.Object.UserDataForRank;
 

@@ -16,6 +16,7 @@ public class UserManager {
     private String userUID = Constants.NODATA;
     private String userName = Constants.NODATA;
     private String facebookID = Constants.NODATA;
+    private String sequenceID = Constants.NODATA;
 
     private static final UserManager ourInstance = new UserManager();
 
@@ -105,5 +106,13 @@ public class UserManager {
 
     public void setFacebookID(String facebookID) {
         this.facebookID = facebookID;
+    }
+
+    public String getSequenceID() {
+        return sequenceID;
+    }
+
+    public void setSequenceID(String sequenceID) {
+        this.sequenceID = sequenceID;
     }
 }

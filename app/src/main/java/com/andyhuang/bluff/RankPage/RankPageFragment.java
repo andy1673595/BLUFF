@@ -1,4 +1,4 @@
-package com.andyhuang.bluff.MainHallPage;
+package com.andyhuang.bluff.RankPage;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -9,24 +9,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Object.UserDataForRank;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.helper.ImageFromLruCache;
 
 import java.util.LinkedList;
-import java.util.List;
 
-public class MainHallFragment extends Fragment implements MainHallContract.view {
-    MainHallPresenter mPresenter;
+public class RankPageFragment extends Fragment implements RankPageContract.view {
+    RankPagePresenter mPresenter;
     ImageView imageUserPhotoArray[];
     TextView textUserNameArray[];
     TextView textInfoArray[];
     View root;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_main_hall, container, false);
-        mPresenter = new MainHallPresenter(this);
+        root = inflater.inflate(R.layout.fragment_rank_page, container, false);
+        mPresenter = new RankPagePresenter(this);
         initVIew();
         //get the rank data from firebase
         mPresenter.getRankDataFromFirebase();

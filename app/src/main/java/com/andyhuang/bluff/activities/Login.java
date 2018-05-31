@@ -32,13 +32,8 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 
 public class Login extends BaseActivity implements View.OnClickListener{
     private ImageView imageLoginButton;
@@ -135,12 +130,8 @@ public class Login extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == Constants.CLOSE_ACTIVITY) {
-            //close login page
-            this.finish();
-        }
+            super.onActivityResult(requestCode, resultCode, data);
+            callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     //facebook login
@@ -226,5 +217,14 @@ public class Login extends BaseActivity implements View.OnClickListener{
         //切換Activity
         startActivity(intent);
     }
+
+    @Override
+    protected void onResume() {
+        boolean sholdStartMainActivity = this.getIntent().getBooleanExtra("closeActivity",false);
+        //come from create account page, completed sign up and start main activity
+        if(sholdStartMainActivity) startMainHallActiviry();
+        super.onResume();
+    }
+
 
 }

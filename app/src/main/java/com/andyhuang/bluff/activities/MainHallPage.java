@@ -23,6 +23,7 @@ import com.andyhuang.bluff.BluffContract;
 import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.Callback.ChangeUserPhotoCompletedCallback;
 import com.andyhuang.bluff.FriendPage.FragmentListener;
+import com.andyhuang.bluff.FriendPage.IniviteErrorDialog;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.helper.ChangeUserPhotoHelper;
@@ -120,14 +121,20 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
     }
 
     @Override
-    public void showGamePage(String gameID,int gamerInvitedTotal) {
+    public void showGamePage(String gameID,int gamerInvitedTotal,boolean isHost) {
         Intent intent = new Intent();
         intent.setClass(this,GamePage.class);
         intent.putExtra("gameID",gameID);
         //I am invitee , set is Host false
-        intent.putExtra("isHost",false);
+        intent.putExtra("isHost",isHost);
         intent.putExtra("playerCount",gamerInvitedTotal);
         startActivity(intent);
+    }
+
+    @Override
+    public void showErrorInviteDialogFromRandom(String message) {
+        IniviteErrorDialog dialog = new IniviteErrorDialog(this,message);
+        dialog.show();
     }
 
     @Override

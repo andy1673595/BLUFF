@@ -1,14 +1,12 @@
-package com.andyhuang.bluff.MainHallPage;
+package com.andyhuang.bluff.RankPage;
 
 import com.andyhuang.bluff.BasePresenter;
 import com.andyhuang.bluff.BaseView;
-import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Object.UserDataForRank;
 
 import java.util.LinkedList;
-import java.util.List;
 
-public interface MainHallContract {
+public interface RankPageContract {
     interface view extends BaseView {
         void freshUI(LinkedList<UserDataForRank> userListWinRank, int type);
     }

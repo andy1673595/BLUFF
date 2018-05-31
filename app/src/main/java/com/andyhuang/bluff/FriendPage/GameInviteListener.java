@@ -28,7 +28,6 @@ public class GameInviteListener implements com.google.firebase.database.ValueEve
                     //user is playing game, don't send invite
                     String errorMessage = "玩家 " + friendName + "\n目前正在進行一場遊戲";
                     callback.showError(errorMessage);
-
                 }
                 if(isLast) {
                     callback.openRoom();

@@ -75,6 +75,7 @@ public class Constants {
     //Activity request code
     //Constant for Login activity callback request code
     public static int CLOSE_ACTIVITY = 2;
+    public static int COMPLETED_SIGN_UP = 5;
     //Constant for change user photo
     public static final int GET_PHOTO_FROM_GALLERY =3;
     public static final int GET_PHOTO_CROP =4;
@@ -82,6 +83,7 @@ public class Constants {
 
     //Constant for random games
     public static String RANDOM_GAME = "randomGame";
+    public static String SEQUENCE_STATE = "SequenceState";
 
     //float radius of dialog
     public static float DIALOG_RADIUS = 70f;
