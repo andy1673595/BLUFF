@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/modify_comment_background"
+        android:id="@+id/image_game_end_dialog_background"
         android:layout_width="329dp"
         android:layout_height="400dp"
         android:layout_marginBottom="12dp"
@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/increase_dialog_back_2" />
 
     <TextView
-        android:id="@+id/text_modify_comment_title"
+        android:id="@+id/text_game_end_dialog_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -28,9 +28,9 @@
         android:text="遊戲結束"
         android:textColor="@color/teal600"
         android:textSize="32sp"
-        app:layout_constraintEnd_toEndOf="@+id/modify_comment_background"
-        app:layout_constraintStart_toStartOf="@+id/modify_comment_background"
-        app:layout_constraintTop_toTopOf="@+id/modify_comment_background" />
+        app:layout_constraintEnd_toEndOf="@+id/image_game_end_dialog_background"
+        app:layout_constraintStart_toStartOf="@+id/image_game_end_dialog_background"
+        app:layout_constraintTop_toTopOf="@+id/image_game_end_dialog_background" />
 
     <TextView
         android:id="@+id/text_end_game_info"
@@ -42,9 +42,9 @@
         android:gravity="center"
         android:textColor="@color/teal800"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/modify_comment_background"
-        app:layout_constraintStart_toStartOf="@+id/modify_comment_background"
-        app:layout_constraintTop_toBottomOf="@+id/text_modify_comment_title"
+        app:layout_constraintEnd_toEndOf="@+id/image_game_end_dialog_background"
+        app:layout_constraintStart_toStartOf="@+id/image_game_end_dialog_background"
+        app:layout_constraintTop_toBottomOf="@+id/text_game_end_dialog_title"
         tools:text="結束訊息" />
 
     <Button
@@ -55,11 +55,11 @@
         android:layout_marginStart="24dp"
         android:text="新開一局"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/button_quit_edit_comment"
-        app:layout_constraintStart_toStartOf="@+id/modify_comment_background" />
+        app:layout_constraintBottom_toBottomOf="@+id/button_leave_room"
+        app:layout_constraintStart_toStartOf="@+id/image_game_end_dialog_background" />
 
     <Button
-        android:id="@+id/button_quit_edit_comment"
+        android:id="@+id/button_leave_room"
         style="@style/MyButtonInDiceDialog"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
         android:layout_marginEnd="24dp"
         android:text="離開房間"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/modify_comment_background"
-        app:layout_constraintEnd_toEndOf="@+id/modify_comment_background" />
+        app:layout_constraintBottom_toBottomOf="@+id/image_game_end_dialog_background"
+        app:layout_constraintEnd_toEndOf="@+id/image_game_end_dialog_background" />
 
 </android.support.constraint.ConstraintLayout>

@@ -2,6 +2,8 @@ package com.andyhuang.bluff.GamPage.IncreaseDiceDialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
@@ -11,6 +13,9 @@ import android.widget.TextView;
 
 import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
 import com.andyhuang.bluff.R;
+import com.andyhuang.bluff.Util.Constants;
+
+import static com.andyhuang.bluff.helper.ImageRounder.getRoundedCornerBitmap;
 
 public class IncreaseDiceDialog extends Dialog
         implements IncreaseDiceDialogContract.View ,View.OnClickListener{
@@ -25,11 +30,18 @@ public class IncreaseDiceDialog extends Dialog
     private Button buttonDecreaseOne;
     private int[] diceImageSourceArray;
     private IncreasrDiceDialogPresenter mPresenter;
+    private ImageView imageBackground;
 
     public IncreaseDiceDialog(@NonNull Context context,GameFirebaseHelper helper) {
         super(context, R.style.MyDialogStyle);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.increase_dice_dialog);
+        //set round Corner
+        imageBackground = findViewById(R.id.image_increase_dialog_background);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
+                R.drawable.increase_dialog_back_2);
+        imageBackground.setImageBitmap(getRoundedCornerBitmap(bitmap, Constants.DIALOG_RADIUS));
+
         mContext = context;
         textInfoToPlayer = (TextView)findViewById(R.id.text_increase_dice_dialog);
         textDiceCount = (TextView)findViewById(R.id.text_dice_count);

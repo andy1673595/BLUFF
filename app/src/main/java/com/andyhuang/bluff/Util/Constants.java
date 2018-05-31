@@ -83,5 +83,9 @@ public class Constants {
     //Constant for random games
     public static String RANDOM_GAME = "randomGame";
 
+    //float radius of dialog
+    public static float DIALOG_RADIUS = 70f;
+
+
 
 }

@@ -191,7 +191,7 @@
             app:srcCompat="@drawable/shadow" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/image_comment_background"
             android:layout_width="385dp"
             android:layout_height="259dp"
             android:layout_marginTop="20dp"
@@ -210,7 +210,7 @@
             android:textColor="@color/teal800"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView4" />
+            app:layout_constraintTop_toTopOf="@+id/image_comment_background" />
 
         <ImageView
             android:id="@+id/image_modify_comment_button"
@@ -221,7 +221,7 @@
             android:padding="4dp"
             android:tint="@color/teal600"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView4"
+            app:layout_constraintTop_toTopOf="@+id/image_comment_background"
             app:srcCompat="@drawable/ic_create_black_24dp" />
 
     </android.support.constraint.ConstraintLayout>

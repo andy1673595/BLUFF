@@ -2,6 +2,8 @@ package com.andyhuang.bluff.GameInviteDialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
@@ -12,6 +14,9 @@ import android.widget.TextView;
 import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.R;
+import com.andyhuang.bluff.Util.Constants;
+
+import static com.andyhuang.bluff.helper.ImageRounder.getRoundedCornerBitmap;
 
 public class GameInviteDialog extends Dialog implements View.OnClickListener{
     private GameInvitePrsenter mPresenter;
@@ -25,7 +30,6 @@ public class GameInviteDialog extends Dialog implements View.OnClickListener{
         inviter = inviterInput;
         roomID = roomIDInput;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.dialog_game_invite);
         mContext = context;
         bluffPresenter = bluffPresenterInput;

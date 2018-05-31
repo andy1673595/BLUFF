@@ -20,6 +20,7 @@ import com.andyhuang.bluff.FriendPage.FragmentListener;
 import com.andyhuang.bluff.Object.GameResult;
 import com.andyhuang.bluff.Profile.Dialog.ModifyCommentDialog;
 import com.andyhuang.bluff.R;
+import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.activities.MainHallPage;
 import com.andyhuang.bluff.helper.ImageFromLruCache;
 
@@ -42,7 +43,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Pr
     private ImageView imageEditCommentButton;
     private String userUID;
     private Activity mActivity;
-    private ImageView imageEmailIcon;
+    private ImageView imageCommentBackground;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -50,6 +51,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Pr
         mActivity = getActivity();
         Bundle bundle = getArguments();
         userUID = bundle.getString("UID");
+        imageCommentBackground = root.findViewById(R.id.image_comment_background);
+        Bitmap bitmap = BitmapFactory.decodeResource(Bluff.getContext().getResources(),
+                R.drawable.profile_comment_background);
+        imageCommentBackground.setImageBitmap(getRoundedCornerBitmap(bitmap, 40f));
+
         textTotalTimes = root.findViewById(R.id.text_total_count_games);
         textTotalTwoPersonTimes = root.findViewById(R.id.text_two_person_games_count_profile);
         textWinRate = root.findViewById(R.id.text_win_rate_profile);
@@ -105,6 +111,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Pr
 
     @Override
     public void setButtonInvisible() {
+        imageUserPhoto.setClickable(false);
         imageEditCommentButton.setVisibility(View.INVISIBLE);
     }
 
