@@ -3,6 +3,7 @@ package com.andyhuang.bluff.activities;
 import android.content.Intent;
 import android.net.wifi.aware.AttachCallback;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -18,7 +19,6 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
     private EditText editEmail;
     private EditText editPassword;
     private EditText editName;
-    private TextView textCompleted;
     private EditText editConfirmPassword;
     private TextView textError;
     private String emailInput;
@@ -28,6 +28,7 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
     private String passwordConfirm;
     private FirebaseCreateAccount mFirebaseCreateAccount;
     private CloseLoginPageCallback mCallback;
+    private ConstraintLayout layouOKButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,18 +39,16 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
         editPassword = findViewById(R.id.edit_password_create_account);
         editName = findViewById(R.id.edit_name_create_account);
         editConfirmPassword = findViewById(R.id.edit_password_confirm);
-        textCompleted = findViewById(R.id.text_completed_create_account);
         textError = findViewById(R.id.text_error_message_create_account);
-        textCompleted.setOnClickListener(this);
-
+        layouOKButton = findViewById(R.id.layout_completed_create_account);
+        layouOKButton.setOnClickListener(this);
         mFirebaseCreateAccount = new FirebaseCreateAccount(CreateAccountPage.this);
-
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.text_completed_create_account:
+            case R.id.layout_completed_create_account:
                 if(checkEditError()) {
                     mFirebaseCreateAccount.creatAccount(firebaseCallback(),emailInput,passwordInput,nameInput,photoAddressInput);
                 }
@@ -80,7 +79,7 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
         }else if (!passwordInput.equals(passwordConfirm)) {
             textError.setText("密碼必須相同");
             return false;
-        }else if(passwordInput.length()<=6) {
+        }else if(passwordInput.length()<6) {
             textError.setText("密碼至少要6個字");
             return false;
         }else {

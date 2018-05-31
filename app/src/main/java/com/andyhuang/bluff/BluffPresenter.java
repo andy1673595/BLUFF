@@ -41,7 +41,7 @@ public class BluffPresenter implements BluffContract.Presenter {
     private String nameInvite = Constants.NODATA;
     private boolean hasReadPhoto = false;
     private GameInviteDialog gameInviteDialog;
-    private Firebase userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
+
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
@@ -72,6 +72,7 @@ public class BluffPresenter implements BluffContract.Presenter {
         initFragment();
         Firebase.setAndroidContext(Bluff.getContext());
         refUserData = new Firebase("https://myproject-556f6.firebaseio.com/userData/");
+
         listenGameInvite();
 
     }
@@ -209,8 +210,8 @@ public class BluffPresenter implements BluffContract.Presenter {
     @Override
     public void setDisconnectWhenGetOutline() {
         //set false when user is outline
-        userDataRef.child(UserManager.getInstance().getUserUID()).child(Constants.ONLINE_STATE).onDisconnect().setValue(false);
-        userDataRef.child(UserManager.getInstance().getUserUID()).child(Constants.IS_GAMING).onDisconnect().setValue(false);
+        refUserData.child(UserManager.getInstance().getUserUID()).child(Constants.ONLINE_STATE).onDisconnect().setValue(false);
+        refUserData.child(UserManager.getInstance().getUserUID()).child(Constants.IS_GAMING).onDisconnect().setValue(false);
     }
 
     @Override
