@@ -70,5 +70,7 @@
             android:text="開遊戲房間"
             android:textColor="@color/teal800"
             android:textSize="22sp" />
+
     </android.support.constraint.ConstraintLayout>
+
 </LinearLayout>

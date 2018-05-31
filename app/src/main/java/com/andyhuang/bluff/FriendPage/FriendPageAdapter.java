@@ -1,6 +1,7 @@
 package com.andyhuang.bluff.FriendPage;
 
 import android.graphics.Color;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,17 +99,19 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
         ImageView imageLeftIcon;
         ImageView imageRightIcon;
         CheckBox checkBoxForInviteGame;
+        ConstraintLayout layoutItemBackground;
         public ViewHolder(View itemView) {
             super(itemView);
             textName = (TextView)itemView.findViewById(R.id.text_name_friend_listItem);
             imageFriendPhoto = (ImageView)itemView.findViewById(R.id.image_user_photo_friend_invite);
             imageLeftIcon = (ImageView)itemView.findViewById(R.id.image_left_icon_friend_listitem);
             imageRightIcon = (ImageView)itemView.findViewById(R.id.image_righ_icon_friend_listitem);
+            layoutItemBackground = (ConstraintLayout)itemView.findViewById(R.id.layout_item_friend_background);
+            layoutItemBackground.setOnClickListener(this);
             checkBoxForInviteGame = (CheckBox)itemView.findViewById(R.id.checkBox_item_friend);
             checkBoxForInviteGame.setOnCheckedChangeListener(this);
             imageLeftIcon.setOnClickListener(this);
             imageRightIcon.setOnClickListener(this);
-            imageFriendPhoto.setOnClickListener(this);
         }
 
         @Override
@@ -116,7 +119,6 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
             int position = getAdapterPosition();
             switch (v.getId()){
                 case R.id.image_righ_icon_friend_listitem:
-
                     if(listFriend.get(position).isFriendInvite()) {
                         //this is friend invite, right icon means cancel
                         mPresenter.refuseInvite(position);
@@ -128,7 +130,7 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
                         mPresenter.acceptInvite(position);
                     }
                     break;
-                case R.id.image_user_photo_friend_invite:
+                case R.id.layout_item_friend_background:
                     //click photo to  look friend Profile
                     friendPageView.showFriendProfile(listFriend.get(position).getUID());
                     break;

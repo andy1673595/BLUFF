@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +15,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andyhuang.bluff.Bluff;
+import com.andyhuang.bluff.Callback.ChangeUserPhotoCompletedCallback;
+import com.andyhuang.bluff.FriendPage.FragmentListener;
 import com.andyhuang.bluff.Object.GameResult;
 import com.andyhuang.bluff.Profile.Dialog.ModifyCommentDialog;
 import com.andyhuang.bluff.R;
+import com.andyhuang.bluff.activities.MainHallPage;
 import com.andyhuang.bluff.helper.ImageFromLruCache;
 
 import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.net.URI;
 
 import static com.andyhuang.bluff.helper.ImageRounder.getRoundedCornerBitmap;
 
@@ -51,6 +59,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Pr
         imageEditCommentButton = root.findViewById(R.id.image_modify_comment_button);
         imageEditCommentButton.setOnClickListener(this);
         imageUserPhoto = root.findViewById(R.id.image_user_photo_profile);
+        imageUserPhoto.setOnClickListener(this);
         mPresenter = new ProfilePresenter(this,userUID);
         mPresenter.loadUserData();
         return root;
@@ -63,6 +72,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Pr
                 ModifyCommentDialog modifyCommentDialog = new ModifyCommentDialog(mActivity,this,mPresenter);
                 modifyCommentDialog.show();
                 break;
+            case R.id.image_user_photo_profile:
+                ((MainHallPage)getActivity()).changeUserPhotoForProfilePage(mPhotoCallback);
+                break;
         }
     }
 
@@ -70,7 +82,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Pr
     public void setPresenter(Object presenter) {
         mPresenter = (ProfilePresenter) presenter;
     }
-
     @Override
     public void setUserDataToUI(String userName, String userEmail, String photoUrl, String comment) {
         imageUserPhoto.setTag(photoUrl);
@@ -96,4 +107,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Pr
     public void setButtonInvisible() {
         imageEditCommentButton.setVisibility(View.INVISIBLE);
     }
+
+
+    private ChangeUserPhotoCompletedCallback mPhotoCallback = new ChangeUserPhotoCompletedCallback() {
+        @Override
+        public void completedChange(Uri photoUri) {
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), photoUri);
+                imageUserPhoto.setImageBitmap(getRoundedCornerBitmap(bitmap,1000));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //update new Image to firebase
+            mPresenter.changeUserPhoto(photoUri);
+        }
+    };
 }

@@ -1,5 +1,8 @@
 package com.andyhuang.bluff.Profile;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 import com.andyhuang.bluff.Callback.GameResultCallback;
 import com.andyhuang.bluff.Callback.ProfileUserDataCallback;
 import com.andyhuang.bluff.Object.GameResult;
@@ -36,6 +39,12 @@ public class ProfilePresenter implements ProfileContract.Presenter {
     @Override
     public void updateComment(String commentAfterModify) {
         mFirebaseHelper.updateComment(mUserUID,commentAfterModify);
+    }
+
+    @Override
+    public void changeUserPhoto(Uri newPhotoUri) {
+        mFirebaseHelper.updateUserPhotoAfterChanged(newPhotoUri);
+
     }
 
     GameResultCallback mGameResultCallback = new GameResultCallback() {

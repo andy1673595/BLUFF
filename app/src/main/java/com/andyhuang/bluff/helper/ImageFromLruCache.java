@@ -101,7 +101,6 @@ public class ImageFromLruCache {
             super.onPostExecute(o);
 
             if (mBitmap != null) {
-
                 Bluff.getLruCache().put(mImageUrl, mBitmap);
                 if (mImageView.getTag() == mImageUrl) {
                     mImageView.setImageBitmap(getRoundedCornerBitmap(mBitmap,roundPx));

@@ -16,5 +16,6 @@ public interface BluffContract {
         void setGameInformationAndGetIntoRoom(String RoomID,int playerInvitedTotal);
         void setDisconnectWhenGetOutline();
         void transToPrivacyPolicy();
+        void startRandomGame();
     }
 }

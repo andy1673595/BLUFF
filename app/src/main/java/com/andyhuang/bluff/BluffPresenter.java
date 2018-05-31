@@ -12,6 +12,7 @@ import com.andyhuang.bluff.GameInviteDialog.GameInviteDialog;
 import com.andyhuang.bluff.MainHallPage.MainHallFragment;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Profile.ProfileFragment;
+import com.andyhuang.bluff.RandomGame.RandomGameHelper;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.activities.MainHallPage;
@@ -214,6 +215,14 @@ public class BluffPresenter implements BluffContract.Presenter {
 
     @Override
     public void transToPrivacyPolicy() {
+
+    }
+
+    @Override
+    public void startRandomGame() {
+        RandomGameHelper randomGameHelper = new RandomGameHelper(this);
+        randomGameHelper.updateMyDataToRandomSequence();
+
 
     }
 

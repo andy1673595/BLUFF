@@ -72,6 +72,16 @@ public class Constants {
     public static String WIN_TIMES = "winTimes";
     public static String TOTAL_TIMES = "totalTimes";
 
+    //Activity request code
     //Constant for Login activity callback request code
     public static int CLOSE_ACTIVITY = 2;
+    //Constant for change user photo
+    public static final int GET_PHOTO_FROM_GALLERY =3;
+    public static final int GET_PHOTO_CROP =4;
+
+
+    //Constant for random games
+    public static String RANDOM_GAME = "randomGame";
+
+
 }

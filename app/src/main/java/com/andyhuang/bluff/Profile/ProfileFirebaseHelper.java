@@ -1,15 +1,21 @@
 package com.andyhuang.bluff.Profile;
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
+
 import com.andyhuang.bluff.Callback.GameResultCallback;
 import com.andyhuang.bluff.Callback.ProfileUserDataCallback;
 import com.andyhuang.bluff.Object.GameResult;
 import com.andyhuang.bluff.Profile.Listener.GameResultListener;
 import com.andyhuang.bluff.Profile.Listener.UserDataListener;
+import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class ProfileFirebaseHelper {
     private GameResult mGameResultData;
@@ -27,4 +33,27 @@ public class ProfileFirebaseHelper {
         userRef.child(UID).child(Constants.USER_COMMENT_FIREBASE).setValue(comment);
     }
 
+    public void updateUserPhotoAfterChanged(Uri newPhotoUri) {
+        Uri file = newPhotoUri;
+        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference riversRef = mStorageRef.child("Profile_images/" + UserManager.getInstance().getUserUID() + ".jpg");
+
+        riversRef.putFile(file)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        UserManager.getInstance().setUserPhotoUrl(downloadUrl.toString());
+                        userRef.child(UserManager.getInstance().getUserUID()).child(Constants.USER_PHOTO_FIREBASE)
+                                .setValue(downloadUrl.toString());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+
+                    }
+                });
+    }
 }

@@ -80,7 +80,10 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
         }else if (!passwordInput.equals(passwordConfirm)) {
             textError.setText("密碼必須相同");
             return false;
-        } else {
+        }else if(passwordInput.length()<=6) {
+            textError.setText("密碼至少要6個字");
+            return false;
+        }else {
             return true;
         }
     }

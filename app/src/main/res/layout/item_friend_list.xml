@@ -5,30 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="100dp">
 
-    <TextView
-        android:id="@+id/text_name_friend_listItem"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:text="name"
-        android:textColor="@color/teal800"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/image_user_photo_friend_invite"
-        app:layout_constraintStart_toEndOf="@+id/image_user_photo_friend_invite"
-        app:layout_constraintTop_toTopOf="@+id/image_user_photo_friend_invite" />
-
-    <ImageView
-        android:id="@+id/image_user_photo_friend_invite"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round" />
-
     <ImageView
         android:id="@+id/image_righ_icon_friend_listitem"
         android:layout_width="30dp"
@@ -64,4 +40,38 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_item_friend_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/image_left_icon_friend_listitem"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/image_user_photo_friend_invite"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/text_name_friend_listItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:text="name"
+            android:textColor="@color/teal800"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/image_user_photo_friend_invite"
+            app:layout_constraintStart_toEndOf="@+id/image_user_photo_friend_invite"
+            app:layout_constraintTop_toTopOf="@+id/image_user_photo_friend_invite" />
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
