@@ -7,6 +7,7 @@ import com.andyhuang.bluff.Callback.GameInviteForFriendFragmentCallback;
 import com.andyhuang.bluff.FriendPage.FriendPageAdapter;
 import com.andyhuang.bluff.FriendPage.GameInviteListener;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
+import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
 import com.firebase.client.ChildEventListener;
@@ -113,18 +114,13 @@ public class RandomGameHelper {
         public void openRoom() {
             if(creatRoom) {
                     //send game invite
-                    myRef.child(recentUserUID).child(Constants.GAME).child(Constants.GAME_INVITE)
-                            .setValue(myUID);
-                    myRef.child(recentUserUID).child(Constants.GAME).child(Constants.GAME_ROOM)
-                            .setValue(""+gameNumber+myUID);
-                    myRef.child(recentUserUID).child(Constants.GAME).child(Constants.USER_EMAIL_FIREBASE)
-                            .setValue(UserManager.getInstance().getEmail());
-                    myRef.child(recentUserUID).child(Constants.GAME).child(Constants.USER_PHOTO_FIREBASE)
-                            .setValue(UserManager.getInstance().getUserPhotoUrl());
-                    myRef.child(recentUserUID).child(Constants.GAME).child(Constants.USER_NAME_FIREBASE)
-                            .setValue(UserManager.getInstance().getUserName());
-
-
+                InviteInformation inviteInformation = new InviteInformation();
+                inviteInformation.setGameInvite(myUID);
+                inviteInformation.setGameRoom(gameNumber+myUID);
+                inviteInformation.setUserName(UserManager.getInstance().getUserName());
+                inviteInformation.setUserPhoto(UserManager.getInstance().getUserPhotoUrl());
+                inviteInformation.setUserEmail(UserManager.getInstance().getEmail());
+                myRef.child(recentUserUID).child(Constants.GAME).setValue(inviteInformation);
                 //increase the gameID to server
                 refGameRoomID.setValue(gameNumber+1);
                 //open the room

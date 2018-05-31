@@ -2,6 +2,8 @@ package com.andyhuang.bluff.Dialog.GameInviteDialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
@@ -13,6 +15,9 @@ import android.widget.TextView;
 import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.R;
+import com.andyhuang.bluff.Util.Constants;
+
+import static com.andyhuang.bluff.helper.ImageRounder.getRoundedCornerBitmap;
 
 public class GameInviteDialog extends Dialog implements View.OnClickListener{
     private GameInvitePrsenter mPresenter;
@@ -20,6 +25,7 @@ public class GameInviteDialog extends Dialog implements View.OnClickListener{
     private BluffPresenter bluffPresenter;
     private Gamer inviter;
     private String roomID;
+    private ImageView imageBackground;
     public GameInviteDialog(@NonNull Context context, BluffPresenter bluffPresenterInput,
                             Gamer inviterInput,String roomIDInput) {
         super(context,R.style.MyDialogStyle);
@@ -27,6 +33,10 @@ public class GameInviteDialog extends Dialog implements View.OnClickListener{
         roomID = roomIDInput;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_game_invite);
+        imageBackground = findViewById(R.id.image_invite_game_background);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
+                R.drawable.increase_dialog_back_2);
+        imageBackground.setImageBitmap(getRoundedCornerBitmap(bitmap, Constants.DIALOG_RADIUS));
         mContext = context;
         bluffPresenter = bluffPresenterInput;
         mPresenter = new GameInvitePrsenter(this);

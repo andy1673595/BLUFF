@@ -32,14 +32,19 @@ public class GameStateListener implements ValueEventListener {
         gameState = (String)dataSnapshot.getValue();
         firebaseHelper.setGameStateInHelper(gameState);
         switch (gameState) {
+            case "wait host":
+                gamePageView.freshTextInfo("等候房主開始");
+                break;
             case "read init data":
                 firebaseHelper.playerGetRoomData();
                 break;
             case "wait ready":
+                gamePageView.freshTextInfo("等候所有人Ready");
                 gamePageView.freshStateButtonUI(Constants.BUTTON_READY);
                 mPresenter.setButtonType(Constants.BUTTON_READY);
                 break;
             case "get new dice":
+                gamePageView.freshTextInfo("以下是你本局的骰子");
                 dice.getNewDice();
                 gameRef.child(Constants.DICE_LIST).child(myUID).setValue(dice.getList());
                 gamePageView.freshDiceUI(dice.getList());

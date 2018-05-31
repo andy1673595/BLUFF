@@ -51,9 +51,9 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private String roomID;
     private boolean isHost;
     private GamePagePresenter mPrsenter;
-    private ImageView imageIncreaseDiceButton;
+  //  private ImageView imageIncreaseDiceButton;
     private ConstraintLayout layoutIncreaseDice;
-    private ImageView imageCatchButton;
+  //  private ImageView imageCatchButton;
     private ConstraintLayout layoutCatch;
     private ImageView imageReadyStateButton;
     private ImageView[] imageDiceArray;
@@ -82,6 +82,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private ConstraintLayout layoutPlayerList;
     int countForPlayerInviteTotal;
     private ArrayList<Gamer> playerJoinedList = new ArrayList<>();
+    private TextView textTellPlayerInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,10 +92,10 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         //Bind view by id and new Array
         initView();
         //set OnclickListener and Visibility
-        imageIncreaseDiceButton.setOnClickListener(this);
         layoutIncreaseDice.setVisibility(View.INVISIBLE);
+        layoutIncreaseDice.setOnClickListener(this);
         layoutCatch.setVisibility(View.INVISIBLE);
-        imageCatchButton.setOnClickListener(this);
+        layoutCatch.setOnClickListener(this);
         imageReadyStateButton.setOnClickListener(this);
         imageHomeBackButton.setOnClickListener(this);
         layoutPlayerList.setOnClickListener(this);
@@ -122,13 +123,14 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
                 (ImageView)findViewById(R.id.image_table_dice3),
                 (ImageView)findViewById(R.id.image_table_dice4),
                 (ImageView)findViewById(R.id.image_table_dice5)};
-        imageIncreaseDiceButton = (ImageView)findViewById(R.id.image_increae_dice);
+       // imageIncreaseDiceButton = (ImageView)findViewById(R.id.image_increae_dice);
         layoutIncreaseDice = (ConstraintLayout)findViewById(R.id.layout_increase_dice);
-        imageCatchButton = (ImageView)findViewById(R.id.image_catch);
+      //  imageCatchButton = (ImageView)findViewById(R.id.image_catch);
         layoutCatch = (ConstraintLayout)findViewById(R.id.layout_catch);
         imageReadyStateButton = (ImageView)findViewById(R.id.image_game_state);
         textShowInformation =(TextView)findViewById(R.id.text_show_current_info);
         imageHomeBackButton = (ImageView)findViewById(R.id.image_home_button_gamepage);
+        textTellPlayerInfo = (TextView)findViewById(R.id.text_tell_player_information);
         //view for video
         imageVideobackground = (ImageView)findViewById(R.id.image_video_background);
         layoutVideoBack = (RelativeLayout)findViewById(R.id.video_back_layout);
@@ -191,6 +193,11 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         textPlayerCountRightNow.setText(playerJoinedList.size()+"/"+countForPlayerInviteTotal);
     }
 
+    @Override
+    public void freshTextInfo(String message) {
+        textTellPlayerInfo.setText(message);
+    }
+
     public void updateVideoView() {
         RendererCommon.ScalingType scalingType = RendererCommon.ScalingType.SCALE_ASPECT_FILL;
         remoteRenderLayout.setPosition(ConstantForWebRTC.REMOTE_X, ConstantForWebRTC.REMOTE_Y
@@ -221,10 +228,10 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
             case R.id.image_game_state:
                 mPrsenter.clickStateButton();
                 break;
-            case R.id.image_increae_dice:
+            case R.id.layout_increase_dice:
                 mPrsenter.increaseDice();
                 break;
-            case R.id.image_catch:
+            case R.id.layout_catch:
                 mPrsenter.catchPlayer();
                 break;
             case R.id.image_home_button_gamepage:
@@ -321,15 +328,15 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     @Override
     public void resetView(boolean isNextPlayer) {
         imageReadyStateButton.setImageResource(R.drawable.ready_button_gamepage);
-        imageCatchButton.setVisibility(View.INVISIBLE);
+        layoutCatch.setVisibility(View.INVISIBLE);
         textShowInformation.setText(" ");
         for(int i=0;i<5;i++) {
             imageDiceArray[i].setImageResource(R.drawable.table_random_dice);
         }
         if(isNextPlayer) {
-            imageIncreaseDiceButton.setVisibility(View.VISIBLE);
+            layoutIncreaseDice.setVisibility(View.VISIBLE);
         } else {
-            imageIncreaseDiceButton.setVisibility(View.INVISIBLE);
+            layoutIncreaseDice.setVisibility(View.INVISIBLE);
         }
 
     }

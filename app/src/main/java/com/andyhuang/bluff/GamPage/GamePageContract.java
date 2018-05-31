@@ -28,6 +28,8 @@ public interface GamePageContract {
         void creatVideoRenders();
         void updatePlayerHaveJoinedText(ArrayList<Gamer> joinedList,Gamer newGamer);
         void inviteeSetTotalPlayerInivted(int count);
+
+        void freshTextInfo(String message);
     }
     interface Presenter extends BasePresenter {
         void init(String RoomID,boolean isHost);

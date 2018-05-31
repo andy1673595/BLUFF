@@ -240,16 +240,6 @@ public class FriendPresenter implements FriendContract.Presenter {
                     inviteInformation.setUserPhoto(UserManager.getInstance().getUserPhotoUrl());
                     inviteInformation.setUserName(UserManager.getInstance().getUserName());
                     myRef.child(friendUID).child(Constants.GAME).setValue(inviteInformation);
-                /*    myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_INVITE)
-                            .setValue(myUID);
-                    myRef.child(friendUID).child(Constants.GAME).child(Constants.GAME_ROOM)
-                            .setValue(""+gameNumber+myUID);
-                    myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_EMAIL_FIREBASE)
-                            .setValue(UserManager.getInstance().getEmail());
-                    myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_PHOTO_FIREBASE)
-                            .setValue(UserManager.getInstance().getUserPhotoUrl());
-                    myRef.child(friendUID).child(Constants.GAME).child(Constants.USER_NAME_FIREBASE)
-                            .setValue(UserManager.getInstance().getUserName());*/
                 }
 
                 //increase the gameID to server
