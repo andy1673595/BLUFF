@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout_wait_random_game_full_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+        android:id="@+id/image_wait_random_game_back"
+        android:layout_width="329dp"
+        android:layout_height="250dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/increase_dialog_back_2" />
+
+    <TextView
+        android:id="@+id/text_show_waiting_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="等候你的對手配對中.."
+        android:textColor="@color/teal800"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/button_cancel_waiting"
+        app:layout_constraintEnd_toEndOf="@+id/image_wait_random_game_back"
+        app:layout_constraintStart_toStartOf="@+id/image_wait_random_game_back"
+        app:layout_constraintTop_toBottomOf="@+id/text_wait_random_game_title" />
+
+
+    <Button
+        android:id="@+id/button_cancel_waiting"
+        style="@style/MyButtonInDiceDialog"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="取消"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/image_wait_random_game_back"
+        app:layout_constraintEnd_toEndOf="@+id/image_wait_random_game_back"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/text_wait_random_game_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:text="等候配對"
+        android:textColor="@color/teal600"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="@+id/image_wait_random_game_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/image_wait_random_game_back" />
+
+</android.support.constraint.ConstraintLayout>

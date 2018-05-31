@@ -1,4 +1,4 @@
-package com.andyhuang.bluff.GameInviteDialog;
+package com.andyhuang.bluff.Dialog.GameInviteDialog;
 
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 

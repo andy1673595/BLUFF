@@ -19,5 +19,6 @@ public interface BluffContract {
         void startRandomGame();
         void showGamePageFromRandom(String s, int i);
         void showErrorDialogFromRandom(String message);
+        void cancelWaiting();
     }
 }

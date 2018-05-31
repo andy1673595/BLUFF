@@ -25,26 +25,28 @@ public class RankPageFirebaseHelper {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot userDataSnapshot:dataSnapshot.getChildren()) {
-                    String userName = userDataSnapshot.child(Constants.USER_NAME_FIREBASE).getValue(String.class);
-                    String userEmail = userDataSnapshot.child(Constants.USER_EMAIL_FIREBASE).getValue(String.class);
-                    String userPhotoURL = userDataSnapshot.child(Constants.USER_PHOTO_FIREBASE).getValue(String.class);
-                    String userUID = userDataSnapshot.getKey();
-                    int countWinTimes = (int)(long)userDataSnapshot.child(Constants.GAME_RESULT)
-                            .child(Constants.WIN_TIMES).getValue();
-                    int countLoseTimes = (int)(long)userDataSnapshot.child(Constants.GAME_RESULT)
-                            .child(Constants.LOSE_TIMES).getValue();
-                    int countTotalTimes =(int)(long)userDataSnapshot.child(Constants.GAME_RESULT)
-                            .child(Constants.TOTAL_TIMES).getValue();
-                    Double winRateDoubleType =0.0;
-                    if ((countWinTimes+countLoseTimes)>=5) {
-                        winRateDoubleType = Double.valueOf(countWinTimes)/Double.valueOf((countLoseTimes +countWinTimes));
-                        winRateDoubleType *= 100;
-                    }else {
-                        winRateDoubleType = 0.0;
+                    if(userDataSnapshot.child(Constants.GAME_RESULT).exists()) {
+                        String userName = userDataSnapshot.child(Constants.USER_NAME_FIREBASE).getValue(String.class);
+                        String userEmail = userDataSnapshot.child(Constants.USER_EMAIL_FIREBASE).getValue(String.class);
+                        String userPhotoURL = userDataSnapshot.child(Constants.USER_PHOTO_FIREBASE).getValue(String.class);
+                        String userUID = userDataSnapshot.getKey();
+                        int countWinTimes = (int)(long)userDataSnapshot.child(Constants.GAME_RESULT)
+                                .child(Constants.WIN_TIMES).getValue();
+                        int countLoseTimes = (int)(long)userDataSnapshot.child(Constants.GAME_RESULT)
+                                .child(Constants.LOSE_TIMES).getValue();
+                        int countTotalTimes =(int)(long)userDataSnapshot.child(Constants.GAME_RESULT)
+                                .child(Constants.TOTAL_TIMES).getValue();
+                        Double winRateDoubleType =0.0;
+                        if ((countWinTimes+countLoseTimes)>=5) {
+                            winRateDoubleType = Double.valueOf(countWinTimes)/Double.valueOf((countLoseTimes +countWinTimes));
+                            winRateDoubleType *= 100;
+                        }else {
+                            winRateDoubleType = 0.0;
+                        }
+                        UserDataForRank userData = new UserDataForRank(userEmail,userName,userPhotoURL,userUID
+                                ,countTotalTimes,countWinTimes,winRateDoubleType);
+                        sortData(userData);
                     }
-                    UserDataForRank userData = new UserDataForRank(userEmail,userName,userPhotoURL,userUID
-                                                ,countTotalTimes,countWinTimes,winRateDoubleType);
-                    sortData(userData);
                 }
 
                 callback.completedGetRankData(userListWinRank,userListTotalRank,userListRateRank);

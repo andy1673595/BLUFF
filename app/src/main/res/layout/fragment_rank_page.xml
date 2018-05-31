@@ -16,6 +16,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_rank_title"
+        android:paddingStart="15dp"
         android:text="吹牛王"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -209,6 +210,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
+
     <TextView
         android:id="@+id/text_rank_rate__title"
         style="@style/TextRankTitle"
@@ -218,6 +220,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_rank_title"
+        android:paddingStart="15dp"
         android:text="勝率王(兩人)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -428,6 +431,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_rank_title"
+        android:paddingStart="15dp"
         android:text="多勝王(兩人)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

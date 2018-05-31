@@ -464,12 +464,12 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
 
     @OnPermissionDenied({Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO})
     void onPermissionDenied() {
-        Toast.makeText(this, "權限被拒絕", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "影音相關權限被拒絕", Toast.LENGTH_LONG).show();
     }
 
     @OnNeverAskAgain({Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO})
     void onNeverAskAgain() {
-        Toast.makeText(this, "可能無法使用視訊功能", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "您可能無法使用視訊功能", Toast.LENGTH_LONG).show();
     }
 
     //return video sufaceView for creating PeerConnection

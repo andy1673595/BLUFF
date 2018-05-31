@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.StringDef;
 
 import com.andyhuang.bluff.FriendPage.FriendFragment;
-import com.andyhuang.bluff.GameInviteDialog.GameInviteDialog;
+import com.andyhuang.bluff.Dialog.GameInviteDialog.GameInviteDialog;
 import com.andyhuang.bluff.RankPage.RankPageFragment;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Profile.ProfileFragment;
@@ -244,6 +244,12 @@ public class BluffPresenter implements BluffContract.Presenter {
     @Override
     public void showErrorDialogFromRandom(String message) {
         bluffView.showErrorInviteDialogFromRandom(message);
+    }
+
+    @Override
+    public void cancelWaiting() {
+        //cancel waiting , so remove the data from sequence List on server
+       removeSequenceForRandomGame();
     }
 
 }

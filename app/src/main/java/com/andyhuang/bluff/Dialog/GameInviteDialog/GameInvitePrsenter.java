@@ -1,6 +1,7 @@
-package com.andyhuang.bluff.GameInviteDialog;
+package com.andyhuang.bluff.Dialog.GameInviteDialog;
 
 import com.andyhuang.bluff.Bluff;
+import com.andyhuang.bluff.Dialog.GameInviteDialog.GameInviteDialog;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;

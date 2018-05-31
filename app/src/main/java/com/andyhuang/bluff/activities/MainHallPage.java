@@ -1,6 +1,8 @@
 package com.andyhuang.bluff.activities;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -19,9 +21,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.andyhuang.bluff.BluffContract;
 import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.Callback.ChangeUserPhotoCompletedCallback;
+import com.andyhuang.bluff.Callback.WaitForRandomGameCallback;
+import com.andyhuang.bluff.Dialog.WaitForRandomGameDialog.WaitForRandomGameDialog;
 import com.andyhuang.bluff.FriendPage.FragmentListener;
 import com.andyhuang.bluff.FriendPage.IniviteErrorDialog;
 import com.andyhuang.bluff.R;
@@ -51,6 +57,7 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
     private Uri mImageUri;
     private Uri mNewPhotoUri;
     private ChangeUserPhotoCompletedCallback mPhotoCallback;
+    private WaitForRandomGameDialog mWaitForRandomGameDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +107,10 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
                         break;
                     case R.id.item_random:
                         mPresenter.startRandomGame();
+                        mWaitForRandomGameDialog = new WaitForRandomGameDialog(MainHallPage.this,mWaitForRandomGameCallback);
+                        //避免玩家手殘點到外面取消
+                        mWaitForRandomGameDialog.setCanceledOnTouchOutside(false);
+                        mWaitForRandomGameDialog.show();
                         break;
                 }
                 myDrawerLayout.closeDrawers();
@@ -122,6 +133,11 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
 
     @Override
     public void showGamePage(String gameID,int gamerInvitedTotal,boolean isHost) {
+        if(mWaitForRandomGameDialog!=null) {
+            //hide the dialog when I'm invitee and I have already get into game
+            mWaitForRandomGameDialog.dismiss();
+            mWaitForRandomGameDialog = null;
+        }
         Intent intent = new Intent();
         intent.setClass(this,GamePage.class);
         intent.putExtra("gameID",gameID);
@@ -203,13 +219,41 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
 
     @OnShowRationale({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void showRationale(final PermissionRequest request) {
+        new AlertDialog.Builder(MainHallPage.this)
+                .setMessage("未允許「" + getString(R.string.app_name) +
+                        "」讀取裝置權限，將無法使用自訂相片，是否重新設定權限？")
+                .setPositiveButton("重新設定權限", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.cancel();
+                    }
+                })
+                .create()
+                .show();
     }
 
     @OnPermissionDenied({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void showDenied() {
+        Toast.makeText(this, "讀取儲存內容權限被拒絕", Toast.LENGTH_LONG).show();
     }
 
     @OnNeverAskAgain({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void showNeverAsk() {
+        Toast.makeText(this, "您將無法使用自訂相片功能", Toast.LENGTH_LONG).show();
     }
+
+    private WaitForRandomGameCallback mWaitForRandomGameCallback = new WaitForRandomGameCallback() {
+        @Override
+        public void cancelWaiting() {
+            mPresenter.cancelWaiting();
+        }
+    };
+
+
 }
