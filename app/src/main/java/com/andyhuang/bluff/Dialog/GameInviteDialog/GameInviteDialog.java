@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,26 +30,24 @@ public class GameInviteDialog extends Dialog implements View.OnClickListener{
         mContext = context;
         bluffPresenter = bluffPresenterInput;
         mPresenter = new GameInvitePrsenter(this);
-        ((ConstraintLayout)findViewById(R.id.constraintLayout_dialog_background)).setOnClickListener(this);
-        ((ImageView)findViewById(R.id.image_ok_invite_game)).setOnClickListener(this);
-        ((ImageView)findViewById(R.id.image_refuse_invite_game)).setOnClickListener(this);
-        ((TextView)findViewById(R.id.text_invite_game_message_dialog)).setText(inviter.getUserName()+"\n邀請你進行吹牛");
+        ((Button)findViewById(R.id.button_accept_invite)).setOnClickListener(this);
+        ((Button)findViewById(R.id.button_reject_invite)).setOnClickListener(this);
+        ((TextView)findViewById(R.id.text_invite_info_dialog)).setText(inviter.getUserName()+"\n邀請你進行吹牛");
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.image_ok_invite_game:
+            case R.id.button_accept_invite:
                 mPresenter.acceptAndStartGame(inviter,roomID);
                 bluffPresenter.setGameInformationAndGetIntoRoom(roomID,0);
                 dismiss();
                 break;
-            case R.id.image_refuse_invite_game:
-              // TODO mPresenter.refuseInvite();
+            case R.id.button_reject_invite:
+                 mPresenter.refuseInvite(roomID);
                 dismiss();
                 break;
             default:
-              //  mPresenter.refuseInvite();
                 dismiss();
                 break;
         }

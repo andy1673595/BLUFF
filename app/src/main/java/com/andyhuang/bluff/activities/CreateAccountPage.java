@@ -59,7 +59,6 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
         passwordInput = String.valueOf(editPassword.getText());
         nameInput = String.valueOf(editName.getText());
         passwordConfirm = String.valueOf(editConfirmPassword.getText());
-        //TODO  let user set photo,get user photoURL
         photoAddressInput= Constants.NODATA;
 
         if(emailInput.isEmpty()) {

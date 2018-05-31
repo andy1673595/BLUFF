@@ -36,4 +36,9 @@ public class GameInvitePrsenter implements GameInviteContract.presenter{
         //remove the invite information
         refUserData.child(UserManager.getInstance().getUserUID()).child(Constants.GAME).removeValue();
     }
+
+    @Override
+    public void refuseInvite(String roomID) {
+        refGameData.child(roomID).child(Constants.GAME_STATE).setValue(Constants.EXIT_GAME);
+    }
 }

@@ -6,5 +6,6 @@ public interface GameInviteContract {
     interface presenter {
         void acceptAndStartGame(Gamer inviter,String roomID);
         void removeInvite();
+        void refuseInvite(String roomID);
     }
 }

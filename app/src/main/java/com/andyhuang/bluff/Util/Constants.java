@@ -26,7 +26,7 @@ public class Constants {
     public static String FRIEND_INVITE_FIREBASE = "isInvite";
     public static String USER_UID_FIREBASE = "userUID";
     public static String GAME_INVITE = "gameInvite";
-    public static String GAME ="gameInformaiton";
+    public static String GAME ="InviteInformaiton";
     public static String GAME_ROOM = "gameRoom";
     public static String PLAYED_TOTAL_INVITED = "player total invited";
 

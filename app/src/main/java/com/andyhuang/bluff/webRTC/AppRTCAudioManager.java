@@ -148,7 +148,6 @@ public class AppRTCAudioManager {
             // The |focusChange| value indicates whether the focus was gained, whether the focus was lost,
             // and whether that loss is transient, or whether the new focus holder will hold it for an
             // unknown amount of time.
-            // TODO(henrika): possibly extend support of handling audio-focus changes. Only contains
             // logging for now.
             @Override
             public void onAudioFocusChange(int focusChange) {
@@ -195,7 +194,6 @@ public class AppRTCAudioManager {
         // Start by setting MODE_IN_COMMUNICATION as default audio mode. It is
         // required to be in this mode when playout and/or recording starts for
         // best possible VoIP performance.
-        // TODO(henrika): we migh want to start with RINGTONE mode here instead.
         audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
 
         // Always disable microphone mute during a WebRTC call.

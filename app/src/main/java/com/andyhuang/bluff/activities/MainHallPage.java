@@ -46,7 +46,7 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class MainHallPage extends BaseActivity implements BluffContract.View,FragmentListener {
+public class MainHallPage extends BaseActivity implements BluffContract.View, FragmentListener {
     private BluffContract.Presenter mPresenter;
     private DrawerLayout myDrawerLayout;
     private NavigationView mNavigationView;
@@ -55,19 +55,19 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
     private TextView textNameForDrawer;
     private ChangeUserPhotoHelper mChangeUserPhotoHelper;
     private Uri mImageUri;
-    private Uri mNewPhotoUri;
     private ChangeUserPhotoCompletedCallback mPhotoCallback;
     private WaitForRandomGameDialog mWaitForRandomGameDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_hall_page);
-        myDrawerLayout = (DrawerLayout)findViewById(R.id.drawrlayout_main);
-        imageMenuButton = (ImageView)findViewById(R.id.image_menu_button);
+        myDrawerLayout = (DrawerLayout) findViewById(R.id.drawrlayout_main);
+        imageMenuButton = (ImageView) findViewById(R.id.image_menu_button);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-        textNameForDrawer = (TextView)mNavigationView.getHeaderView(0).findViewById(R.id.textUserNameInDrawer);
-        imageUserPhotoForDrawer = (ImageView)mNavigationView.getHeaderView(0).findViewById(R.id.imageUserPhotoInDrawer);
-        mPresenter = new BluffPresenter(this,getFragmentManager(),this);
+        textNameForDrawer = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.textUserNameInDrawer);
+        imageUserPhotoForDrawer = (ImageView) mNavigationView.getHeaderView(0).findViewById(R.id.imageUserPhotoInDrawer);
+        mPresenter = new BluffPresenter(this, getFragmentManager(), this);
         mNavigationView.setNavigationItemSelectedListener(navigationViewListener());
         imageMenuButton.setOnClickListener(mainClickListener);
         setDrawerLayout();
@@ -84,15 +84,14 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
         String photoURL = com.andyhuang.bluff.User.UserManager.getInstance().getUserPhotoUrl();
         if (!photoURL.equals(Constants.NODATA)) {
             imageUserPhotoForDrawer.setTag(photoURL);
-            new ImageFromLruCache().set(imageUserPhotoForDrawer, photoURL,10000f);
+            new ImageFromLruCache().set(imageUserPhotoForDrawer, photoURL, 10000f);
         } else {
             imageUserPhotoForDrawer.setImageResource(R.mipmap.ic_launcher_round);
         }
-
     }
 
     private NavigationView.OnNavigationItemSelectedListener navigationViewListener() {
-        return new NavigationView.OnNavigationItemSelectedListener(){
+        return new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
@@ -107,7 +106,7 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
                         break;
                     case R.id.item_random:
                         mPresenter.startRandomGame();
-                        mWaitForRandomGameDialog = new WaitForRandomGameDialog(MainHallPage.this,mWaitForRandomGameCallback);
+                        mWaitForRandomGameDialog = new WaitForRandomGameDialog(MainHallPage.this, mWaitForRandomGameCallback);
                         //避免玩家手殘點到外面取消
                         mWaitForRandomGameDialog.setCanceledOnTouchOutside(false);
                         mWaitForRandomGameDialog.show();
@@ -128,34 +127,34 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
 
     @Override
     public void setPresenter(Object presenter) {
-        mPresenter = (BluffContract.Presenter)presenter;
+        mPresenter = (BluffContract.Presenter) presenter;
     }
 
     @Override
-    public void showGamePage(String gameID,int gamerInvitedTotal,boolean isHost) {
-        if(mWaitForRandomGameDialog!=null) {
+    public void showGamePage(String gameID, int gamerInvitedTotal, boolean isHost) {
+        if (mWaitForRandomGameDialog != null) {
             //hide the dialog when I'm invitee and I have already get into game
             mWaitForRandomGameDialog.dismiss();
             mWaitForRandomGameDialog = null;
         }
         Intent intent = new Intent();
-        intent.setClass(this,GamePage.class);
-        intent.putExtra("gameID",gameID);
+        intent.setClass(this, GamePage.class);
+        intent.putExtra("gameID", gameID);
         //I am invitee , set is Host false
-        intent.putExtra("isHost",isHost);
-        intent.putExtra("playerCount",gamerInvitedTotal);
+        intent.putExtra("isHost", isHost);
+        intent.putExtra("playerCount", gamerInvitedTotal);
         startActivity(intent);
     }
 
     @Override
     public void showErrorInviteDialogFromRandom(String message) {
-        IniviteErrorDialog dialog = new IniviteErrorDialog(this,message);
+        IniviteErrorDialog dialog = new IniviteErrorDialog(this, message);
         dialog.show();
     }
 
     @Override
     public void onBackPressed() {
-        if(myDrawerLayout.isDrawerOpen(Gravity.LEFT)) myDrawerLayout.closeDrawers();
+        if (myDrawerLayout.isDrawerOpen(Gravity.LEFT)) myDrawerLayout.closeDrawers();
         else super.onBackPressed();
     }
 
@@ -163,7 +162,8 @@ public class MainHallPage extends BaseActivity implements BluffContract.View,Fra
     public void showFriendProfile(String friendUID) {
         mPresenter.transToFriendProfile(friendUID);
     }
-    public void changeUserPhotoForProfilePage(ChangeUserPhotoCompletedCallback callbackInput){
+
+    public void changeUserPhotoForProfilePage(ChangeUserPhotoCompletedCallback callbackInput) {
         mPhotoCallback = callbackInput;
         MainHallPagePermissionsDispatcher.getPhotoFromGalleryWithPermissionCheck(this);
     }

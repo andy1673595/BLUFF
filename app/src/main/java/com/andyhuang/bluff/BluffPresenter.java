@@ -131,6 +131,7 @@ public class BluffPresenter implements BluffContract.Presenter {
         Gamer inviter = new Gamer(UIDGameInvite,userPhotoURLGameInvite,emailFromGameInvite);
         inviter.setUserName(nameInvite);
         gameInviteDialog = new GameInviteDialog((Activity)bluffView,this,inviter,numberOfGameRoom);
+        gameInviteDialog.setCanceledOnTouchOutside(false);
         gameInviteDialog.show();
         removeSequenceForRandomGame();
     }
