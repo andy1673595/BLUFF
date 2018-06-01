@@ -2,9 +2,14 @@ package com.andyhuang.bluff.User;
 
 import android.content.SharedPreferences;
 
+import com.andyhuang.bluff.FriendPage.FriendFragment;
+import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.Util.Constants;
 import com.facebook.AccessToken;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserManager {
     private String email = Constants.NODATA;
@@ -17,7 +22,7 @@ public class UserManager {
     private String userName = Constants.NODATA;
     private String facebookID = Constants.NODATA;
     private String sequenceID = Constants.NODATA;
-
+    private List<FriendInformation> friendList = new ArrayList<>();
     private static final UserManager ourInstance = new UserManager();
 
     public static UserManager getInstance() {
@@ -33,6 +38,8 @@ public class UserManager {
        userUID = Constants.NODATA;
        userName = Constants.NODATA;
        facebookID = Constants.NODATA;
+       sequenceID = Constants.NODATA;
+       friendList = new ArrayList<>();
     }
 
 
@@ -114,5 +121,13 @@ public class UserManager {
 
     public void setSequenceID(String sequenceID) {
         this.sequenceID = sequenceID;
+    }
+
+    public List<FriendInformation> getFriendList() {
+        return friendList;
+    }
+
+    public void setFriendList(List<FriendInformation> friendList) {
+        this.friendList = friendList;
     }
 }

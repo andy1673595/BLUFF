@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.andyhuang.bluff.Callback.GameResultCallback;
 import com.andyhuang.bluff.Callback.ProfileUserDataCallback;
+import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.Object.GameResult;
 import com.andyhuang.bluff.Profile.Listener.GameResultListener;
 import com.andyhuang.bluff.Profile.Listener.UserDataListener;
@@ -16,6 +17,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.util.List;
 
 public class ProfileFirebaseHelper {
     private GameResult mGameResultData;
@@ -47,6 +50,7 @@ public class ProfileFirebaseHelper {
                         UserManager.getInstance().setUserPhotoUrl(downloadUrl.toString());
                         userRef.child(UserManager.getInstance().getUserUID()).child(Constants.USER_PHOTO_FIREBASE)
                                 .setValue(downloadUrl.toString());
+                        updateAllFriendMyPhoto(downloadUrl.toString());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -55,5 +59,15 @@ public class ProfileFirebaseHelper {
 
                     }
                 });
+    }
+
+    public void updateAllFriendMyPhoto(String newPhotoURL) {
+        List<FriendInformation> friendList = UserManager.getInstance().getFriendList();
+        for(FriendInformation friend:friendList) {
+            userRef.child(friend.getUID()).child(Constants.FRIEND_LIST_FIREBASE)
+                    .child(UserManager.getInstance().getUserUID()).child(Constants.USER_PHOTO_FIREBASE)
+                    .setValue(newPhotoURL);
+        }
+
     }
 }
