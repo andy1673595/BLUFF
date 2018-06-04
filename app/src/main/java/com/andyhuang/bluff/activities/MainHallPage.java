@@ -26,10 +26,13 @@ import android.widget.Toast;
 import com.andyhuang.bluff.BluffContract;
 import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.Callback.ChangeUserPhotoCompletedCallback;
+import com.andyhuang.bluff.Callback.LoadUserPhotoFromFirebaseCallback;
 import com.andyhuang.bluff.Callback.WaitForRandomGameCallback;
+import com.andyhuang.bluff.Dialog.GameInviteDialog.GameInviteDialog;
 import com.andyhuang.bluff.Dialog.WaitForRandomGameDialog.WaitForRandomGameDialog;
 import com.andyhuang.bluff.FriendPage.FragmentListener;
 import com.andyhuang.bluff.FriendPage.IniviteErrorDialog;
+import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.helper.ChangeUserPhotoHelper;
@@ -47,7 +50,7 @@ import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public class MainHallPage extends BaseActivity implements BluffContract.View, FragmentListener {
-    private BluffContract.Presenter mPresenter;
+    private BluffPresenter mPresenter;
     private DrawerLayout myDrawerLayout;
     private NavigationView mNavigationView;
     private ImageView imageMenuButton;
@@ -81,13 +84,7 @@ public class MainHallPage extends BaseActivity implements BluffContract.View, Fr
         myDrawerLayout.setClipToPadding(false);
         textNameForDrawer.setText(com.andyhuang.bluff.User.UserManager.getInstance().getUserName());
         //set userphoto in drawer
-        String photoURL = com.andyhuang.bluff.User.UserManager.getInstance().getUserPhotoUrl();
-        if (!photoURL.equals(Constants.NODATA)) {
-            imageUserPhotoForDrawer.setTag(photoURL);
-            new ImageFromLruCache().set(imageUserPhotoForDrawer, photoURL, 10000f);
-        } else {
-            imageUserPhotoForDrawer.setImageResource(R.mipmap.ic_launcher_round);
-        }
+        mPresenter.loadUserPhoto();
     }
 
     private NavigationView.OnNavigationItemSelectedListener navigationViewListener() {
@@ -127,7 +124,7 @@ public class MainHallPage extends BaseActivity implements BluffContract.View, Fr
 
     @Override
     public void setPresenter(Object presenter) {
-        mPresenter = (BluffContract.Presenter) presenter;
+        mPresenter = (BluffPresenter) presenter;
     }
 
     @Override
@@ -151,6 +148,25 @@ public class MainHallPage extends BaseActivity implements BluffContract.View, Fr
         IniviteErrorDialog dialog = new IniviteErrorDialog(this, message);
         dialog.show();
     }
+
+    @Override
+    public void showInviteDialog(Gamer inviter,String numberOfGameRoom) {
+        GameInviteDialog gameInviteDialog = new GameInviteDialog(MainHallPage.this,mPresenter,inviter,numberOfGameRoom);
+        gameInviteDialog.setCanceledOnTouchOutside(false);
+        gameInviteDialog.show();
+        mPresenter.removeSequenceForRandomGame();
+    }
+
+    @Override
+    public void setUserPhotoOnDrawer(String userPhotoURL) {
+        if (!userPhotoURL.equals(Constants.NODATA)) {
+            imageUserPhotoForDrawer.setTag(userPhotoURL);
+            new ImageFromLruCache().set(imageUserPhotoForDrawer, userPhotoURL, 10000f);
+        } else {
+            imageUserPhotoForDrawer.setImageResource(R.mipmap.ic_launcher_round);
+        }
+    }
+
 
     @Override
     public void onBackPressed() {

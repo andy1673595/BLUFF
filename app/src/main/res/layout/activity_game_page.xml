@@ -60,7 +60,7 @@
             android:id="@+id/image_home_button_gamepage"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="30dp"
             android:scaleType="fitXY"
             android:tint="@color/teal600"
             app:layout_constraintStart_toStartOf="parent"

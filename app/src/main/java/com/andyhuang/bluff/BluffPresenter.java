@@ -1,11 +1,14 @@
 package com.andyhuang.bluff;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.StringDef;
 
+import com.andyhuang.bluff.BluffListener.LoadUserPhotoListener;
+import com.andyhuang.bluff.Callback.LoadUserPhotoFromFirebaseCallback;
 import com.andyhuang.bluff.FriendPage.FriendFragment;
 import com.andyhuang.bluff.Dialog.GameInviteDialog.GameInviteDialog;
 import com.andyhuang.bluff.Object.InviteInformation;
@@ -26,6 +29,7 @@ import java.lang.annotation.RetentionPolicy;
 
 public class BluffPresenter implements BluffContract.Presenter {
     private BluffContract.View bluffView;
+    private BluffFirebaseHelper mFirebaseHelper;
     private FragmentManager fragmentManager;
     private RankPageFragment mRankPageFragment;
     private ProfileFragment mProfileFragment;
@@ -39,9 +43,8 @@ public class BluffPresenter implements BluffContract.Presenter {
     private String userPhotoURLGameInvite = Constants.NODATA;
     private String nameInvite = Constants.NODATA;
     private boolean hasReadPhoto = false;
-    private GameInviteDialog gameInviteDialog;
-
-
+    private int recentBackstackNumber = 0;
+    private boolean isDoingPopAllstack = false;
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
             MAIN, FRIEND, PROFILE
@@ -54,6 +57,7 @@ public class BluffPresenter implements BluffContract.Presenter {
 
     public BluffPresenter(BluffContract.View bluffViewInput, FragmentManager fragmentManagerInput,MainHallPage activityInput) {
         bluffView = bluffViewInput;
+        mFirebaseHelper = new BluffFirebaseHelper();
         fragmentManager = fragmentManagerInput;
         activity = activityInput;
         bluffView.setPresenter(this);
@@ -71,9 +75,7 @@ public class BluffPresenter implements BluffContract.Presenter {
         initFragment();
         Firebase.setAndroidContext(Bluff.getContext());
         refUserData = new Firebase("https://myproject-556f6.firebaseio.com/userData/");
-
         listenGameInvite();
-
     }
 
     @Override
@@ -83,15 +85,19 @@ public class BluffPresenter implements BluffContract.Presenter {
 
     @Override
     public void transToMainPage() {
-        if(friendProfileFragment!=null) removeFriendProfileFragment();
+        if(friendProfileFragment!=null) {
+            removeFriendProfileFragment();
+        }
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.hide(mProfileFragment).hide(mFriendFragment)
-                .show(mRankPageFragment).addToBackStack(null).commit();
+                .show(mRankPageFragment).addToBackStack(MAIN).commit();
     }
 
     @Override
     public void transToFriendPage() {
-        if(friendProfileFragment!=null) removeFriendProfileFragment();
+        if(friendProfileFragment!=null) {
+            removeFriendProfileFragment();
+        }
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.hide(mProfileFragment).hide(mRankPageFragment)
                 .show(mFriendFragment).commit();
@@ -99,10 +105,12 @@ public class BluffPresenter implements BluffContract.Presenter {
 
     @Override
     public void transToProfilePage() {
-        if(friendProfileFragment!=null) removeFriendProfileFragment();
+        if(friendProfileFragment!=null) {
+            removeFriendProfileFragment();
+        }
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.hide(mFriendFragment).hide(mRankPageFragment)
-                .show(mProfileFragment).addToBackStack(null).commit();
+        transaction.hide(mRankPageFragment).hide(mFriendFragment).
+                show(mProfileFragment).addToBackStack(PROFILE).commit();
     }
 
     @Override
@@ -115,8 +123,8 @@ public class BluffPresenter implements BluffContract.Presenter {
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.mainFrameLayout,friendProfileFragment,FRIEND_PROFILE).show(friendProfileFragment)
-                    .hide(mFriendFragment).hide(mRankPageFragment).hide(mProfileFragment)
-                    .addToBackStack(null).commit();
+                    .hide(mFriendFragment).hide(mRankPageFragment).hide(mProfileFragment).addToBackStack(null)
+                    .commit();
     }
 
     @Override
@@ -131,12 +139,10 @@ public class BluffPresenter implements BluffContract.Presenter {
     public void showGameInviteDialog() {
         Gamer inviter = new Gamer(UIDGameInvite,userPhotoURLGameInvite,emailFromGameInvite);
         inviter.setUserName(nameInvite);
-        gameInviteDialog = new GameInviteDialog((Activity)bluffView,this,inviter,numberOfGameRoom);
-        gameInviteDialog.setCanceledOnTouchOutside(false);
-        gameInviteDialog.show();
-        removeSequenceForRandomGame();
+        bluffView.showInviteDialog(inviter,numberOfGameRoom);
     }
 
+    @Override
     public void removeSequenceForRandomGame() {
         String sequenceID = UserManager.getInstance().getSequenceID();
         if(!sequenceID.equals(Constants.NODATA)) {
@@ -148,12 +154,37 @@ public class BluffPresenter implements BluffContract.Presenter {
         }
     }
 
+    @Override
+    public void loadUserPhoto() {
+        mFirebaseHelper.loadUserPhoto(mLoadUserPhotoFromFirebaseCallback);
+    }
+
     public void initFragment() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.mainFrameLayout, mRankPageFragment, MAIN)
                 .add(R.id.mainFrameLayout, mProfileFragment, PROFILE)
                 .add(R.id.mainFrameLayout, mFriendFragment, FRIEND).hide(mProfileFragment).hide(mRankPageFragment)
                 .show(mFriendFragment).commit();
+
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if(fragmentManager.getBackStackEntryCount() < recentBackstackNumber&&!isDoingPopAllstack) {
+                    popAllBackstack();
+                }else {
+                    recentBackstackNumber = fragmentManager.getBackStackEntryCount();
+                }
+            }
+        });
+    }
+
+    private void popAllBackstack() {
+        isDoingPopAllstack = true;
+        for(int i=0;i<fragmentManager.getBackStackEntryCount();i++) {
+            fragmentManager.popBackStack();
+        }
+        recentBackstackNumber =0;
+        isDoingPopAllstack = false;
     }
 
     public void listenGameInvite() {
@@ -242,5 +273,12 @@ public class BluffPresenter implements BluffContract.Presenter {
         //cancel waiting , so remove the data from sequence List on server
        removeSequenceForRandomGame();
     }
+
+    private LoadUserPhotoFromFirebaseCallback mLoadUserPhotoFromFirebaseCallback =new LoadUserPhotoFromFirebaseCallback() {
+        @Override
+        public void completed(String userPhotoURL) {
+            bluffView.setUserPhotoOnDrawer(userPhotoURL);
+        }
+    };
 
 }

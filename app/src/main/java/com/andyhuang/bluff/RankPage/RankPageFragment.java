@@ -16,10 +16,11 @@ import com.andyhuang.bluff.helper.ImageFromLruCache;
 import java.util.LinkedList;
 
 public class RankPageFragment extends Fragment implements RankPageContract.view {
-    RankPagePresenter mPresenter;
-    ImageView imageUserPhotoArray[];
-    TextView textUserNameArray[];
-    TextView textInfoArray[];
+    private RankPagePresenter mPresenter;
+    private ImageView imageUserPhotoArray[];
+    private TextView textUserNameArray[];
+    private TextView textInfoArray[];
+    
     View root;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
