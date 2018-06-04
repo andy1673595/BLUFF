@@ -2,7 +2,6 @@ package com.andyhuang.bluff.FriendPage;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,17 +11,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andyhuang.bluff.Bluff;
-import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.R;
+import com.andyhuang.bluff.activities.BluffMainActivity;
 import com.andyhuang.bluff.activities.GamePage;
-import com.andyhuang.bluff.activities.MainHallPage;
+
 import java.util.ArrayList;
 
 public class FriendFragment extends Fragment implements FriendContract.View,View.OnClickListener {
@@ -92,7 +90,7 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
     @Override
     public void showGamePage(String gameID,int playerInvitedTotal) {
         Intent intent = new Intent();
-        intent.setClass((MainHallPage)getActivity(),GamePage.class);
+        intent.setClass((BluffMainActivity)getActivity(),GamePage.class);
         intent.putExtra("gameID",gameID);
         intent.putExtra("isHost",true);
         intent.putExtra("playerCount",playerInvitedTotal);

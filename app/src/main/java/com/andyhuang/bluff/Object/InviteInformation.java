@@ -3,20 +3,19 @@ package com.andyhuang.bluff.Object;
 import com.andyhuang.bluff.Util.Constants;
 
 public class InviteInformation {
-    public String gameInvite = Constants.NODATA;
+    public String inviteUID = Constants.NODATA;
     public String gameRoom = Constants.NODATA;
     public String userEmail = Constants.NODATA;
     public String userPhoto = Constants.NODATA;
     public String userName = Constants.NODATA;
 
-    public String getGameInvite() {
-        return gameInvite;
+    public String getInviteUID() {
+        return inviteUID;
     }
 
-    public void setGameInvite(String gameInvite) {
-        this.gameInvite = gameInvite;
+    public void setInviteUID(String inviteUID) {
+        this.inviteUID = inviteUID;
     }
-
     public String getGameRoom() {
         return gameRoom;
     }

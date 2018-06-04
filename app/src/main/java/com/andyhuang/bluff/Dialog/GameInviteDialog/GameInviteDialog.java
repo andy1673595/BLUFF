@@ -14,23 +14,22 @@ import android.widget.TextView;
 
 import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
+import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.Util.Constants;
 
 import static com.andyhuang.bluff.helper.ImageRounder.getRoundedCornerBitmap;
 
 public class GameInviteDialog extends Dialog implements View.OnClickListener{
+    private InviteInformation mInviteInformation;
     private GameInvitePrsenter mPresenter;
     private Context mContext;
     private BluffPresenter bluffPresenter;
-    private Gamer inviter;
-    private String roomID;
     private ImageView imageBackground;
     public GameInviteDialog(@NonNull Context context, BluffPresenter bluffPresenterInput,
-                            Gamer inviterInput,String roomIDInput) {
+                            InviteInformation inviteInformation) {
         super(context,R.style.MyDialogStyle);
-        inviter = inviterInput;
-        roomID = roomIDInput;
+        mInviteInformation = inviteInformation;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_game_invite);
         imageBackground = findViewById(R.id.image_invite_game_background);
@@ -42,19 +41,20 @@ public class GameInviteDialog extends Dialog implements View.OnClickListener{
         mPresenter = new GameInvitePrsenter(this);
         ((Button)findViewById(R.id.button_accept_invite)).setOnClickListener(this);
         ((Button)findViewById(R.id.button_reject_invite)).setOnClickListener(this);
-        ((TextView)findViewById(R.id.text_invite_info_dialog)).setText(inviter.getUserName()+"\n邀請你進行吹牛");
+        ((TextView)findViewById(R.id.text_invite_info_dialog)).
+                setText(inviteInformation.getUserName()+"\n邀請你進行吹牛");
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_accept_invite:
-                mPresenter.acceptAndStartGame(inviter,roomID);
-                bluffPresenter.setGameInformationAndGetIntoRoom(roomID,0);
+                mPresenter.acceptAndStartGame(mInviteInformation);
+                bluffPresenter.setGameInformationAndGetIntoRoom(mInviteInformation.getGameRoom(),0);
                 dismiss();
                 break;
             case R.id.button_reject_invite:
-                 mPresenter.refuseInvite(roomID);
+                 mPresenter.refuseInvite(mInviteInformation.getGameRoom());
                 dismiss();
                 break;
             default:
@@ -67,7 +67,7 @@ public class GameInviteDialog extends Dialog implements View.OnClickListener{
     @Override
     public void dismiss() {
         bluffPresenter.removeGameInvite();
-        mPresenter.removeInvite();
+        mPresenter.removeInviteFromFirebase();
         super.dismiss();
     }
 }

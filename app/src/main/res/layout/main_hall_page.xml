@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawrlayout_main"
-    tools:context="com.andyhuang.bluff.activities.MainHallPage"
+    tools:context="com.andyhuang.bluff.activities.BluffMainActivity"
     >
 
 

@@ -1,7 +1,6 @@
 package com.andyhuang.bluff.FriendPage;
 
 import com.andyhuang.bluff.Bluff;
-import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.Callback.GameInviteForFriendFragmentCallback;
 import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
@@ -237,7 +236,7 @@ public class FriendPresenter implements FriendContract.Presenter {
                 for(String friendUID : UIDlistForInvite) {
                     //send game invite
                     InviteInformation inviteInformation = new InviteInformation();
-                    inviteInformation.setGameInvite(myUID);
+                    inviteInformation.setInviteUID(myUID);
                     inviteInformation.setGameRoom(gameNumber+myUID);
                     inviteInformation.setUserEmail(UserManager.getInstance().getEmail());
                     inviteInformation.setUserPhoto(UserManager.getInstance().getUserPhotoUrl());

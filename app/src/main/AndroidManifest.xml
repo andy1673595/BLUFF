@@ -67,7 +67,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.MainHallPage"
+            android:name=".activities.BluffMainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".activities.GamePage"

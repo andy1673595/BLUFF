@@ -4,19 +4,14 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,13 +21,13 @@ import android.widget.Toast;
 import com.andyhuang.bluff.BluffContract;
 import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.Callback.ChangeUserPhotoCompletedCallback;
-import com.andyhuang.bluff.Callback.LoadUserPhotoFromFirebaseCallback;
 import com.andyhuang.bluff.Callback.WaitForRandomGameCallback;
 import com.andyhuang.bluff.Dialog.GameInviteDialog.GameInviteDialog;
 import com.andyhuang.bluff.Dialog.WaitForRandomGameDialog.WaitForRandomGameDialog;
 import com.andyhuang.bluff.FriendPage.FragmentListener;
 import com.andyhuang.bluff.FriendPage.IniviteErrorDialog;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
+import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.helper.ChangeUserPhotoHelper;
@@ -49,7 +44,7 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class MainHallPage extends BaseActivity implements BluffContract.View, FragmentListener {
+public class BluffMainActivity extends BaseActivity implements BluffContract.View, FragmentListener {
     private BluffPresenter mPresenter;
     private DrawerLayout myDrawerLayout;
     private NavigationView mNavigationView;
@@ -70,7 +65,7 @@ public class MainHallPage extends BaseActivity implements BluffContract.View, Fr
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
         textNameForDrawer = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.textUserNameInDrawer);
         imageUserPhotoForDrawer = (ImageView) mNavigationView.getHeaderView(0).findViewById(R.id.imageUserPhotoInDrawer);
-        mPresenter = new BluffPresenter(this, getFragmentManager(), this);
+        mPresenter = new BluffPresenter(this, getFragmentManager());
         mNavigationView.setNavigationItemSelectedListener(navigationViewListener());
         imageMenuButton.setOnClickListener(mainClickListener);
         setDrawerLayout();
@@ -103,7 +98,7 @@ public class MainHallPage extends BaseActivity implements BluffContract.View, Fr
                         break;
                     case R.id.item_random:
                         mPresenter.startRandomGame();
-                        mWaitForRandomGameDialog = new WaitForRandomGameDialog(MainHallPage.this, mWaitForRandomGameCallback);
+                        mWaitForRandomGameDialog = new WaitForRandomGameDialog(BluffMainActivity.this, mWaitForRandomGameCallback);
                         //避免玩家手殘點到外面取消
                         mWaitForRandomGameDialog.setCanceledOnTouchOutside(false);
                         mWaitForRandomGameDialog.show();
@@ -150,11 +145,11 @@ public class MainHallPage extends BaseActivity implements BluffContract.View, Fr
     }
 
     @Override
-    public void showInviteDialog(Gamer inviter,String numberOfGameRoom) {
-        GameInviteDialog gameInviteDialog = new GameInviteDialog(MainHallPage.this,mPresenter,inviter,numberOfGameRoom);
+    public void showInviteDialog(InviteInformation inviteInformation) {
+        GameInviteDialog gameInviteDialog = new GameInviteDialog(BluffMainActivity.this,mPresenter,inviteInformation);
         gameInviteDialog.setCanceledOnTouchOutside(false);
         gameInviteDialog.show();
-        mPresenter.removeSequenceForRandomGame();
+        mPresenter.removeSequenceOnFirebaseForRandomGame();
     }
 
     @Override
@@ -181,7 +176,7 @@ public class MainHallPage extends BaseActivity implements BluffContract.View, Fr
 
     public void changeUserPhotoForProfilePage(ChangeUserPhotoCompletedCallback callbackInput) {
         mPhotoCallback = callbackInput;
-        MainHallPagePermissionsDispatcher.getPhotoFromGalleryWithPermissionCheck(this);
+        BluffMainActivityPermissionsDispatcher.getPhotoFromGalleryWithPermissionCheck(this);
     }
 
     @Override
@@ -230,12 +225,12 @@ public class MainHallPage extends BaseActivity implements BluffContract.View, Fr
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        MainHallPagePermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        BluffMainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     @OnShowRationale({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void showRationale(final PermissionRequest request) {
-        new AlertDialog.Builder(MainHallPage.this)
+        new AlertDialog.Builder(BluffMainActivity.this)
                 .setMessage("未允許「" + getString(R.string.app_name) +
                         "」讀取裝置權限，將無法使用自訂相片，是否重新設定權限？")
                 .setPositiveButton("重新設定權限", new DialogInterface.OnClickListener() {

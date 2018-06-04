@@ -39,7 +39,7 @@ public class FirebaseCreateAccount {
     }
 
     public void creatAccount(final FirebaseLoginCallback callback, final String accountInput,
-                             final String passwordInput,final String nameInput,final String photoURLInput) {
+                             final String passwordInput,final String nameInput) {
 
         mAuth.createUserWithEmailAndPassword(accountInput,passwordInput)
                 .addOnCompleteListener(mCreatePage, new OnCompleteListener<AuthResult>() {
@@ -50,7 +50,6 @@ public class FirebaseCreateAccount {
                             userEmail = accountInput;
                             userPassword = passwordInput;
                             userName = nameInput;
-                            userPhotoURL = photoURLInput;
                             user = mAuth.getCurrentUser();
                             userUID = user.getUid();
                             //update online state

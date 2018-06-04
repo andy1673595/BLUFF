@@ -10,11 +10,10 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.andyhuang.bluff.Util.Constants;
-import com.andyhuang.bluff.activities.MainHallPage;
+import com.andyhuang.bluff.activities.BluffMainActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,7 +88,7 @@ public class ChangeUserPhotoHelper {
             }
 
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION); //For android 8.0 and after
-            ((MainHallPage)mContext).startActivityForResult(intent, Constants.GET_PHOTO_CROP);
+            ((BluffMainActivity)mContext).startActivityForResult(intent, Constants.GET_PHOTO_CROP);
 
         } catch (ActivityNotFoundException e) {
             Toast.makeText(mContext, "This device doesn't support the crop action!", Toast.LENGTH_SHORT).show();

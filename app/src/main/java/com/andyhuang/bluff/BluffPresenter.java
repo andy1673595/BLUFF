@@ -1,16 +1,13 @@
 package com.andyhuang.bluff;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.StringDef;
 
-import com.andyhuang.bluff.BluffListener.LoadUserPhotoListener;
+import com.andyhuang.bluff.Callback.InviteListenCallback;
 import com.andyhuang.bluff.Callback.LoadUserPhotoFromFirebaseCallback;
 import com.andyhuang.bluff.FriendPage.FriendFragment;
-import com.andyhuang.bluff.Dialog.GameInviteDialog.GameInviteDialog;
 import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.RankPage.RankPageFragment;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
@@ -18,7 +15,7 @@ import com.andyhuang.bluff.Profile.ProfileFragment;
 import com.andyhuang.bluff.RandomGame.RandomGameHelper;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
-import com.andyhuang.bluff.activities.MainHallPage;
+import com.andyhuang.bluff.activities.BluffMainActivity;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -28,66 +25,51 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public class BluffPresenter implements BluffContract.Presenter {
-    private BluffContract.View bluffView;
-    private BluffFirebaseHelper mFirebaseHelper;
+    //區域變數
+    private int recentBackstackNumber = 0;
+    private boolean isDoingPopAllstack = false;
+    private InviteInformation inviteInformation;
+    //fragment variables
     private FragmentManager fragmentManager;
     private RankPageFragment mRankPageFragment;
     private ProfileFragment mProfileFragment;
     private FriendFragment mFriendFragment;
     private ProfileFragment friendProfileFragment;
-    private Firebase refUserData;
-    private MainHallPage activity;
-    private String UIDGameInvite = Constants.NODATA;
-    private String numberOfGameRoom = Constants.NODATA;
-    private String emailFromGameInvite = Constants.NODATA;
-    private String userPhotoURLGameInvite = Constants.NODATA;
-    private String nameInvite = Constants.NODATA;
-    private boolean hasReadPhoto = false;
-    private int recentBackstackNumber = 0;
-    private boolean isDoingPopAllstack = false;
-    @Retention(RetentionPolicy.SOURCE)
-    @StringDef({
-            MAIN, FRIEND, PROFILE
-    })
-    public @interface FragmentType {}
+    //View , Firebase變數宣告
+    private BluffContract.View bluffView;
+    private BluffFirebaseHelper mFirebaseHelper;
+   // private Firebase refUserData;
+
+
+    //fragment的Tag
     public static final String MAIN     = "MAIN";
     public static final String FRIEND = "FRIEND";
     public static final String PROFILE  = "PROFILE";
     public static final String FRIEND_PROFILE  = "FRIEND_PROFILE";
 
-    public BluffPresenter(BluffContract.View bluffViewInput, FragmentManager fragmentManagerInput,MainHallPage activityInput) {
+    public BluffPresenter(BluffContract.View bluffViewInput, FragmentManager fragmentManagerInput) {
         bluffView = bluffViewInput;
-        mFirebaseHelper = new BluffFirebaseHelper();
-        fragmentManager = fragmentManagerInput;
-        activity = activityInput;
         bluffView.setPresenter(this);
+        mFirebaseHelper = new BluffFirebaseHelper(this);
+        //init fragment variables
+        fragmentManager = fragmentManagerInput;
         mRankPageFragment = new RankPageFragment();
-        mProfileFragment = new ProfileFragment();
         mFriendFragment = new FriendFragment();
-        //set UID to profile fragment
-        Bundle bundle = new Bundle();
-        bundle.putString("UID",UserManager.getInstance().getUserUID());
-        mProfileFragment.setArguments(bundle);
-        //set UID to friend fragment
-        Bundle bundleToFriendFragment = new Bundle();
-        mProfileFragment.setArguments(bundle);
-        //inti
+        //拿到自己的ProfileFragment
+        mProfileFragment = getProfileFragment(UserManager.getInstance().getUserUID());
+        //init其他參數
         initFragment();
         Firebase.setAndroidContext(Bluff.getContext());
-        refUserData = new Firebase("https://myproject-556f6.firebaseio.com/userData/");
+      //  refUserData = new Firebase("https://myproject-556f6.firebaseio.com/userData/");
+        //監聽遊戲邀請
         listenGameInvite();
     }
-
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
     public void transToMainPage() {
-        if(friendProfileFragment!=null) {
-            removeFriendProfileFragment();
-        }
+        removeFriendProfileFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.hide(mProfileFragment).hide(mFriendFragment)
                 .show(mRankPageFragment).addToBackStack(MAIN).commit();
@@ -95,9 +77,7 @@ public class BluffPresenter implements BluffContract.Presenter {
 
     @Override
     public void transToFriendPage() {
-        if(friendProfileFragment!=null) {
-            removeFriendProfileFragment();
-        }
+        removeFriendProfileFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.hide(mProfileFragment).hide(mRankPageFragment)
                 .show(mFriendFragment).commit();
@@ -105,9 +85,7 @@ public class BluffPresenter implements BluffContract.Presenter {
 
     @Override
     public void transToProfilePage() {
-        if(friendProfileFragment!=null) {
-            removeFriendProfileFragment();
-        }
+        removeFriendProfileFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.hide(mRankPageFragment).hide(mFriendFragment).
                 show(mProfileFragment).addToBackStack(PROFILE).commit();
@@ -115,43 +93,31 @@ public class BluffPresenter implements BluffContract.Presenter {
 
     @Override
     public void transToFriendProfile(String friendUID) {
-        friendProfileFragment = new ProfileFragment();
-        //set UID to profile fragment
-        Bundle bundle = new Bundle();
-        bundle.putString("UID",friendUID);
-        friendProfileFragment.setArguments(bundle);
-
+        friendProfileFragment = getProfileFragment(friendUID);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.mainFrameLayout,friendProfileFragment,FRIEND_PROFILE).show(friendProfileFragment)
-                    .hide(mFriendFragment).hide(mRankPageFragment).hide(mProfileFragment).addToBackStack(null)
-                    .commit();
+        transaction.add(R.id.mainFrameLayout,friendProfileFragment,FRIEND_PROFILE)
+                   .show(friendProfileFragment).hide(mFriendFragment).hide(mRankPageFragment)
+                   .hide(mProfileFragment).addToBackStack(FRIEND_PROFILE).commit();
     }
 
     @Override
     public void removeFriendProfileFragment() {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.remove(friendProfileFragment).show(mFriendFragment)
-                .hide(mRankPageFragment).hide(mProfileFragment).commit();
-        friendProfileFragment = null;
-    }
-
-    @Override
-    public void showGameInviteDialog() {
-        Gamer inviter = new Gamer(UIDGameInvite,userPhotoURLGameInvite,emailFromGameInvite);
-        inviter.setUserName(nameInvite);
-        bluffView.showInviteDialog(inviter,numberOfGameRoom);
-    }
-
-    @Override
-    public void removeSequenceForRandomGame() {
-        String sequenceID = UserManager.getInstance().getSequenceID();
-        if(!sequenceID.equals(Constants.NODATA)) {
-            //if I am invited from random game , remove the sequence from server
-            Firebase randomGameRef =
-                    new Firebase("https://myproject-556f6.firebaseio.com/"+ Constants.RANDOM_GAME);
-            randomGameRef.child(sequenceID).removeValue();
-            UserManager.getInstance().setSequenceID(Constants.NODATA);
+        if(friendProfileFragment!=null) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.remove(friendProfileFragment).commit();
+            friendProfileFragment = null;
         }
+    }
+
+    @Override
+    public void showGameInviteDialog(InviteInformation inviteInformationInput) {
+        inviteInformation = inviteInformationInput;
+        bluffView.showInviteDialog(inviteInformation);
+    }
+
+    @Override
+    public void removeSequenceOnFirebaseForRandomGame() {
+        mFirebaseHelper.removeSequenceOnFirebase();
     }
 
     @Override
@@ -163,75 +129,52 @@ public class BluffPresenter implements BluffContract.Presenter {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.mainFrameLayout, mRankPageFragment, MAIN)
                 .add(R.id.mainFrameLayout, mProfileFragment, PROFILE)
-                .add(R.id.mainFrameLayout, mFriendFragment, FRIEND).hide(mProfileFragment).hide(mRankPageFragment)
+                .add(R.id.mainFrameLayout, mFriendFragment, FRIEND)
+                .hide(mProfileFragment).hide(mRankPageFragment)
                 .show(mFriendFragment).commit();
 
         fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
+                //如果使用者按back鍵就把所有的backstack清空回到friend頁面
                 if(fragmentManager.getBackStackEntryCount() < recentBackstackNumber&&!isDoingPopAllstack) {
                     popAllBackstack();
                 }else {
+                    //紀錄backstack裡面的堆疊數量,下次按下back鍵時可以判斷是否要清空stack
                     recentBackstackNumber = fragmentManager.getBackStackEntryCount();
                 }
             }
         });
     }
 
+    //清空backstack裡面的所有堆疊
     private void popAllBackstack() {
+        //設定flag免得重複進行popAllBackstack()
         isDoingPopAllstack = true;
         for(int i=0;i<fragmentManager.getBackStackEntryCount();i++) {
+            //清空堆疊
             fragmentManager.popBackStack();
         }
+        //reset 計數器和flag
         recentBackstackNumber =0;
         isDoingPopAllstack = false;
     }
 
+    private ProfileFragment getProfileFragment(String userUIDForProfilePage) {
+        ProfileFragment profileFragment = new ProfileFragment();
+        //set UID to profile fragment
+        Bundle bundle = new Bundle();
+        bundle.putString("UID",userUIDForProfilePage);
+        profileFragment.setArguments(bundle);
+        return profileFragment;
+    }
+
     public void listenGameInvite() {
-        refUserData.child(UserManager.getInstance().getUserUID())
-                .addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if(dataSnapshot.getKey().equals(Constants.GAME)) {
-                    InviteInformation inviteInformation = dataSnapshot.getValue(InviteInformation.class);
-                    UIDGameInvite = inviteInformation.getGameInvite();
-                    numberOfGameRoom = inviteInformation.getGameRoom();
-                    emailFromGameInvite = inviteInformation.getUserEmail();
-                    userPhotoURLGameInvite = inviteInformation.getUserPhoto();
-                    nameInvite = inviteInformation.getUserName();
-                    showGameInviteDialog();
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+        mFirebaseHelper.listenGameInviteFromFirebase();
     }
     @Override
     public void removeGameInvite() {
-        UIDGameInvite = Constants.NODATA;
-        numberOfGameRoom = Constants.NODATA;
-        emailFromGameInvite = Constants.NODATA;
-        userPhotoURLGameInvite = Constants.NODATA;
-        nameInvite = Constants.NODATA;
-        hasReadPhoto = false;
+       inviteInformation =null;
     }
 
     @Override
@@ -241,14 +184,7 @@ public class BluffPresenter implements BluffContract.Presenter {
 
     @Override
     public void setDisconnectWhenGetOutline() {
-        //set false when user is outline
-        refUserData.child(UserManager.getInstance().getUserUID()).child(Constants.ONLINE_STATE).onDisconnect().setValue(false);
-        refUserData.child(UserManager.getInstance().getUserUID()).child(Constants.IS_GAMING).onDisconnect().setValue(false);
-    }
-
-    @Override
-    public void transToPrivacyPolicy() {
-
+        mFirebaseHelper.setDisconnectWhenGetOutlineOnFirebase();
     }
 
     @Override
@@ -271,7 +207,7 @@ public class BluffPresenter implements BluffContract.Presenter {
     @Override
     public void cancelWaiting() {
         //cancel waiting , so remove the data from sequence List on server
-       removeSequenceForRandomGame();
+        removeSequenceOnFirebaseForRandomGame();
     }
 
     private LoadUserPhotoFromFirebaseCallback mLoadUserPhotoFromFirebaseCallback =new LoadUserPhotoFromFirebaseCallback() {

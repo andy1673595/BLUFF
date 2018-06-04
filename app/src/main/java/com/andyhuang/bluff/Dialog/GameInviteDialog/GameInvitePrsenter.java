@@ -3,6 +3,7 @@ package com.andyhuang.bluff.Dialog.GameInviteDialog;
 import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.Dialog.GameInviteDialog.GameInviteDialog;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
+import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
 import com.firebase.client.Firebase;
@@ -20,19 +21,19 @@ public class GameInvitePrsenter implements GameInviteContract.presenter{
         refGameData = new Firebase(URL_GAME_ROOM_DATA);
     }
     @Override
-    public void acceptAndStartGame(Gamer inviter,String roomID) {
+    public void acceptAndStartGame(InviteInformation inviteInformation) {
         Gamer me = new Gamer(UserManager.getInstance().getUserUID(),
                 UserManager.getInstance().getUserPhotoUrl(),
                 UserManager.getInstance().getEmail());
         me.setUserName(UserManager.getInstance().getUserName());
         //accept , join the game
-        refGameData.child(roomID).child(Constants.GAMER_FIREBASE)
+        refGameData.child(inviteInformation.gameRoom).child(Constants.GAMER_FIREBASE)
                 .child(UserManager.getInstance().getUserUID()).setValue(me);
     }
 
 
     @Override
-    public void removeInvite() {
+    public void removeInviteFromFirebase() {
         //remove the invite information
         refUserData.child(UserManager.getInstance().getUserUID()).child(Constants.GAME).removeValue();
     }

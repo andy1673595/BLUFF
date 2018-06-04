@@ -4,17 +4,14 @@ import android.util.Log;
 
 import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.Callback.GameInviteForFriendFragmentCallback;
-import com.andyhuang.bluff.FriendPage.FriendPageAdapter;
 import com.andyhuang.bluff.FriendPage.GameInviteListener;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Util.Constants;
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ServerValue;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -62,7 +59,7 @@ public class RandomGameHelper {
                             //I'm a host , invite recent person
                             Log.d("randomLog","I'm host, invite "+recentUserUID);
                             getNumberOfGameRoom();
-                            mBluffPresenter.removeSequenceForRandomGame();
+                            mBluffPresenter.removeSequenceOnFirebaseForRandomGame();
 
                         } else {
                             Log.d("randomLog","I'm invitee" );
@@ -115,7 +112,7 @@ public class RandomGameHelper {
             if(creatRoom) {
                     //send game invite
                 InviteInformation inviteInformation = new InviteInformation();
-                inviteInformation.setGameInvite(myUID);
+                inviteInformation.setInviteUID(myUID);
                 inviteInformation.setGameRoom(gameNumber+myUID);
                 inviteInformation.setUserName(UserManager.getInstance().getUserName());
                 inviteInformation.setUserPhoto(UserManager.getInstance().getUserPhotoUrl());

@@ -16,18 +16,12 @@ import android.widget.TextView;
 
 import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.Callback.ChangeUserPhotoCompletedCallback;
-import com.andyhuang.bluff.FriendPage.FragmentListener;
-import com.andyhuang.bluff.Object.GameResult;
 import com.andyhuang.bluff.Profile.Dialog.ModifyCommentDialog;
 import com.andyhuang.bluff.R;
-import com.andyhuang.bluff.Util.Constants;
-import com.andyhuang.bluff.activities.MainHallPage;
+import com.andyhuang.bluff.activities.BluffMainActivity;
 import com.andyhuang.bluff.helper.ImageFromLruCache;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
-import java.net.URI;
 
 import static com.andyhuang.bluff.helper.ImageRounder.getRoundedCornerBitmap;
 
@@ -79,7 +73,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Pr
                 modifyCommentDialog.show();
                 break;
             case R.id.image_user_photo_profile:
-                ((MainHallPage)getActivity()).changeUserPhotoForProfilePage(mPhotoCallback);
+                ((BluffMainActivity)getActivity()).changeUserPhotoForProfilePage(mPhotoCallback);
                 break;
         }
     }

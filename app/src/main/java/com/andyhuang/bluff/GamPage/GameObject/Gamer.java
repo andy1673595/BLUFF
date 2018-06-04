@@ -12,6 +12,12 @@ public class Gamer {
         userPhotoURL = userPhotoURLInput;
         userEmail = userEmailInput;
     }
+    public Gamer(String userUIDInput,String userPhotoURLInput,String userEmailInput,String userNameInput){
+        userUID = userUIDInput;
+        userPhotoURL = userPhotoURLInput;
+        userEmail = userEmailInput;
+        userName = userNameInput;
+    }
     public String getUserUID() {
         return userUID;
     }
