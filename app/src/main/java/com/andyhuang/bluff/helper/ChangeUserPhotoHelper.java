@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.widget.Toast;
 
 import com.andyhuang.bluff.Util.Constants;
@@ -22,7 +23,8 @@ import java.util.Date;
 import java.util.List;
 
 public class ChangeUserPhotoHelper {
-    Context mContext;
+    private Context mContext;
+    private Uri imageUri;
     public ChangeUserPhotoHelper(Context context) {
         mContext = context;
     }
@@ -58,7 +60,6 @@ public class ChangeUserPhotoHelper {
                     null);
             if (cursor != null && cursor.moveToFirst()) {
                 final int index = cursor.getColumnIndexOrThrow(column);
-                String xx  = cursor.getString(index);
                 return cursor.getString(index);
             }
         } finally {
@@ -68,7 +69,10 @@ public class ChangeUserPhotoHelper {
         return null;
     }
 
-    public void doCropPhoto(Uri uri, Uri galleryUri) {
+    public void doCropPhoto(Context context,Intent data) {
+        String path = getRealPathFromURI(data.getData());
+        File imageFile = new File(path);
+        Uri galleryUri = FileProvider.getUriForFile(context, "com.andyhuang.bluff.fileprovider", imageFile);
         try {
             Intent intent = new Intent("com.android.camera.action.CROP");
             intent.setDataAndType(galleryUri, "image/*");
@@ -79,12 +83,12 @@ public class ChangeUserPhotoHelper {
             intent.putExtra("outputX", 200);//回傳照片比例X
             intent.putExtra("outputY", 200);//回傳照片比例Y
             intent.putExtra("return-data", false);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
 
             List<ResolveInfo> resInfoList = mContext.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
             for (ResolveInfo resolveInfo : resInfoList) {
                 String packageName = resolveInfo.activityInfo.packageName;
-                mContext.grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                mContext.grantUriPermission(packageName,imageUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             }
 
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION); //For android 8.0 and after
@@ -108,5 +112,24 @@ public class ChangeUserPhotoHelper {
                 storageDir      /* directory */);
 
         return image;
+    }
+
+    public void getThePhotoFromMobilePhotoGallery(Context context,Intent intentPhotoGallery) {
+        File imageFile = null;
+        try {
+            imageFile = createImageFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (imageFile != null) {
+            //mImageCameraTempUri
+            imageUri = FileProvider.getUriForFile(context, "com.andyhuang.bluff.fileprovider", imageFile);
+            intentPhotoGallery.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            ((BluffMainActivity)mContext).startActivityForResult(intentPhotoGallery, Constants.GET_PHOTO_FROM_GALLERY);
+        }
+    }
+
+    public Uri getImageUri() {
+        return imageUri;
     }
 }

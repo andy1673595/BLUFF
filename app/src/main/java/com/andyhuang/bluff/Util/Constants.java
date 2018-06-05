@@ -2,6 +2,7 @@ package com.andyhuang.bluff.Util;
 
 public class Constants {
     public static final String FACEBOOK_HINT = "ThisFacebookDontShowAcocount";
+    public static final int SHOW_INVITE = 10;
     public static String FIREBASE_URL = "https://myproject-556f6.firebaseio.com/";
     public static String TAG = "Bluff Debug";
     public static String NODATA = "No data";

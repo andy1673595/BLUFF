@@ -2,6 +2,7 @@ package com.andyhuang.bluff.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -47,40 +48,50 @@ import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public class BluffMainActivity extends BaseActivity implements BluffContract.View, FragmentListener {
-    private BluffPresenter mPresenter;
-    private DrawerLayout myDrawerLayout;
-    private NavigationView mNavigationView;
+
     private ImageView imageMenuButton;
     private ImageView imageUserPhotoForDrawer;
     private TextView textNameForDrawer;
+    private DrawerLayout myDrawerLayout;
+    private NavigationView mNavigationView;
+    private Context mContext;
     private ChangeUserPhotoHelper mChangeUserPhotoHelper;
-    private Uri mImageUri;
     private ChangeUserPhotoCompletedCallback mPhotoCallback;
     private WaitForRandomGameDialog mWaitForRandomGameDialog;
-
+    private GameInviteDialog gameInviteDialog;
+    private BluffPresenter mPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        myDrawerLayout = (DrawerLayout) findViewById(R.id.drawrlayout_main);
-        imageMenuButton = (ImageView) findViewById(R.id.image_menu_button);
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-        textNameForDrawer = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.textUserNameInDrawer);
-        imageUserPhotoForDrawer = (ImageView) mNavigationView.getHeaderView(0).findViewById(R.id.imageUserPhotoInDrawer);
-        mPresenter = new BluffPresenter(this, getFragmentManager());
+        mContext = this;
+        initView();
+        //setListener
         mNavigationView.setNavigationItemSelectedListener(navigationViewListener());
         imageMenuButton.setOnClickListener(mainClickListener);
-        setDrawerLayout();
+        //init presenter
+        mPresenter = new BluffPresenter(this, getFragmentManager());
         mPresenter.setDisconnectWhenGetOutline();
         //helper for changing user photo in the profile page
         mChangeUserPhotoHelper = new ChangeUserPhotoHelper(this);
+        //set drawer layout default setting
+        setDrawerLayout();
     }
 
+    private void initView() {
+        imageMenuButton = findViewById(R.id.image_menu_button);
+        //navigationView element
+        mNavigationView = findViewById(R.id.navigation_view);
+        imageUserPhotoForDrawer = mNavigationView.getHeaderView(0).findViewById(R.id.imageUserPhotoInDrawer);
+        textNameForDrawer = mNavigationView.getHeaderView(0).findViewById(R.id.textUserNameInDrawer);
+        myDrawerLayout = findViewById(R.id.drawrlayout_main);
+    }
+    //set default setting for drawer layout
     public void setDrawerLayout() {
         myDrawerLayout.setFitsSystemWindows(true);
         myDrawerLayout.setClipToPadding(false);
         textNameForDrawer.setText(com.andyhuang.bluff.User.UserManager.getInstance().getUserName());
-        //set userphoto in drawer
+        //set user photo in drawer
         mPresenter.loadUserPhoto();
     }
 
@@ -114,8 +125,13 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
 
     private View.OnClickListener mainClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
-            myDrawerLayout.openDrawer(Gravity.LEFT);
+        public void onClick(View view) {
+            switch (view.getId()) {
+                //開啟 drawer 選單
+                case R.id.image_menu_button:
+                    myDrawerLayout.openDrawer(Gravity.LEFT);
+                    break;
+            }
         }
     };
 
@@ -127,7 +143,7 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
     @Override
     public void showGamePage(String gameID, int gamerInvitedTotal, boolean isHost) {
         if (mWaitForRandomGameDialog != null) {
-            //hide the dialog when I'm invitee and I have already get into game
+            //hide the random game dialog when I'm invitee and I have got ready to start a game
             mWaitForRandomGameDialog.dismiss();
             mWaitForRandomGameDialog = null;
         }
@@ -148,18 +164,25 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
 
     @Override
     public void showInviteDialog(InviteInformation inviteInformation) {
-        GameInviteDialog gameInviteDialog = new GameInviteDialog(Bluff.getContext(), mPresenter, inviteInformation);
+        gameInviteDialog = new GameInviteDialog(BluffMainActivity.this, mPresenter, inviteInformation);
+        //避免使用者手殘點擊到外面的區域
         gameInviteDialog.setCanceledOnTouchOutside(false);
-        gameInviteDialog.show();
+        //在handler中開啟dialog
+        Message message = new Message();
+        message.what = Constants.SHOW_INVITE;
+        showInviteHandler.sendMessage(message);
+        //移除掉隨機配對排隊序列
         mPresenter.removeSequenceOnFirebaseForRandomGame();
     }
 
     @Override
     public void setUserPhotoOnDrawer(String userPhotoURL) {
         if (!userPhotoURL.equals(Constants.NODATA)) {
+            //not default value, set the image by photo url
             imageUserPhotoForDrawer.setTag(userPhotoURL);
             new ImageFromLruCache().set(imageUserPhotoForDrawer, userPhotoURL, 10000f);
         } else {
+            //It's default value , set default image
             imageUserPhotoForDrawer.setImageResource(R.mipmap.ic_launcher_round);
         }
     }
@@ -167,6 +190,7 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
 
     @Override
     public void onBackPressed() {
+        //when back key is pressed,if drawer is open, close the drawer
         if (myDrawerLayout.isDrawerOpen(Gravity.LEFT)) myDrawerLayout.closeDrawers();
         else super.onBackPressed();
     }
@@ -176,10 +200,6 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
         mPresenter.transToFriendProfile(friendUID);
     }
 
-    public void changeUserPhotoForProfilePage(ChangeUserPhotoCompletedCallback callbackInput) {
-        mPhotoCallback = callbackInput;
-        BluffMainActivityPermissionsDispatcher.getPhotoFromGalleryWithPermissionCheck(this);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -187,15 +207,13 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
         switch (requestCode) {
             case Constants.GET_PHOTO_FROM_GALLERY:  //取得圖片後進行裁剪
                 if (resultCode == RESULT_OK) {
-                    String path = mChangeUserPhotoHelper.getRealPathFromURI(data.getData());
-                    File imageFile = new File(path);
-                    mChangeUserPhotoHelper.doCropPhoto(mImageUri,
-                            FileProvider.getUriForFile(this, "com.andyhuang.bluff.fileprovider", imageFile));
+                    mChangeUserPhotoHelper.doCropPhoto(mContext,data);
                 }
                 break;
-            case Constants.GET_PHOTO_CROP:  //裁剪完的圖片Uri傳給Profile fragment
+            case Constants.GET_PHOTO_CROP:
+                //裁剪完的圖片Uri用callback回傳給Profile fragment
                 if (resultCode == RESULT_OK) {
-                    mPhotoCallback.completedChange(mImageUri);
+                    mPhotoCallback.completedChange(mChangeUserPhotoHelper.getImageUri());
                 }
                 break;
         }
@@ -209,18 +227,7 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
         //開啟 Pictures 畫面 Type 設定為 image
         intentPhotoGallery.setType("image/*");
         if (intentPhotoGallery.resolveActivity(this.getPackageManager()) != null) {
-            File imageFile = null;
-            try {
-                imageFile = mChangeUserPhotoHelper.createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (imageFile != null) {
-                mImageUri = FileProvider.getUriForFile(this, "com.andyhuang.bluff.fileprovider", imageFile); //mImageCameraTempUri
-                intentPhotoGallery.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
-                startActivityForResult(intentPhotoGallery, Constants.GET_PHOTO_FROM_GALLERY);
-            }
+            mChangeUserPhotoHelper.getThePhotoFromMobilePhotoGallery(mContext,intentPhotoGallery);
         }
     }
 
@@ -265,6 +272,28 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
         @Override
         public void cancelWaiting() {
             mPresenter.cancelWaiting();
+        }
+    };
+
+
+     public void changeUserPhotoForProfilePage(ChangeUserPhotoCompletedCallback callbackInput) {
+        mPhotoCallback = callbackInput;
+        BluffMainActivityPermissionsDispatcher.getPhotoFromGalleryWithPermissionCheck(this);
+    }
+
+
+    //另開一個handler處理Dialog show的問題
+    //有時候Activity正在做別的事情或正在被使用無法處理dialog會導致crash
+    private Handler showInviteHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constants.SHOW_INVITE:
+                    if (!isFinishing()) {
+                        gameInviteDialog.show();
+                    }
+                    break;
+            }
         }
     };
 }
