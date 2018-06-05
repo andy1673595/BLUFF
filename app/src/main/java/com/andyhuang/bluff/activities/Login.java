@@ -16,6 +16,8 @@ import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.Callback.FacebookLoginCallback;
 import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
 import com.andyhuang.bluff.Callback.GetFacebookUserDataCallback;
+import com.andyhuang.bluff.Login.LoginContract;
+import com.andyhuang.bluff.Login.LoginPresenter;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.User.FacebookUserData;
 import com.andyhuang.bluff.User.FirebaseAccount;
@@ -30,7 +32,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import java.util.Arrays;
 
-public class Login extends BaseActivity implements View.OnClickListener{
+public class Login extends BaseActivity implements View.OnClickListener,LoginContract.View{
     //layout的變數宣告
     private ImageView imageLoginButton;
     private ImageView imageFBLoginIcon;
@@ -39,11 +41,8 @@ public class Login extends BaseActivity implements View.OnClickListener{
     private EditText editTextPasswordInput;
     private ConstraintLayout layoutFBLoginButton;
     //其他變數宣告
-    private FirebaseAccount firebaseAccount;
-    private CallbackManager callbackManager;
-    private AccessToken accessToken;
-    private FacebookLoginCallback callback = loginCallback();
-    private FacebookUserData userDataAPI;
+    private LoginPresenter mLoginPresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -56,11 +55,8 @@ public class Login extends BaseActivity implements View.OnClickListener{
                 R.drawable.facebook_icon);
         imageFBLoginIcon.setImageBitmap(ImageUtils.toRoundCorner(bitmapIconFBLogin,50,5));
         //檢查sharedPrefrence是否有帳號密碼,有的話直接從裡面拿出來不用讓使用者重新輸入
-        checkSharedPreference();
-        firebaseAccount = new FirebaseAccount(Login.this);
-        userDataAPI = new FacebookUserData();
-        callbackManager = CallbackManager.Factory.create();
-        facebookLoginResult(callback);
+        mLoginPresenter = new LoginPresenter(this);
+        mLoginPresenter.checkSharedPreference();
     }
 
     //把layout的變數找到對應的id
@@ -83,20 +79,19 @@ public class Login extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.image_login_button:
+                //登入按鈕, 檢查帳號密碼不為空之後登入
                 UserManager.getInstance().reset();
                 String accountEmail = String.valueOf(editTextEmailAccountInput.getText());
                 String password  = String.valueOf(editTextPasswordInput.getText());
-                if(accountEmail.isEmpty()||password.isEmpty()) {
-                    Toast.makeText(this,"帳號或密碼不得為空白",Toast.LENGTH_SHORT).show();
-                }else {
-                    firebaseAccount.login(accountEmail,password,firebaseCallback());
-                }
+                mLoginPresenter.checkEditTextInput(accountEmail,password);
                 break;
             case R.id.text_create_account:
+                //創建帳號
                 UserManager.getInstance().reset();
                 startCreateAccountActivity();
                 break;
             case R.id.constraintLayout_fb_login:
+                //fb登入按鈕
                 UserManager.getInstance().reset();
                 LoginManager.getInstance().logInWithReadPermissions(this,
                         Arrays.asList("public_profile", "user_friends","email"));
@@ -107,19 +102,20 @@ public class Login extends BaseActivity implements View.OnClickListener{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
-            callbackManager.onActivityResult(requestCode, resultCode, data);
+            mLoginPresenter.getCallbackManager().onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     protected void onResume() {
         boolean sholdStartMainActivity = this.getIntent().getBooleanExtra("closeActivity",false);
         //come from create account page, completed sign up and start main activity
-        if(sholdStartMainActivity) startMainActiviry();
+        if(sholdStartMainActivity) startMainActivity();
         super.onResume();
     }
 
 
-    public void startMainActiviry() {
+    @Override
+    public void startMainActivity() {
         //設定切換Activity時所需要的參數
         Intent intent = new Intent();
         intent.setClass(Login.this,BluffMainActivity.class);
@@ -137,94 +133,25 @@ public class Login extends BaseActivity implements View.OnClickListener{
         startActivity(intent);
     }
 
-    //檢查sharedPreference是否有資料存在
-    private void checkSharedPreference() {
-        if( Bluff.getContext().getSharedPreferences(Constants.TAG_FOR_SHAREDPREFREENCE,MODE_PRIVATE)
-                .contains(Constants.USER_PASSWORD_SHAREDPREFREENCE)) {
-            //it has password in sharedPreference
-            String password = Bluff.getContext().getSharedPreferences(Constants.TAG_FOR_SHAREDPREFREENCE,MODE_PRIVATE)
-                    .getString(Constants.USER_PASSWORD_SHAREDPREFREENCE,Constants.NODATA);
-            String email =  Bluff.getContext().getSharedPreferences(Constants.TAG_FOR_SHAREDPREFREENCE,MODE_PRIVATE)
-                    .getString(Constants.USER_EMAIL_SHAREDPREFREENCE,Constants.NODATA);
-
-            if(password.equals(Constants.FACEBOOK_HINT)) {
-                //使用者上次是用facebook登入,則清空email和password
-                setEditTextAccountAndPassword("", "");
-                editTextEmailAccountInput.setHint("請輸入信箱登入");
-                editTextPasswordInput.setHint("請輸入密碼登入");
-            } else {
-                //使用者上次是用帳密登入,設定email和password
-                setEditTextAccountAndPassword(password, email);
-            }
-
-        }
-    }
-
-    private void setEditTextAccountAndPassword(String password, String email) {
+    @Override
+    public void setEditTextAccountAndPassword(String password, String email) {
         editTextEmailAccountInput.setText(email);
         editTextPasswordInput.setText(password);
     }
 
-    //facebook login Result
-    public void facebookLoginResult(final FacebookLoginCallback callback) {
-        callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                //拿到accessToken
-                accessToken = loginResult.getAccessToken();
-                if (accessToken == null) {
-                    Log.d(Constants.TAG, "token null");
-                }
-                userDataAPI.getUserData(userDataCallback(),accessToken,Login.this);
-                firebaseAccount.facebookLogin(accessToken,callback);
-            }
-            @Override
-            public void onCancel() {
-                callback.loginFail();
-            }
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(Constants.TAG,"facebook login error: "+error.getMessage());
-                callback.loginFail();
-            }
-        });
+    @Override
+    public void setEditTextHint(String passwordHint, String emailHint) {
+        editTextEmailAccountInput.setHint(passwordHint);
+        editTextPasswordInput.setHint(emailHint);
     }
 
-    private FacebookLoginCallback loginCallback() {
-        return new FacebookLoginCallback() {
-            @Override
-            public void loginSuccess() {
-                Log.d(Constants.TAG,"facebook login success");
-                startMainActiviry();
-            }
-            @Override
-            public void loginFail() {
-                Log.d(Constants.TAG,"facebook login fail");
-            }
-        };
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
-    private GetFacebookUserDataCallback userDataCallback(){
-        return new GetFacebookUserDataCallback() {
-            @Override
-            public void completed() {
-                Log.d(Constants.TAG,"Got facebook data!");
-            }
-        };
-    }
+    @Override
+    public void setPresenter(Object presenter) {
 
-    private FirebaseLoginCallback firebaseCallback() {
-        return new FirebaseLoginCallback() {
-            @Override
-            public void completed() {
-                startMainActiviry();
-            }
-            @Override
-            public void loginFail() {
-                Log.d(Constants.TAG,"firebase login fail");
-            }
-        };
     }
-
 }

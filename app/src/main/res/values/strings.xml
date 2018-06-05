@@ -10,4 +10,9 @@
     <!--  Use for WebRTC  -->
     <string name="pref_speakerphone_key">speakerphone_preference</string>
     <string name="pref_speakerphone_default">auto</string>
+    <string name="use_facebook_login">使用 Facebook 登入</string>
+    <string name="please_input_password">請輸入密碼登入</string>
+    <string name="please_input_email">請輸入信箱登入</string>
+    <string name="create_account_hint">沒有帳號嗎? 創建一個帳號吧</string>
+    <string name="account_and_password_null_error_message">帳號或密碼不得為空白</string>
 </resources>

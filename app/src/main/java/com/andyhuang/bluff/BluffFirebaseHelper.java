@@ -1,7 +1,6 @@
 package com.andyhuang.bluff;
 
 import com.andyhuang.bluff.BluffListener.LoadUserPhotoListener;
-import com.andyhuang.bluff.Callback.InviteListenCallback;
 import com.andyhuang.bluff.Callback.LoadUserPhotoFromFirebaseCallback;
 import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.User.UserManager;
@@ -37,7 +36,7 @@ public class BluffFirebaseHelper {
             UserManager.getInstance().setSequenceID(Constants.NODATA);
         }
     }
-
+    //Listen the Invite message change on Firebase
     public void listenGameInviteFromFirebase() {
         userDataRef.child(UserManager.getInstance().getUserUID())
                 .addChildEventListener(new ChildEventListener() {
@@ -61,6 +60,7 @@ public class BluffFirebaseHelper {
                 });
     }
 
+    //update online state to offline when Disconnect from Firebase
     public void setDisconnectWhenGetOutlineOnFirebase() {
         //set false when user is outline
         userDataRef.child(UserManager.getInstance().getUserUID())

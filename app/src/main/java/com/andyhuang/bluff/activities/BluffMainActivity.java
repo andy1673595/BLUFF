@@ -26,7 +26,6 @@ import com.andyhuang.bluff.Dialog.GameInviteDialog.GameInviteDialog;
 import com.andyhuang.bluff.Dialog.WaitForRandomGameDialog.WaitForRandomGameDialog;
 import com.andyhuang.bluff.FriendPage.FragmentListener;
 import com.andyhuang.bluff.FriendPage.IniviteErrorDialog;
-import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.Util.Constants;
@@ -59,7 +58,7 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_hall_page);
+        setContentView(R.layout.main_activity);
         myDrawerLayout = (DrawerLayout) findViewById(R.id.drawrlayout_main);
         imageMenuButton = (ImageView) findViewById(R.id.image_menu_button);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);

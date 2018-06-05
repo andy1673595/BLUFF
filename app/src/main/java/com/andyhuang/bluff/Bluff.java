@@ -41,6 +41,7 @@ public class Bluff extends Application {
         return mDiskLruCache;
     }
 
+    //init cache of lru disk
     private void initDiskLruCache() {
         try {
             File cacheDir = getDiskCacheDir(context, "ImageCache");
@@ -53,7 +54,7 @@ public class Bluff extends Application {
             e.printStackTrace();
         }
     }
-
+    //return the app Version
     private int getAppVersion(Context context) {
         try {
             PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);

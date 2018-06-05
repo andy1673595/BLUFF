@@ -10,6 +10,7 @@ import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.Callback.CheckIsCreateCallback;
 import com.andyhuang.bluff.Callback.FacebookLoginCallback;
 import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
+import com.andyhuang.bluff.Login.LoginPresenter;
 import com.andyhuang.bluff.Object.GameResult;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.activities.Login;
@@ -32,22 +33,25 @@ import com.google.firebase.database.ValueEventListener;
 import static com.andyhuang.bluff.Util.Constants.TAG;
 
 public class FirebaseAccount {
-    private FirebaseAuth mAuth;
-    private FirebaseUser user;
-    private Firebase mRef;
-    private Login login;
     private String userEmail = Constants.NODATA;
     private String userPassword= Constants.NODATA;
     private String userUID = Constants.NODATA;
     private String userPhotoURL = Constants.NODATA;
     private String userName = Constants.NODATA;
+
+    private Login login;
+    private LoginPresenter mLoginPresenter;
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
+    private Firebase mRef;
     private DatabaseReference dataBaseRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference presenceRef = FirebaseDatabase.getInstance().getReference("disconnectmessage");
     private Firebase userDataRef;
 
 
-    public FirebaseAccount(Context context) {
+    public FirebaseAccount(Context context, LoginPresenter loginPresenter) {
         login = (Login) context;
+        mLoginPresenter = loginPresenter;
         mAuth = FirebaseAuth.getInstance();
         Firebase.setAndroidContext(context);
         userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
