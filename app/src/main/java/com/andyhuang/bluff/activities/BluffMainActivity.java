@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.BluffContract;
 import com.andyhuang.bluff.BluffPresenter;
 import com.andyhuang.bluff.Callback.ChangeUserPhotoCompletedCallback;
@@ -145,7 +148,7 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
 
     @Override
     public void showInviteDialog(InviteInformation inviteInformation) {
-        GameInviteDialog gameInviteDialog = new GameInviteDialog(BluffMainActivity.this,mPresenter,inviteInformation);
+        GameInviteDialog gameInviteDialog = new GameInviteDialog(Bluff.getContext(), mPresenter, inviteInformation);
         gameInviteDialog.setCanceledOnTouchOutside(false);
         gameInviteDialog.show();
         mPresenter.removeSequenceOnFirebaseForRandomGame();
@@ -264,6 +267,5 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
             mPresenter.cancelWaiting();
         }
     };
-
-
 }
+

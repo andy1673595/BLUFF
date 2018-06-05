@@ -11,11 +11,13 @@ import android.widget.TextView;
 
 import com.andyhuang.bluff.Callback.CloseLoginPageCallback;
 import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
+import com.andyhuang.bluff.CreateAccountPage.CreateAcccountPresenter;
+import com.andyhuang.bluff.CreateAccountPage.CreateAccountContract;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.User.FirebaseCreateAccount;
 
-public class CreateAccountPage extends BaseActivity implements View.OnClickListener{
+public class CreateAccountPage extends BaseActivity implements View.OnClickListener,CreateAccountContract.View{
     //layout的變數
     private TextView textError;
     private EditText editEmail;
@@ -24,19 +26,22 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
     private EditText editConfirmPassword;
     private ConstraintLayout layouOKButton;
     //區域變數
-    private String emailInput;
-    private String passwordInput;
-    private String nameInput;
-    private String passwordConfirm;
-    private FirebaseCreateAccount mFirebaseCreateAccount;
+    private String emailInput = Constants.NODATA;
+    private String passwordInput = Constants.NODATA;
+    private String nameInput =Constants.NODATA;
+    private String passwordConfirm =Constants.NODATA;
+
+    //presenter
+    private CreateAcccountPresenter mCreateAcccountPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_create_login_page);
+        mCreateAcccountPresenter = new CreateAcccountPresenter(this);
         initView();
         layouOKButton.setOnClickListener(this);
-        mFirebaseCreateAccount = new FirebaseCreateAccount(CreateAccountPage.this);
+
     }
 
     public void initView(){
@@ -52,42 +57,18 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_completed_create_account:
-                if(isEditTextCheckedLegal()) {
-                    mFirebaseCreateAccount.creatAccount(firebaseCallback(),emailInput,passwordInput,nameInput);
-                }
+                emailInput = String.valueOf(editEmail.getText());
+                passwordInput = String.valueOf(editPassword.getText());
+                nameInput = String.valueOf(editName.getText());
+                passwordConfirm = String.valueOf(editConfirmPassword.getText());
+                //檢查輸入是否正確,如果正確就執行創建帳號
+                mCreateAcccountPresenter.checkEditTextIsLegal(emailInput,passwordInput,nameInput,passwordConfirm);
                 break;
         }
     }
-    //檢查輸入是否正確
-    public boolean isEditTextCheckedLegal() {
-        emailInput = String.valueOf(editEmail.getText());
-        passwordInput = String.valueOf(editPassword.getText());
-        nameInput = String.valueOf(editName.getText());
-        passwordConfirm = String.valueOf(editConfirmPassword.getText());
 
-        if(emailInput.isEmpty()) {
-            textError.setText("email不能為空");
-            return false;
-        } else if (passwordInput.isEmpty()) {
-            textError.setText("password不能為空");
-            return false;
-        } else if (nameInput.isEmpty()) {
-            textError.setText("名字不能為空");
-            return false;
-        } else if(passwordConfirm.isEmpty()){
-            textError.setText("密碼確認不能為空");
-            return false;
-        }else if (!passwordInput.equals(passwordConfirm)) {
-            textError.setText("密碼必須相同");
-            return false;
-        }else if(passwordInput.length()<6) {
-            textError.setText("密碼至少要6個字");
-            return false;
-        }else {
-            return true;
-        }
-    }
 
+    @Override
     public void backToLoginAndStartMainActivity() {
         //回到LoginActivity並且關掉LoginActivity前往MainActivity
         Intent intent=new Intent();
@@ -100,19 +81,14 @@ public class CreateAccountPage extends BaseActivity implements View.OnClickListe
         this.finish();
     }
 
-    private FirebaseLoginCallback firebaseCallback() {
-        return new FirebaseLoginCallback() {
-            @Override
-            public void completed() {
-                backToLoginAndStartMainActivity();
-            }
-
-            @Override
-            public void loginFail() {
-                Log.d(Constants.TAG,"firebase login fail");
-            }
-        };
+    @Override
+    public void setErrorText(String errorMessage) {
+        textError.setText(errorMessage);
     }
 
 
+    @Override
+    public void setPresenter(Object presenter) {
+
+    }
 }

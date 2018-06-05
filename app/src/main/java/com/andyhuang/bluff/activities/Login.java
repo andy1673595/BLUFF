@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,23 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andyhuang.bluff.Bluff;
-import com.andyhuang.bluff.Callback.FacebookLoginCallback;
-import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
-import com.andyhuang.bluff.Callback.GetFacebookUserDataCallback;
 import com.andyhuang.bluff.Login.LoginContract;
 import com.andyhuang.bluff.Login.LoginPresenter;
 import com.andyhuang.bluff.R;
-import com.andyhuang.bluff.User.FacebookUserData;
-import com.andyhuang.bluff.User.FirebaseAccount;
 import com.andyhuang.bluff.User.UserManager;
-import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.helper.ImageUtils;
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
+
 import java.util.Arrays;
 
 public class Login extends BaseActivity implements View.OnClickListener,LoginContract.View{

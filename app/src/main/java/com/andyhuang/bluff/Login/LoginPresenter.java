@@ -1,7 +1,6 @@
 package com.andyhuang.bluff.Login;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.Callback.FacebookLoginCallback;
@@ -9,7 +8,7 @@ import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
 import com.andyhuang.bluff.Callback.GetFacebookUserDataCallback;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.User.FacebookUserData;
-import com.andyhuang.bluff.User.FirebaseAccount;
+import com.andyhuang.bluff.User.FirebaseAccountHelper;
 import com.andyhuang.bluff.Util.Constants;
 import com.andyhuang.bluff.activities.Login;
 import com.facebook.AccessToken;
@@ -18,19 +17,18 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-
 import static android.content.Context.MODE_PRIVATE;
 
 public class LoginPresenter implements LoginContract.Presenter{
     Login loginView;
-    private FirebaseAccount firebaseAccount;
+    private FirebaseAccountHelper firebaseAccount;
     private CallbackManager callbackManager;
     private AccessToken accessToken;
     private FacebookUserData userDataAPI;
-    
+
     public LoginPresenter(Login loginViewInput) {
         loginView = loginViewInput;
-        firebaseAccount = new FirebaseAccount(loginView,this);
+        firebaseAccount = new FirebaseAccountHelper(loginView,this);
         userDataAPI = new FacebookUserData();
         callbackManager = CallbackManager.Factory.create();
         facebookLoginResult(mFacebookLoginCallback);
@@ -107,6 +105,7 @@ public class LoginPresenter implements LoginContract.Presenter{
         return callbackManager;
     }
 
+    //Call back methods
     private FirebaseLoginCallback firebaseCallback() {
         return new FirebaseLoginCallback() {
             @Override
