@@ -8,7 +8,7 @@ import com.andyhuang.bluff.FriendPage.GameInviteListener;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.User.UserManager;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -18,7 +18,7 @@ import com.google.firebase.database.Query;
 
 import java.util.Date;
 
-import static com.andyhuang.bluff.Util.Constants.URL_GAME_ROOM_DATA;
+import static com.andyhuang.bluff.Constant.Constants.URL_GAME_ROOM_DATA;
 
 public class RandomGameHelper {
     private BluffPresenter mBluffPresenter;

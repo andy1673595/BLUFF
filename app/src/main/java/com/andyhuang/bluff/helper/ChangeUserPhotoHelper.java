@@ -12,10 +12,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.widget.Toast;
-
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.andyhuang.bluff.activities.BluffMainActivity;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -28,7 +26,7 @@ public class ChangeUserPhotoHelper {
     public ChangeUserPhotoHelper(Context context) {
         mContext = context;
     }
-
+    //get the Uri of photo chose
     public String getRealPathFromURI(Uri uri) {
         final String docId = DocumentsContract.getDocumentId(uri);
         final String[] split = docId.split(":");
@@ -99,7 +97,7 @@ public class ChangeUserPhotoHelper {
         }
     }
 
-
+    //create temp image file to store image we chose
     public File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";

@@ -16,11 +16,10 @@ import com.andyhuang.bluff.helper.ImageFromLruCache;
 import java.util.LinkedList;
 
 public class RankPageFragment extends Fragment implements RankPageContract.view {
-    private RankPagePresenter mPresenter;
     private ImageView imageUserPhotoArray[];
     private TextView textUserNameArray[];
     private TextView textInfoArray[];
-    
+    private RankPagePresenter mPresenter;
     View root;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -68,9 +67,7 @@ public class RankPageFragment extends Fragment implements RankPageContract.view 
 
     @Override
     public void setPresenter(Object presenter) {
-
     }
-
 
     @Override
     public void freshUI(LinkedList<UserDataForRank> userList, int type) {
@@ -79,7 +76,6 @@ public class RankPageFragment extends Fragment implements RankPageContract.view 
             new ImageFromLruCache().set(imageUserPhotoArray[type*3+number],
                                         userList.get(number).getUserPhoto(),100f);
             textUserNameArray[type*3+number].setText(userList.get(number).getUserName());
-
             if(type == 0) {
                 //this is total rank list
                 textInfoArray[type*3+number].setText(userList.get(number).totalTimes+"場");
@@ -91,7 +87,6 @@ public class RankPageFragment extends Fragment implements RankPageContract.view 
                 //this is win times rank list
                 textInfoArray[type*3+number].setText(userList.get(number).winTimes+"場");
             }
-
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.andyhuang.bluff.BluffListener;
 
 import com.andyhuang.bluff.Callback.LoadUserPhotoFromFirebaseCallback;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;

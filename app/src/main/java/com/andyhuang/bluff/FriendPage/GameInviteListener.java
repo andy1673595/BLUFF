@@ -1,8 +1,7 @@
 package com.andyhuang.bluff.FriendPage;
 
 import com.andyhuang.bluff.Callback.GameInviteForFriendFragmentCallback;
-import com.andyhuang.bluff.User.UserManager;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 

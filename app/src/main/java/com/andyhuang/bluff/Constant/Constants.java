@@ -1,4 +1,4 @@
-package com.andyhuang.bluff.Util;
+package com.andyhuang.bluff.Constant;
 
 public class Constants {
     public static final String FACEBOOK_HINT = "ThisFacebookDontShowAcocount";

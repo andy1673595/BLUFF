@@ -7,7 +7,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-
+/*the class make the views have round corners  */
+/*And it can choose which corner to be rounded*/
 public class ImageUtils  {
 
     public static final int CORNER_TOP_LEFT = 1;

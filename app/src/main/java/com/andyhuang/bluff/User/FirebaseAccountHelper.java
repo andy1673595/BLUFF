@@ -12,10 +12,9 @@ import com.andyhuang.bluff.Callback.FacebookLoginCallback;
 import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
 import com.andyhuang.bluff.Login.LoginPresenter;
 import com.andyhuang.bluff.Object.GameResult;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.andyhuang.bluff.activities.Login;
 import com.facebook.AccessToken;
-import com.facebook.FacebookCallback;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,7 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import static com.andyhuang.bluff.Util.Constants.TAG;
+import static com.andyhuang.bluff.Constant.Constants.TAG;
 
 public class FirebaseAccountHelper {
     private String userEmail = Constants.NODATA;
@@ -40,17 +39,14 @@ public class FirebaseAccountHelper {
     private String userName = Constants.NODATA;
 
     private Login login;
-    private LoginPresenter mLoginPresenter;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private DatabaseReference dataBaseRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference presenceRef = FirebaseDatabase.getInstance().getReference("disconnectmessage");
     private Firebase userDataRef;
 
 
     public FirebaseAccountHelper(Context context, LoginPresenter loginPresenter) {
         login = (Login) context;
-        mLoginPresenter = loginPresenter;
         mAuth = FirebaseAuth.getInstance();
         Firebase.setAndroidContext(context);
         userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
@@ -168,7 +164,7 @@ public class FirebaseAccountHelper {
         dataBaseRef.child(Constants.USER_DATA_FIREBASE).child(userUID).child(Constants.GAME_RESULT).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if((Object)dataSnapshot.getValue() == null) {
+                if(dataSnapshot.getValue() == null) {
                     callback.thisIsFirstCreate(fbCallback);
                 }else {
                     callback.notFirstCreate();

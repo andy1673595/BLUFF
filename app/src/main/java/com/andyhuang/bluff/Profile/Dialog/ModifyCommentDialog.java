@@ -11,12 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.andyhuang.bluff.Profile.ProfileFragment;
 import com.andyhuang.bluff.Profile.ProfilePresenter;
 import com.andyhuang.bluff.R;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 
 import static com.andyhuang.bluff.helper.ImageRounder.getRoundedCornerBitmap;
 

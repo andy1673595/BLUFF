@@ -1,10 +1,10 @@
 package com.andyhuang.bluff.GamPage.GameObject;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 public class CurrentInformation {
-    public String currentPlayer = Constants.NODATA;
-    public String recentPlayer = Constants.NODATA;
     public int recentDiceType = 0;
     public int recentDiceNumber = 0;
+    public String currentPlayer = Constants.NODATA;
+    public String recentPlayer = Constants.NODATA;
 
     public String getCurrentPlayer() {
         return currentPlayer;

@@ -8,10 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.andyhuang.bluff.FriendPage.FriendPageAdapter;
-import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.R;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.andyhuang.bluff.helper.ImageFromLruCache;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package com.andyhuang.bluff.RankPage;
 
 import com.andyhuang.bluff.Object.UserDataForRank;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -13,7 +13,7 @@ public class RankPageFirebaseHelper {
     RankPagePresenter mPresenter;
     private Firebase userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData/");
     //list for three type rank
-    LinkedList<UserDataForRank> userListWinRank = new LinkedList<>();
+    LinkedList<UserDataForRank> userListWinTimesRank = new LinkedList<>();
     LinkedList<UserDataForRank> userListTotalRank= new LinkedList<>();
     LinkedList<UserDataForRank> userListRateRank= new LinkedList<>();
     public RankPageFirebaseHelper(RankPagePresenter presenter) {
@@ -38,7 +38,8 @@ public class RankPageFirebaseHelper {
                                 .child(Constants.TOTAL_TIMES).getValue();
                         Double winRateDoubleType =0.0;
                         if ((countWinTimes+countLoseTimes)>=5) {
-                            winRateDoubleType = Double.valueOf(countWinTimes)/Double.valueOf((countLoseTimes +countWinTimes));
+                            winRateDoubleType = Double.valueOf(countWinTimes)
+                                    /Double.valueOf((countLoseTimes +countWinTimes));
                             winRateDoubleType *= 100;
                         }else {
                             winRateDoubleType = 0.0;
@@ -48,8 +49,7 @@ public class RankPageFirebaseHelper {
                         sortData(userData);
                     }
                 }
-
-                callback.completedGetRankData(userListWinRank,userListTotalRank,userListRateRank);
+                callback.completedGetRankData(userListWinTimesRank,userListTotalRank,userListRateRank);
             }
 
             @Override
@@ -59,27 +59,33 @@ public class RankPageFirebaseHelper {
         });
     }
 
-    public void sortData(UserDataForRank userInput) {
-
+    private void sortData(UserDataForRank userInput) {
         //insert first
-        if(userListWinRank.size() ==0) {
-            userListWinRank.add(userInput);
+        if(userListWinTimesRank.size() ==0) {
+            userListWinTimesRank.add(userInput);
             userListRateRank.add(userInput);
             userListTotalRank.add(userInput);
             return;
         }
+        sortTotalTimesList(userInput);
+        sortWinRateList(userInput);
+        sortWinTimesList(userInput);
+    }
 
+
+    private void sortTotalTimesList(UserDataForRank userInput) {
         for( int number = 0; number<3 ; number++) {
-          if(userInput.totalTimes > userListTotalRank.get(number).totalTimes) {
-              userListTotalRank.add(number,userInput);
-              break;
-          } else if(userListTotalRank.size()-1 ==  number) {
-              //touch the last of list , add the user into list because size of list is less than 3
-              userListTotalRank.add(number+1,userInput);
-              break;
-          }
+            if(userInput.totalTimes > userListTotalRank.get(number).totalTimes) {
+                userListTotalRank.add(number,userInput);
+                break;
+            } else if(userListTotalRank.size()-1 ==  number) {
+                //touch the last of list , add the user into list because size of list is less than 3
+                userListTotalRank.add(number+1,userInput);
+                break;
+            }
         }
-
+    }
+    private void sortWinRateList(UserDataForRank userInput) {
         //check for winRateRank
         for( int number = 0; number<3 ; number++) {
             if(userInput.winRate > userListRateRank.get(number).winRate) {
@@ -91,19 +97,19 @@ public class RankPageFirebaseHelper {
                 break;
             }
         }
-
+    }
+    private void sortWinTimesList(UserDataForRank userInput) {
         //check for winTotalTimes
         for( int number = 0; number<3 ; number++) {
-            if(userInput.winTimes > userListWinRank.get(number).winTimes) {
-                userListWinRank.add(number,userInput);
+            if(userInput.winTimes > userListWinTimesRank.get(number).winTimes) {
+                userListWinTimesRank.add(number,userInput);
                 break;
-            } else if(userListWinRank.size()-1 ==  number) {
+            } else if(userListWinTimesRank.size()-1 ==  number) {
                 //touch the last of list , add the user into list because size of list is less than 3
-                userListWinRank.add(number+1,userInput);
+                userListWinTimesRank.add(number+1,userInput);
                 break;
             }
         }
-
     }
 
 }

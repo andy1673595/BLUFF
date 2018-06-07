@@ -13,55 +13,61 @@ import android.widget.TextView;
 
 import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
 import com.andyhuang.bluff.R;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 
 import static com.andyhuang.bluff.helper.ImageRounder.getRoundedCornerBitmap;
 
 public class IncreaseDiceDialog extends Dialog
         implements IncreaseDiceDialogContract.View ,View.OnClickListener{
-    private Context mContext;
     private TextView textInfoToPlayer;
     private TextView textDiceCount;
     private ImageView imageOk;
     private ImageView imageDiceNumber;
+    private ImageView imageBackground;
     private Button buttonIncreaseFive;
     private Button buttonIncreaseOne;
     private Button buttonDecreaseFive;
     private Button buttonDecreaseOne;
     private int[] diceImageSourceArray;
     private IncreasrDiceDialogPresenter mPresenter;
-    private ImageView imageBackground;
 
     public IncreaseDiceDialog(@NonNull Context context,GameFirebaseHelper helper) {
         super(context, R.style.MyDialogStyle);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.increase_dice_dialog);
+        initView();
         //set round Corner
-        imageBackground = findViewById(R.id.image_increase_dialog_background);
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.increase_dialog_back_2);
         imageBackground.setImageBitmap(getRoundedCornerBitmap(bitmap, Constants.DIALOG_RADIUS));
+        //set the view onclicklisteners
+        setViewOnclickLisener();
+        //the drawable id array of pictures of dice numbers
+        diceImageSourceArray = new int[] {R.drawable.dice1,R.drawable.dice2,R.drawable.dice3,
+                R.drawable.dice4,R.drawable.dice5,R.drawable.dice6};
+        //init presenter
+        mPresenter = new IncreasrDiceDialogPresenter(this, helper);
+    }
 
-        mContext = context;
-        textInfoToPlayer = (TextView)findViewById(R.id.text_increase_dice_dialog);
-        textDiceCount = (TextView)findViewById(R.id.text_dice_count);
-        imageOk = (ImageView)findViewById(R.id.image_ok_button_dice_dialog);
-        imageDiceNumber = (ImageView)findViewById(R.id.image_dice_choose);
-        buttonIncreaseFive = (Button)findViewById(R.id.button_puls_5);
-        buttonDecreaseFive = (Button)findViewById(R.id.button_decrease_5);
-        buttonIncreaseOne = (Button)findViewById(R.id.button_puls_1);
-        buttonDecreaseOne = (Button)findViewById(R.id.button_decrase_1);
+    private void initView() {
+        textInfoToPlayer = findViewById(R.id.text_increase_dice_dialog);
+        textDiceCount = findViewById(R.id.text_dice_count);
+        imageOk = findViewById(R.id.image_ok_button_dice_dialog);
+        imageDiceNumber = findViewById(R.id.image_dice_choose);
+        imageBackground = findViewById(R.id.image_increase_dialog_background);
+        buttonIncreaseFive = findViewById(R.id.button_puls_5);
+        buttonDecreaseFive = findViewById(R.id.button_decrease_5);
+        buttonIncreaseOne = findViewById(R.id.button_puls_1);
+        buttonDecreaseOne = findViewById(R.id.button_decrase_1);
+    }
+    private void setViewOnclickLisener() {
         imageOk.setOnClickListener(this);
         imageDiceNumber.setOnClickListener(this);
         buttonDecreaseOne.setOnClickListener(this);
         buttonIncreaseOne.setOnClickListener(this);
         buttonDecreaseFive.setOnClickListener(this);
         buttonIncreaseFive.setOnClickListener(this);
-        diceImageSourceArray = new int[] {R.drawable.dice1,R.drawable.dice2,R.drawable.dice3,
-                R.drawable.dice4,R.drawable.dice5,R.drawable.dice6};
-        mPresenter = new IncreasrDiceDialogPresenter(this, helper);
     }
-
 
     @Override
     public void showNumberCountChooseDialog(String message) {

@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import com.andyhuang.bluff.GamPage.GameEndDialog.ExitRoomCallback;
 import com.andyhuang.bluff.R;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 
 import static com.andyhuang.bluff.helper.ImageRounder.getRoundedCornerBitmap;
 

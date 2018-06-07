@@ -4,7 +4,7 @@ import com.andyhuang.bluff.BluffListener.LoadUserPhotoListener;
 import com.andyhuang.bluff.Callback.LoadUserPhotoFromFirebaseCallback;
 import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.User.UserManager;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;

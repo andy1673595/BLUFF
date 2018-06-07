@@ -3,26 +3,15 @@ package com.andyhuang.bluff;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.annotation.StringDef;
 
-import com.andyhuang.bluff.Callback.InviteListenCallback;
 import com.andyhuang.bluff.Callback.LoadUserPhotoFromFirebaseCallback;
 import com.andyhuang.bluff.FriendPage.FriendFragment;
 import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.RankPage.RankPageFragment;
-import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Profile.ProfileFragment;
 import com.andyhuang.bluff.RandomGame.RandomGameHelper;
 import com.andyhuang.bluff.User.UserManager;
-import com.andyhuang.bluff.Util.Constants;
-import com.andyhuang.bluff.activities.BluffMainActivity;
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 
 public class BluffPresenter implements BluffContract.Presenter {
     //區域變數

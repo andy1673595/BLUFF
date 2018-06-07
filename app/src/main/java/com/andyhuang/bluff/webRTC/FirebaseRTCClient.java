@@ -28,21 +28,21 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-import static com.andyhuang.bluff.Util.ConstantForWebRTC.CHANNEL_VIDEO;
+import static com.andyhuang.bluff.Constant.ConstantForWebRTC.CHANNEL_VIDEO;
 
 public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
+    private static final int TURN_HTTP_TIMEOUT_MS = 5000;
+    private static final String TAG = "FirebaseRTCClient";
     private String roomID;
     private String gameRoomID;
-    private static final String TAG = "FirebaseRTCClient";
-    DatabaseReference database;
-    AppRTCSingalEvent events;
-    //use for get into channel,it's the same with Game room ID
-    private boolean is_initiator = false;
-    private static final int TURN_HTTP_TIMEOUT_MS = 5000;
+    private boolean isConnected = false;
+    private boolean isInitiator = false;
     private final Handler handler;
+    private DatabaseReference database;
+    private AppRTCSingalEvent events;
     private Hashtable<String, Boolean> sdpAdded = new Hashtable<String, Boolean>();
     private WebRTC mWebRTC;
-    private boolean isConnected = false;
+
 
     public FirebaseRTCClient( AppRTCSingalEvent events,String gameRoomIDInput,WebRTC webRTC) {
         database = FirebaseDatabase.getInstance().getReference();
@@ -58,8 +58,8 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
         Log.d(TAG, "onDataChanged");
-        if(!dataSnapshot.exists() && !is_initiator) {
-            is_initiator = true;
+        if(!dataSnapshot.exists() && !isInitiator) {
+            isInitiator = true;
         }
 
         if(!dataSnapshot.hasChild(roomID)) {
@@ -83,7 +83,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
                         SignalingParameters parameters = new SignalingParameters(
                                 // Ice servers are not needed for direct connections.
                                 iceServerList,
-                                is_initiator, // Server side acts as the initiator on direct connections.
+                                isInitiator, // Server side acts as the initiator on direct connections.
                                 null, // clientId
                                 null, // wssUrl
                                 null, // wwsPostUrl

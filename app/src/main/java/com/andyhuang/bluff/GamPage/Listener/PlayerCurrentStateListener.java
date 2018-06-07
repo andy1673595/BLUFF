@@ -12,14 +12,12 @@ public class PlayerCurrentStateListener implements ChildEventListener {
     }
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        String state = (String)dataSnapshot.getValue();
-        mCurrentStateHelper.dealCurrentState(state);
+        mCurrentStateHelper.dealCurrentState((String)dataSnapshot.getValue());
     }
 
     @Override
     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-        String state = (String)dataSnapshot.getValue();
-        mCurrentStateHelper.dealCurrentState(state);
+        mCurrentStateHelper.dealCurrentState((String)dataSnapshot.getValue());
     }
 
     @Override

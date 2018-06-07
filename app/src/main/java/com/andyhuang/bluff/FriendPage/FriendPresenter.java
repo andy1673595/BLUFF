@@ -7,7 +7,7 @@ import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.Object.MapFromFirebaseToFriendList;
 import com.andyhuang.bluff.User.UserManager;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.andyhuang.bluff.Util.Constants.URL_GAME_ROOM_DATA;
+import static com.andyhuang.bluff.Constant.Constants.URL_GAME_ROOM_DATA;
 
 public class FriendPresenter implements FriendContract.Presenter {
     private FriendContract.View friendPageView;

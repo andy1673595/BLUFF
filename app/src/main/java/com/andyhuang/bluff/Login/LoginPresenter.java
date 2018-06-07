@@ -9,7 +9,7 @@ import com.andyhuang.bluff.Callback.GetFacebookUserDataCallback;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.User.FacebookUserData;
 import com.andyhuang.bluff.User.FirebaseAccountHelper;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.andyhuang.bluff.activities.Login;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;

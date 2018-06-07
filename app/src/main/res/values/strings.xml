@@ -15,4 +15,5 @@
     <string name="please_input_email">請輸入信箱登入</string>
     <string name="create_account_hint">沒有帳號嗎? 創建一個帳號吧</string>
     <string name="account_and_password_null_error_message">帳號或密碼不得為空白</string>
+    <string name="comment_default">並未設定簽名</string>
 </resources>

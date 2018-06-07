@@ -3,7 +3,7 @@ import android.util.Log;
 
 import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
 import com.andyhuang.bluff.User.FirebaseCreateAccount;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.andyhuang.bluff.activities.CreateAccountPage;
 
 public class CreateAcccountPresenter implements CreateAccountContract.Presenter{

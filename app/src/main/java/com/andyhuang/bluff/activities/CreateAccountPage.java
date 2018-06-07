@@ -1,21 +1,16 @@
 package com.andyhuang.bluff.activities;
 
 import android.content.Intent;
-import android.net.wifi.aware.AttachCallback;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.andyhuang.bluff.Callback.CloseLoginPageCallback;
-import com.andyhuang.bluff.Callback.FirebaseLoginCallback;
 import com.andyhuang.bluff.CreateAccountPage.CreateAcccountPresenter;
 import com.andyhuang.bluff.CreateAccountPage.CreateAccountContract;
 import com.andyhuang.bluff.R;
-import com.andyhuang.bluff.Util.Constants;
-import com.andyhuang.bluff.User.FirebaseCreateAccount;
+import com.andyhuang.bluff.Constant.Constants;
 
 public class CreateAccountPage extends BaseActivity implements View.OnClickListener,CreateAccountContract.View{
     //layout的變數

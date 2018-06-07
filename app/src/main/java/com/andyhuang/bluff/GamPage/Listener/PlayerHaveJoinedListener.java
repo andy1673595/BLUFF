@@ -15,7 +15,6 @@ public class PlayerHaveJoinedListener implements ChildEventListener {
         mCallback = callback;
     }
 
-
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
         if(dataSnapshot.exists()) {

@@ -1,6 +1,6 @@
 package com.andyhuang.bluff.Object;
 
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 
 public class UserDataForRank {
     public String userEmail = Constants.NODATA;

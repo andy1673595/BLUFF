@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,8 +27,7 @@ import com.andyhuang.bluff.GamPage.LeaveRoomDialog.ExitGameDialog;
 import com.andyhuang.bluff.GamPage.GamerJoinedDialog.PlayerJoinedDialog;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.GamPage.GameObject.CurrentInformation;
-import com.andyhuang.bluff.Util.ConstantForWebRTC;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.ConstantForWebRTC;
 import com.andyhuang.bluff.webRTC.PercentFrameLayout;
 import org.webrtc.EglBase;
 import org.webrtc.RendererCommon;
@@ -72,6 +70,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private final List<VideoRenderer.Callbacks> remoteRenderers =
             new ArrayList<VideoRenderer.Callbacks>();
     private EglBase rootEglBase;
+    private RendererCommon.ScalingType scalingType;
     //其他變數
     private int countForPlayerInviteTotal;
     private int[] diceImageSourceArray;
@@ -83,7 +82,6 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private GameEndDialog mGameEndDialog;
     private ExitGameDialog mExitGameDialog;
     private ArrayList<Gamer> playerJoinedList = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +129,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         textPlayerCountRightNow = findViewById(R.id.text_show_playerlist_button);
         layoutIncreaseDice = findViewById(R.id.layout_increase_dice);
         layoutCatch = findViewById(R.id.layout_catch);
+        layoutPlayerList = findViewById(R.id.layout_show_player_list);
         //view for video
         imageVideoIcon = findViewById(R.id.image_video_button);
         imageVideobackground = findViewById(R.id.image_video_background);
@@ -139,9 +138,10 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         switchForVideo.setClickable(false);
         layoutVideoBack = findViewById(R.id.video_back_layout);
         layoutSwitchForVideoShow = findViewById(R.id.layout_for_video_switch);
+        //layout for video
+        scalingType = RendererCommon.ScalingType.SCALE_ASPECT_FILL;
         localRender = findViewById(R.id.local_video_view);
         localRenderLayout = findViewById(R.id.local_video_layout);
-        layoutPlayerList = findViewById(R.id.layout_show_player_list);
         remoteRenderScreen = findViewById(R.id.remote_video_view);
         remoteRenderLayout = findViewById(R.id.remote_video_layout);
         remoteRenderers.add(remoteRenderScreen);
@@ -156,6 +156,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     }
 
     public void creatVideoRenders() {
+        scalingType = RendererCommon.ScalingType.SCALE_ASPECT_FILL;
         // Create video renderers.
         if(localRender ==null) {
             localRender = new SurfaceViewRenderer(this);
@@ -169,10 +170,10 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
             rootEglBase = EglBase.create();
             localRender.init(rootEglBase.getEglBaseContext(), null);
             remoteRenderScreen.init(rootEglBase.getEglBaseContext(), null);
+            localRender.setZOrderOnTop(true);
             localRender.setZOrderMediaOverlay(true);
         }
         updateVideoView();
-
     }
 
     @Override
@@ -225,19 +226,21 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     }
 
     public void updateVideoView() {
-        RendererCommon.ScalingType scalingType = RendererCommon.ScalingType.SCALE_ASPECT_FILL;
         remoteRenderLayout.setPosition(ConstantForWebRTC.REMOTE_X, ConstantForWebRTC.REMOTE_Y
                 , ConstantForWebRTC.REMOTE_WIDTH, ConstantForWebRTC.REMOTE_HEIGHT);
         remoteRenderScreen.setScalingType(scalingType);
         remoteRenderScreen.setMirror(false);
+        localRender.setZOrderOnTop(true);
+       // localRender.setZOrderMediaOverlay(true);
 
         if (mPrsenter.getIceConnectedInWebRTC()) {
             //show connected layout
             localRenderLayout.setPosition(
-                    ConstantForWebRTC.LOCAL_X_CONNECTED, ConstantForWebRTC.LOCAL_Y_CONNECTED
+                    ConstantForWebRTC.LOCAL_X_CONNECTED, 20
                     , ConstantForWebRTC.LOCAL_WIDTH_CONNECTED, ConstantForWebRTC.LOCAL_HEIGHT_CONNECTED);
             localRender.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
         } else {
+            localRender.setZOrderOnTop(true);
             localRenderLayout.setPosition(
                     ConstantForWebRTC.LOCAL_X_CONNECTING, ConstantForWebRTC.LOCAL_Y_CONNECTING
                     , ConstantForWebRTC.LOCAL_WIDTH_CONNECTING, ConstantForWebRTC.LOCAL_HEIGHT_CONNECTING);
@@ -247,6 +250,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         localRender.setMirror(true);
         localRender.requestLayout();
         remoteRenderScreen.requestLayout();
+
     }
 
 

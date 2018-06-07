@@ -9,15 +9,15 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 public class CurrentPlayerInformationListener implements ValueEventListener {
+    String myUID = UserManager.getInstance().getUserUID();
+    boolean firstTurn = true;
     CurrentInformation mCurrentInformation;
     GameFirebaseHelper mGameFirebaseHelper;
-    GamePageContract.View gamepageView;
-    GamePageContract.Presenter gamepagePresenter;
-    boolean firstTurn = true;
-    String myUID = UserManager.getInstance().getUserUID();
+    GamePageContract.View mGamepageView;
+
     public CurrentPlayerInformationListener(GameFirebaseHelper helper,GamePageContract.View viewInput) {
         mGameFirebaseHelper = helper;
-        gamepageView = viewInput;
+        mGamepageView = viewInput;
     }
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -26,7 +26,7 @@ public class CurrentPlayerInformationListener implements ValueEventListener {
             mGameFirebaseHelper.setCurrentInformation(mCurrentInformation);
             //fresh who increase what dice and how many it is
             if(mCurrentInformation.getRecentDiceType()!= 0) {
-                gamepageView.freshRecentDiceUI(mCurrentInformation);
+                mGamepageView.freshRecentDiceUI(mCurrentInformation);
                 firstTurn =false;
             } else {
                 firstTurn =true;
@@ -34,15 +34,15 @@ public class CurrentPlayerInformationListener implements ValueEventListener {
 
             if(myUID.equals(mCurrentInformation.currentPlayer)) {
                 //I'm currentPlayer ,I can increase the dice
-                if(firstTurn) gamepageView.freshCatchAndIncreaseUI(true,false);
-                else gamepageView.freshCatchAndIncreaseUI(true,true);
+                if(firstTurn) mGamepageView.freshCatchAndIncreaseUI(true,false);
+                else mGamepageView.freshCatchAndIncreaseUI(true,true);
             } else if(myUID.equals(mCurrentInformation.recentPlayer)){
                 //I'm recent player ,I can't catch myself
-                gamepageView.freshCatchAndIncreaseUI(false,false);
+                mGamepageView.freshCatchAndIncreaseUI(false,false);
             } else {
                 //I'm not the currentPlayer, I only can catch recent person
-                if(firstTurn) gamepageView.freshCatchAndIncreaseUI(false,false);
-                else gamepageView.freshCatchAndIncreaseUI(false,true);
+                if(firstTurn) mGamepageView.freshCatchAndIncreaseUI(false,false);
+                else mGamepageView.freshCatchAndIncreaseUI(false,true);
             }
         }
     }

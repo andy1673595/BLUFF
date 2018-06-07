@@ -1,16 +1,17 @@
 package com.andyhuang.bluff.Profile;
 
-import android.graphics.Bitmap;
+
 import android.net.Uri;
 
+import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.Callback.GameResultCallback;
 import com.andyhuang.bluff.Callback.ProfileUserDataCallback;
 import com.andyhuang.bluff.Object.GameResult;
+import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.User.UserManager;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 
 public class ProfilePresenter implements ProfileContract.Presenter {
-    GameResult mGameResult = new GameResult();
     ProfileContract.View mProfileView;
     ProfileFirebaseHelper mFirebaseHelper;
     String mUserUID;
@@ -26,9 +27,7 @@ public class ProfilePresenter implements ProfileContract.Presenter {
     }
 
     @Override
-    public void start() {
-
-    }
+    public void start() {}
 
     @Override
     public void loadUserData() {
@@ -66,7 +65,7 @@ public class ProfilePresenter implements ProfileContract.Presenter {
         @Override
         public void userDataReadCompleted(String userName, String userEmail, String userPhotoUrl, String userComment) {
             if(userComment.equals(Constants.NODATA)) {
-                userComment = "並未設定簽名";
+                userComment = Bluff.getContext().getString(R.string.comment_default);
             }
             mProfileView.setUserDataToUI(userName,userEmail,userPhotoUrl,userComment);
         }

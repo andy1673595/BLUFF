@@ -1,6 +1,6 @@
 package com.andyhuang.bluff.GamPage.GameHelper;
 
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 
 public class CurrentStateHelper {
     private int countForCompletedRead=0;

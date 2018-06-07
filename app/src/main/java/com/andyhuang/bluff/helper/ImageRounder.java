@@ -7,7 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-
+/*the class make the views have round corners  */
 public class ImageRounder {
     public static Bitmap getRoundedCornerBitmap(Bitmap bitmap,float roundPx)
     {

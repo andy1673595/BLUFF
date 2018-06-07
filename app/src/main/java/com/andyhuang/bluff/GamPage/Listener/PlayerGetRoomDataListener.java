@@ -4,24 +4,23 @@ import com.andyhuang.bluff.Callback.PlayerGetRoomDataCallback;
 import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
 import com.andyhuang.bluff.GamPage.GamePageContract;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-
 import java.util.LinkedList;
 import java.util.List;
 
 public class PlayerGetRoomDataListener implements ValueEventListener {
+    private boolean isHost;
     private List<Gamer> gamerList;
     private GameFirebaseHelper mGameFirebaseHelper;
-    private boolean isHost;
     private GamePageContract.View gamePageView;
-    PlayerGetRoomDataCallback callback;
+    private PlayerGetRoomDataCallback callback;
     public PlayerGetRoomDataListener(List<Gamer> gamerListInput, GameFirebaseHelper helper,
                             boolean isHostInput, GamePageContract.View gamePageViewInput,
                             PlayerGetRoomDataCallback callbackInput) {
-        gamerList = new LinkedList<Gamer>();
+        gamerList = new LinkedList<>();
         mGameFirebaseHelper = helper;
         isHost = isHostInput;
         gamePageView =gamePageViewInput;

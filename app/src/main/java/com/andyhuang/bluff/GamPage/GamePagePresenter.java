@@ -5,7 +5,7 @@ import com.andyhuang.bluff.GamPage.GameObject.GameEndInformation;
 import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.GamPage.IncreaseDiceDialog.IncreaseDiceDialog;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.andyhuang.bluff.activities.GamePage;
 import com.andyhuang.bluff.webRTC.WebRTC;
 
@@ -20,7 +20,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     private boolean isVideoSwitchOn = false;
     private IncreaseDiceDialog mDialog;
     private ArrayList<Gamer> playerHaveJoinedList = new ArrayList<>();
-    private GamePageContract.View gamePgaeView;
+    private GamePage mGamePageView;
     private GameFirebaseHelper firebaseHelper;
     private WebRTC mWebRTC;
 
@@ -29,15 +29,15 @@ public class GamePagePresenter implements GamePageContract.Presenter{
 
     }
 
-    public GamePagePresenter(GamePageContract.View gamePgaeViewInput) {
-        gamePgaeView = gamePgaeViewInput;
+    public GamePagePresenter(GamePage gamePgaeViewInput) {
+        mGamePageView = gamePgaeViewInput;
     }
 
     @Override
     public void init(String roomIDInput, boolean isHostInput) {
         roomID = roomIDInput;
         isHost = isHostInput;
-        firebaseHelper = new GameFirebaseHelper(roomID,gamePgaeView,isHost,this);
+        firebaseHelper = new GameFirebaseHelper(roomID, mGamePageView,isHost,this);
         //set Button UI
         setButtonUI();
         firebaseHelper.listenGameState();
@@ -50,7 +50,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     @Override
     public void increaseDice() {
         if(isplaying) {
-            mDialog = new IncreaseDiceDialog((GamePage)gamePgaeView,firebaseHelper);
+            mDialog = new IncreaseDiceDialog((GamePage) mGamePageView,firebaseHelper);
             mDialog.show();
         }
     }
@@ -73,13 +73,13 @@ public class GamePagePresenter implements GamePageContract.Presenter{
             case "ready":
                 //get ready
                 buttonType = Constants.BUTTON_GET_READY;
-                gamePgaeView.freshStateButtonUI(Constants.BUTTON_GET_READY);
+                mGamePageView.freshStateButtonUI(Constants.BUTTON_GET_READY);
                 firebaseHelper.setCurrentState(Constants.GET_READY);
                 break;
             case "get ready":
                 //cancel Ready
                 buttonType = Constants.BUTTON_READY;
-                gamePgaeView.freshStateButtonUI(Constants.BUTTON_READY);
+                mGamePageView.freshStateButtonUI(Constants.BUTTON_READY);
                 firebaseHelper.setCurrentState(Constants.CANCEL_READY);
                 break;
         }
@@ -96,19 +96,25 @@ public class GamePagePresenter implements GamePageContract.Presenter{
 
     @Override
     public void initVideoData() {
-        gamePgaeView.setVideoElement(true);
+        mGamePageView.setVideoElement(true);
     }
 
     @Override
     public void initMultipleData() {
-        gamePgaeView.setVideoElement(false);
+        mGamePageView.setVideoElement(false);
 
     }
 
     @Override
     public void startVideo() {
-        gamePgaeView.creatVideoRenders();
-        mWebRTC = new WebRTC(this,(GamePage) gamePgaeView,roomID);
+        mGamePageView.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mGamePageView.creatVideoRenders();
+            }
+        });
+
+        mWebRTC = new WebRTC(this,(GamePage) mGamePageView,roomID);
         mWebRTC.startCall();
     }
     //when click video icon layout or leave game , disconnect video
@@ -117,8 +123,8 @@ public class GamePagePresenter implements GamePageContract.Presenter{
         isVideoSwitchOn = false;
         mWebRTC.disconnectReset();
         mWebRTC =null;
-        gamePgaeView.freshSwitchUI(isVideoSwitchOn);
-        gamePgaeView.closeVideo();
+        mGamePageView.freshSwitchUI(isVideoSwitchOn);
+        mGamePageView.closeVideo();
     }
     //when touch Video chat switch , it will call this method,and judge what to do
     @Override
@@ -126,14 +132,14 @@ public class GamePagePresenter implements GamePageContract.Presenter{
         if(isVideoSwitchOn) {
             //switch is On , close the Video
             isVideoSwitchOn = false;
-            gamePgaeView.freshSwitchUI(isVideoSwitchOn);
+            mGamePageView.freshSwitchUI(isVideoSwitchOn);
             disconnectVideo();
-            gamePgaeView.closeVideo();
+            mGamePageView.closeVideo();
         } else {
             //switch is Off, start to video chat
             isVideoSwitchOn = true;
-            gamePgaeView.freshSwitchUI(isVideoSwitchOn);
-            gamePgaeView.showVideo();
+            mGamePageView.freshSwitchUI(isVideoSwitchOn);
+            mGamePageView.showVideo();
         }
     }
 
@@ -150,19 +156,19 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     @Override
     public void updatePlayerHaveJoinedList(ArrayList<Gamer> joinedList,Gamer newGamer) {
         playerHaveJoinedList = joinedList;
-        gamePgaeView.freshPlayerHaveJoinedText(joinedList,newGamer);
+        mGamePageView.freshPlayerHaveJoinedText(joinedList,newGamer);
     }
 
     private void setButtonUI() {
         if(isHost) {
             buttonType = Constants.BUTTON_START;
-            gamePgaeView.freshStateButtonUI(Constants.BUTTON_START);
+            mGamePageView.freshStateButtonUI(Constants.BUTTON_START);
             //host set game state to wait for host start
             firebaseHelper.setGameState(Constants.WAIT_HOST);
         } else {
             //invitee wait for host click start
             buttonType =Constants.BUTTON_WAIT;
-            gamePgaeView.freshStateButtonUI(Constants.BUTTON_WAIT);
+            mGamePageView.freshStateButtonUI(Constants.BUTTON_WAIT);
         }
     }
 
@@ -192,7 +198,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
 
     @Override
     public void updatePlayInvitedCountToUI(int count) {
-        gamePgaeView.freshTotalPlayerUI(count);
+        mGamePageView.freshTotalPlayerUI(count);
     }
 
     public void setButtonType(String type) {

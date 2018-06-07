@@ -1,6 +1,6 @@
 package com.andyhuang.bluff.GamPage.GameObject;
 
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 
 public class Gamer {
     public String userUID = Constants.USER_UID_FIREBASE;

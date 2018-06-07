@@ -1,14 +1,13 @@
 package com.andyhuang.bluff.Dialog.GameInviteDialog;
 
 import com.andyhuang.bluff.Bluff;
-import com.andyhuang.bluff.Dialog.GameInviteDialog.GameInviteDialog;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.Object.InviteInformation;
 import com.andyhuang.bluff.User.UserManager;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.firebase.client.Firebase;
 
-import static com.andyhuang.bluff.Util.Constants.URL_GAME_ROOM_DATA;
+import static com.andyhuang.bluff.Constant.Constants.URL_GAME_ROOM_DATA;
 
 public class GameInvitePrsenter implements GameInviteContract.presenter{
     Firebase refUserData;

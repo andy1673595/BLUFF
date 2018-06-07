@@ -1,4 +1,4 @@
-package com.andyhuang.bluff.Util;
+package com.andyhuang.bluff.Constant;
 
 public class ConstantForWebRTC {
     public static final int REMOTE_X = 0;

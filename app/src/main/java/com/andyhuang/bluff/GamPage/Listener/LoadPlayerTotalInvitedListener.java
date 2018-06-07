@@ -13,8 +13,7 @@ public class LoadPlayerTotalInvitedListener implements ValueEventListener {
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
         if(dataSnapshot.exists()) {
-            int count = (int)((long)dataSnapshot.getValue());
-            mPresenter.updatePlayInvitedCountToUI(count);
+            mPresenter.updatePlayInvitedCountToUI((int)((long)dataSnapshot.getValue()));
         }
     }
 

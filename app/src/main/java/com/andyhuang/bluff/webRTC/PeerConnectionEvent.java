@@ -80,8 +80,13 @@ public class PeerConnectionEvent implements  PeerConnectionClient.PeerConnection
         if (mPeerConnectionClient == null ) {
             return;
         }
-        // Update video view.
-        mGamePageView.updateVideoView();
+        mGamePageView.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // Update video view.
+                mGamePageView.updateVideoView();
+            }
+        });
         // Enable statistics callback.
         mPeerConnectionClient.enableStatsEvents(true, 1000);
     }

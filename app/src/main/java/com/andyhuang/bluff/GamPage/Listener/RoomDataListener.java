@@ -4,7 +4,7 @@ import com.andyhuang.bluff.Callback.RoomListenerCallback;
 import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
 import com.andyhuang.bluff.GamPage.GameHelper.CurrentStateHelper;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -32,7 +32,6 @@ public class RoomDataListener implements ValueEventListener {
         if (dataSnapshot.exists()) {
             //read all player
             for (DataSnapshot gamerData : dataSnapshot.getChildren()) {
-
                 Gamer gamer = new Gamer((String) gamerData.child(Constants.USER_UID_FIREBASE).getValue(),
                         (String)gamerData.child("userPhotoURL").getValue(),
                         (String)gamerData.child(Constants.USER_EMAIL_FIREBASE).getValue()) ;

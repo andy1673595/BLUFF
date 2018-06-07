@@ -2,9 +2,8 @@ package com.andyhuang.bluff.User;
 
 import android.content.SharedPreferences;
 
-import com.andyhuang.bluff.FriendPage.FriendFragment;
 import com.andyhuang.bluff.Object.FriendInformation;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.facebook.AccessToken;
 import com.google.firebase.auth.FirebaseUser;
 

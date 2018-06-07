@@ -9,21 +9,19 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.R;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.andyhuang.bluff.helper.ImageFromLruCache;
-import com.andyhuang.bluff.helper.UserOutlineProvider;
 
 import java.util.ArrayList;
 
 public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.ViewHolder>{
+    private boolean startReset = false;
     private ArrayList<FriendInformation> listFriend;
     private ArrayList<Boolean> checkBoxResetList = new ArrayList<>();
-    private boolean startReset = false;
     private FriendContract.Presenter mPresenter;
     private FriendContract.View friendPageView;
 
@@ -65,7 +63,6 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
             holder.checkBoxForInviteGame.setChecked(false);
         }
 
-      // holder.imageFriendPhoto.setOutlineProvider(new UserOutlineProvider());
         if (!friendPhoto.equals(Constants.NODATA)) {
             holder.imageFriendPhoto.setTag(friendPhoto);
             new ImageFromLruCache().set(holder.imageFriendPhoto, friendPhoto,10000f);
@@ -102,16 +99,19 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
         ConstraintLayout layoutItemBackground;
         public ViewHolder(View itemView) {
             super(itemView);
-            textName = (TextView)itemView.findViewById(R.id.text_name_friend_listItem);
-            imageFriendPhoto = (ImageView)itemView.findViewById(R.id.image_user_photo_friend_invite);
-            imageLeftIcon = (ImageView)itemView.findViewById(R.id.image_left_icon_friend_listitem);
-            imageRightIcon = (ImageView)itemView.findViewById(R.id.image_righ_icon_friend_listitem);
-            layoutItemBackground = (ConstraintLayout)itemView.findViewById(R.id.layout_item_friend_background);
-            layoutItemBackground.setOnClickListener(this);
-            checkBoxForInviteGame = (CheckBox)itemView.findViewById(R.id.checkBox_item_friend);
-            checkBoxForInviteGame.setOnCheckedChangeListener(this);
+            //find view by id
+            textName = itemView.findViewById(R.id.text_name_friend_listItem);
+            imageFriendPhoto = itemView.findViewById(R.id.image_user_photo_friend_invite);
+            imageLeftIcon = itemView.findViewById(R.id.image_left_icon_friend_listitem);
+            imageRightIcon = itemView.findViewById(R.id.image_righ_icon_friend_listitem);
+            layoutItemBackground = itemView.findViewById(R.id.layout_item_friend_background);
+            checkBoxForInviteGame = itemView.findViewById(R.id.checkBox_item_friend);
+            //set OnClickListeners
             imageLeftIcon.setOnClickListener(this);
             imageRightIcon.setOnClickListener(this);
+            layoutItemBackground.setOnClickListener(this);
+            checkBoxForInviteGame.setOnCheckedChangeListener(this);
+
         }
 
         @Override

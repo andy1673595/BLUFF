@@ -17,27 +17,20 @@ import static android.app.Activity.RESULT_OK;
 public class WebRTC {
     //Url of google WebRTC server
     private String roomUrl = "https://appr.tc";
-    private Uri roomUri;
-
-    public void setIceConnected(boolean iceConnected) {
-        this.iceConnected = iceConnected;
-    }
-    public boolean getIceConnected(){
-        return iceConnected;
-    }
-
+    private String roomID;
+    private long callStartedTimeMs = 0;
     private boolean iceConnected;
-    private boolean commandLineRun =false;
+    private Uri roomUri;
+    //game page elements
     private GamePagePresenter mPresenter;
     private GamePage mGamePageView;
+    //WebRTC elements
     private SignalingParameters signalingParameters;
     private PeerConnectionParameters peerConnectionParameters;
     private PeerConnectionClient peerConnectionClient;
     private PeerConnectionEvent mPeerConnectionEvent;
-    private String roomID;
     private AppRTCClient mFirebaseRTCClient;
     private AppRTCSingalEvent mAppRTCSingalEvent;
-    private long callStartedTimeMs = 0;
     private AppRTCClient.RoomConnectionParameters roomConnectionParameters;
     private AppRTCAudioManager audioManager = null;
 
@@ -71,7 +64,6 @@ public class WebRTC {
                         false,
                         false,
                         false);
-        commandLineRun = false;
         //user Firebase as communication channel
         mAppRTCSingalEvent = new AppRTCSingalEvent(mGamePageView,this);
         mFirebaseRTCClient = new FirebaseRTCClient(mAppRTCSingalEvent,roomID,this);
@@ -89,7 +81,6 @@ public class WebRTC {
         mPeerConnectionEvent.setCallStartedTimeMs(callStartedTimeMs);
         mAppRTCSingalEvent.setCallStartedTimeMs(callStartedTimeMs);
         mFirebaseRTCClient.connectToRoom(roomConnectionParameters);
-
         audioManager = AppRTCAudioManager.create(mGamePageView, new Runnable() {
            //Audio Manager的Method
             @Override
@@ -116,11 +107,6 @@ public class WebRTC {
             audioManager = null;
         }
         Log.d("errorTEST","endWebRTC audio = null end");
-        /* if (iceConnected && !isError) {
-            mGamePageView.setResult(RESULT_OK);
-        } else {
-            mGamePageView.setResult(RESULT_CANCELED);
-        }*/
     }
     void checkPermissions() {
         // Check for mandatory permissions.
@@ -157,5 +143,8 @@ public class WebRTC {
     public void disconnect() {
         mPresenter.disconnectVideo();
     }
-
+    public void setIceConnected(boolean iceConnected) {
+        this.iceConnected = iceConnected;
+    }
+    public boolean getIceConnected(){return iceConnected;}
 }

@@ -26,43 +26,51 @@ import java.io.IOException;
 import static com.andyhuang.bluff.helper.ImageRounder.getRoundedCornerBitmap;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener,ProfileContract.View {
-    private ProfilePresenter mPresenter;
+    //view variables
     private ImageView imageUserPhoto;
+    private ImageView imageEditCommentButton;
+    private ImageView imageCommentBackground;
     private TextView textTotalTimes;
     private TextView textTotalTwoPersonTimes;
     private TextView textWinRate;
     private TextView textUserName;
     private TextView textUserEmail;
     private TextView textComment;
-    private ImageView imageEditCommentButton;
+    //other variables
     private String userUID;
     private Activity mActivity;
-    private ImageView imageCommentBackground;
-
+    private ProfilePresenter mPresenter;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
         mActivity = getActivity();
+        //get the uid whose profile page should be showed
         Bundle bundle = getArguments();
         userUID = bundle.getString("UID");
-        imageCommentBackground = root.findViewById(R.id.image_comment_background);
+        initView(root);
+        //let the comment background has round corners
         Bitmap bitmap = BitmapFactory.decodeResource(Bluff.getContext().getResources(),
                 R.drawable.profile_comment_background);
         imageCommentBackground.setImageBitmap(getRoundedCornerBitmap(bitmap, 40f));
+        //set OnClickListeners
+        imageEditCommentButton.setOnClickListener(this);
+        imageUserPhoto.setOnClickListener(this);
+        //init presenter
+        mPresenter = new ProfilePresenter(this,userUID);
+        mPresenter.loadUserData();
+        return root;
+    }
 
+    private void initView(View root) {
+        imageUserPhoto = root.findViewById(R.id.image_user_photo_profile);
+        imageCommentBackground = root.findViewById(R.id.image_comment_background);
+        imageEditCommentButton = root.findViewById(R.id.image_modify_comment_button);
         textTotalTimes = root.findViewById(R.id.text_total_count_games);
         textTotalTwoPersonTimes = root.findViewById(R.id.text_two_person_games_count_profile);
         textWinRate = root.findViewById(R.id.text_win_rate_profile);
         textUserName = root.findViewById(R.id.text_user_name_profile);
         textUserEmail= root.findViewById(R.id.text_email_profile);
         textComment= root.findViewById(R.id.text_comment_profile);
-        imageEditCommentButton = root.findViewById(R.id.image_modify_comment_button);
-        imageEditCommentButton.setOnClickListener(this);
-        imageUserPhoto = root.findViewById(R.id.image_user_photo_profile);
-        imageUserPhoto.setOnClickListener(this);
-        mPresenter = new ProfilePresenter(this,userUID);
-        mPresenter.loadUserData();
-        return root;
     }
 
     @Override
@@ -102,13 +110,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Pr
         textTotalTwoPersonTimes.setText(timesForTwoPersonGame);
         textWinRate.setText(winRate+"%");
     }
-
+    //if this is a friend's profile page , we can't modify comment and change the photo
     @Override
     public void setButtonInvisible() {
         imageUserPhoto.setClickable(false);
         imageEditCommentButton.setVisibility(View.INVISIBLE);
     }
-
 
     private ChangeUserPhotoCompletedCallback mPhotoCallback = new ChangeUserPhotoCompletedCallback() {
         @Override

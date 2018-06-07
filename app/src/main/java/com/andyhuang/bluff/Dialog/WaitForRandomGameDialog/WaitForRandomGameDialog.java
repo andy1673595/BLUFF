@@ -13,7 +13,7 @@ import android.widget.ImageView;
 
 import com.andyhuang.bluff.Callback.WaitForRandomGameCallback;
 import com.andyhuang.bluff.R;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import static com.andyhuang.bluff.helper.ImageRounder.getRoundedCornerBitmap;
 
 public class WaitForRandomGameDialog extends Dialog implements View.OnClickListener{

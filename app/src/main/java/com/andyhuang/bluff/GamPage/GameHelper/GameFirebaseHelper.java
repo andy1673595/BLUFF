@@ -21,7 +21,7 @@ import com.andyhuang.bluff.GamPage.Listener.PlayerHaveJoinedListener;
 import com.andyhuang.bluff.GamPage.Listener.RoomDataListener;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.User.UserManager;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;

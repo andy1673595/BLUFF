@@ -2,12 +2,11 @@ package com.andyhuang.bluff.GamPage.GameHelper;
 
 import com.andyhuang.bluff.GamPage.GameObject.GameEndInformation;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
-import com.andyhuang.bluff.Util.Constants;
+import com.andyhuang.bluff.Constant.Constants;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-
 import java.util.List;
 
 public class UpdateGameResult {

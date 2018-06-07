@@ -13,8 +13,8 @@ import org.webrtc.VideoCapturer;
 import com.andyhuang.bluff.webRTC.AppRTCClient.SignalingParameters;
 
 public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
-    GamePage mGamePageView;
     private long callStartedTimeMs = 0;
+    private GamePage mGamePageView;
     private PeerConnectionClient peerConnectionClient;
     private WebRTC mWebRTC;
 

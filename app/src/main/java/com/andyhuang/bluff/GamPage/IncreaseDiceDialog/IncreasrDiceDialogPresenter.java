@@ -4,9 +4,8 @@ import android.app.Dialog;
 
 import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
 import com.andyhuang.bluff.GamPage.GameObject.Gamer;
-import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.GamPage.GameObject.CurrentInformation;
-
+import com.andyhuang.bluff.User.UserManager;
 import java.util.List;
 
 public class IncreasrDiceDialogPresenter implements IncreaseDiceDialogContract.Presenter {
@@ -42,20 +41,20 @@ public class IncreasrDiceDialogPresenter implements IncreaseDiceDialogContract.P
 
     @Override
     public void clickOKButton() {
-        boolean check = isChooseLegal(diceType,diceCount);
-        if(check) {
+        if( isChooseLegal(diceType,diceCount)) {
             List<Gamer> gamerList = mGameFirebaseHelper.getGamerList();
-            int total = gamerList.size();
             String myUID = UserManager.getInstance().getUserUID();
             int nextPlayerNumber =0;
-            for(int i=0;i<total;i++) {
+            //I have choose the increase dice type and count ,find the next player
+            for(int i=0;i<gamerList.size();i++) {
                Gamer gamer = gamerList.get(i);
                String currentPlayer = gamer.getUserUID();
                if(currentPlayer.equals(myUID)) {
-                   nextPlayerNumber = (i==total-1)?0:i+1;
+                   nextPlayerNumber = (i == gamerList.size()-1)?0:i+1;
                    break;
                }
             }
+            //update current information
             mCurrentInformation.setRecentPlayer(myUID);
             mCurrentInformation.setRecentDiceType(diceType);
             mCurrentInformation.setRecentDiceNumber(diceCount);
@@ -66,12 +65,14 @@ public class IncreasrDiceDialogPresenter implements IncreaseDiceDialogContract.P
             ((Dialog)dialogView).dismiss();
 
         } else {
+            //the choose is illegal, choose another
             String message = "小於"+mCurrentInformation.getRecentDiceNumber()+"個"+
                     mCurrentInformation.getRecentDiceType() +",請重選";
             dialogView.showError(message);
         }
     }
 
+    //check the dice combination player choose is legal or not
     @Override
     public boolean isChooseLegal(int diceNumber, int numberCount) {
         if(diceNumber <= mCurrentInformation.getRecentDiceType() &&
