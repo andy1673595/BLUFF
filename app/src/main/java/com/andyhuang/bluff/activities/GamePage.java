@@ -170,8 +170,6 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
             rootEglBase = EglBase.create();
             localRender.init(rootEglBase.getEglBaseContext(), null);
             remoteRenderScreen.init(rootEglBase.getEglBaseContext(), null);
-            localRender.setZOrderOnTop(true);
-            localRender.setZOrderMediaOverlay(true);
         }
         updateVideoView();
     }
@@ -231,12 +229,12 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         remoteRenderScreen.setScalingType(scalingType);
         remoteRenderScreen.setMirror(false);
         localRender.setZOrderOnTop(true);
-       // localRender.setZOrderMediaOverlay(true);
+        localRender.setZOrderMediaOverlay(true);
 
         if (mPrsenter.getIceConnectedInWebRTC()) {
             //show connected layout
             localRenderLayout.setPosition(
-                    ConstantForWebRTC.LOCAL_X_CONNECTED, 20
+                    ConstantForWebRTC.LOCAL_X_CONNECTED, ConstantForWebRTC.LOCAL_Y_CONNECTED
                     , ConstantForWebRTC.LOCAL_WIDTH_CONNECTED, ConstantForWebRTC.LOCAL_HEIGHT_CONNECTED);
             localRender.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
         } else {
