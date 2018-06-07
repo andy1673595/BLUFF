@@ -34,15 +34,15 @@ public class CurrentPlayerInformationListener implements ValueEventListener {
 
             if(myUID.equals(mCurrentInformation.currentPlayer)) {
                 //I'm currentPlayer ,I can increase the dice
-                if(firstTurn) gamepageView.refreshCatchAndIncreaseUI(true,false);
-                else gamepageView.refreshCatchAndIncreaseUI(true,true);
+                if(firstTurn) gamepageView.freshCatchAndIncreaseUI(true,false);
+                else gamepageView.freshCatchAndIncreaseUI(true,true);
             } else if(myUID.equals(mCurrentInformation.recentPlayer)){
                 //I'm recent player ,I can't catch myself
-                gamepageView.refreshCatchAndIncreaseUI(false,false);
+                gamepageView.freshCatchAndIncreaseUI(false,false);
             } else {
                 //I'm not the currentPlayer, I only can catch recent person
-                if(firstTurn) gamepageView.refreshCatchAndIncreaseUI(false,false);
-                else gamepageView.refreshCatchAndIncreaseUI(false,true);
+                if(firstTurn) gamepageView.freshCatchAndIncreaseUI(false,false);
+                else gamepageView.freshCatchAndIncreaseUI(false,true);
             }
         }
     }

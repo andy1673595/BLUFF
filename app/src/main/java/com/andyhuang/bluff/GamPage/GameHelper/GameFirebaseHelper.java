@@ -31,42 +31,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameFirebaseHelper {
-    private Firebase gameRef;
+    private int currentPlayerNumber = 0;
     private String gameState;
-    private GamePageContract.View gamePageView;
-    private GamePagePresenter mPresenter;
-    private List<Gamer> gamerList = new ArrayList<Gamer>();
-    private GameEndInformation mGameEndInformation;
     private String myUID;
     private boolean isHost;
+    //presenter and view
+    private GamePageContract.View gamePageView;
+    private GamePagePresenter mPresenter;
+    //other variables
+    private Firebase gameRef;
     private CurrentStateHelper currentStateHelper;
-    private GameFirebaseHelper mGameFirebaseHelper;
+    private GameEndInformation mGameEndInformation;
+    private CurrentInformation currentInformation;
     private Dice dice = new Dice();
+    private List<Gamer> gamerList = new ArrayList<Gamer>();
+    private ArrayList<Gamer> mPlayerJoinedList = new ArrayList<>();
     private List<List<Integer>> diceListForEachPlayer;
     private List<Integer> diceTotal;
-    private CurrentInformation currentInformation;
-    private int currentPlayerNumber = 0;
-    private GameStateListener gameStateListener;
-    private RoomDataListener roomDataListener;
+    //Firebase listeners
+    private GameStateListener mGameStateListener;
+    private RoomDataListener mRoomDataListener;
     private PlayerCurrentStateListener mPlayerCurrentStateListener;
     private PlayerGetRoomDataListener mPlayerGetRoomDataListener;
     private DiceTotalListener mDiceTotalListener;
     private CurrentPlayerInformationListener mCurrentPlayerInformationListener;
     private EndGameListener mEndGameListener;
-    private ArrayList<Gamer> mPlayerJoinedList = new ArrayList<>();
     private PlayerHaveJoinedListener mPlayerHaveJoinedListener;
     private LoadPlayerTotalInvitedListener mLoadPlayerTotalInvitedListener;
 
     public GameFirebaseHelper(String roomID,GamePageContract.View gamePageViewInput,
                               boolean isHostInput,GamePagePresenter mPresenterInput) {
-        gameRef = new Firebase("https://myproject-556f6.firebaseio.com/GameData/"+roomID+"/");
+        myUID = UserManager.getInstance().getUserUID();
+        isHost = isHostInput;
         gamePageView = gamePageViewInput;
         mPresenter = mPresenterInput;
-        isHost = isHostInput;
-        myUID = UserManager.getInstance().getUserUID();
-        mGameFirebaseHelper = this;
-        gameStateListener = new GameStateListener(this,dice,gameRef,mPresenter,gamePageView);
-        roomDataListener = new RoomDataListener(gamerList,gameRef,this,mRoomListenerCallback);
+        gameRef = new Firebase("https://myproject-556f6.firebaseio.com/GameData/"+roomID+"/");
+        //Listeners init
+        mGameStateListener = new GameStateListener(this,dice,gameRef,mPresenter,gamePageView);
+        mRoomDataListener = new RoomDataListener(gamerList,gameRef,this,mRoomListenerCallback);
         mPlayerGetRoomDataListener = new PlayerGetRoomDataListener(gamerList,this,isHostInput,
                                                             gamePageView,mPlayerGetRoomDataCallback);
         mDiceTotalListener = new DiceTotalListener(mDiceTotalListenerCallback);
@@ -80,7 +82,7 @@ public class GameFirebaseHelper {
     }
     //host read gamer and update it to server
     public void getRoomData() {
-        gameRef.child(Constants.GAMER_FIREBASE).addListenerForSingleValueEvent(roomDataListener);
+        gameRef.child(Constants.GAMER_FIREBASE).addListenerForSingleValueEvent(mRoomDataListener);
     }
     //all player read player list
     public void playerGetRoomData() {
@@ -90,12 +92,11 @@ public class GameFirebaseHelper {
         listenCurrentPlayerInformation();
     }
 
-
-
+    //all player should listen game state and do the corresponding things
     public void listenGameState() {
-        gameRef.child(Constants.GAME_STATE).addValueEventListener(gameStateListener);
+        gameRef.child(Constants.GAME_STATE).addValueEventListener(mGameStateListener);
     }
-
+    //host should listen all players' current state and update the game state to control game process
     public void hostListenPlayerCurrentState() {
         gameRef.child(Constants.CURRENT_STATE_LIST).addChildEventListener(mPlayerCurrentStateListener);
     }
@@ -139,20 +140,105 @@ public class GameFirebaseHelper {
         });
 
     }
-
-    public void getInitailGameData() {
+    //when game first start , get the initial game data
+    public void getInitialGameData() {
         gameRef.child(Constants.DICE_TOTAL_LIST).addListenerForSingleValueEvent(mDiceTotalListener);
     }
-    public void listenCurrentPlayerInformation() {
-        mCurrentPlayerInformationListener = new CurrentPlayerInformationListener(this,gamePageView);
-        gameRef.child(Constants.NEXT_PLAYER_INFORMATION).addValueEventListener(mCurrentPlayerInformationListener);
+    //when game restart , reset all variables used in game
+    private void reset() {
+        if(isHost) {
+            currentStateHelper.resetCount();
+            //start from who lose game
+            currentInformation.setCurrentPlayer(mGameEndInformation.getLoserUID());
+            currentInformation.setRecentDiceType(0);
+            currentInformation.setRecentDiceNumber(0);
+            currentInformation.setRecentPlayer(Constants.NODATA);
+            gameRef.child(Constants.NEXT_PLAYER_INFORMATION).setValue(currentInformation);
+        }
+        if(currentInformation.getCurrentPlayer().equals(myUID)) {
+            gamePageView.resetView(true);
+        }else {
+            gamePageView.resetView(false);
+        }
+        diceTotal.clear();
+        //restart a game , wait for ready
+        gameRef.child(Constants.CURRENT_STATE_LIST).child(myUID).setValue(Constants.COMPLETED_READ_INIT);
+    }
+
+    public void  updateCurrentInformation(CurrentInformation currentInformation) {
+        gameRef.child(Constants.NEXT_PLAYER_INFORMATION).setValue(currentInformation);
+    }
+    //when a gamer is end,update the result of the game to the firebase
+    public void updateGameEndInfromation(GameEndInformation gameEndInformation) {
+        //update game end information
+        gameRef.child(Constants.END_INFORMATION).setValue(gameEndInformation);
+        //tell everyone should end game
+        gameRef.child(Constants.GAME_STATE).setValue(Constants.LOAD_END_INFO);
+        UpdateGameResult gameResult = new UpdateGameResult();
+        //If this game is a 2 person game,upadte the win and lose result to server
+        if(gamerList.size()==2) {
+            gameResult.updateTwoPersonResultToFirebase(gamerList,gameEndInformation);
+        }
+        gameResult.updateOnlyTimesToFirebase(gamerList);
+    }
+
+    public void loadGameEndInfromation() {
+        gameRef.child(Constants.END_INFORMATION).addListenerForSingleValueEvent(mEndGameListener);
+    }
+    public void removeListener() {
+        if(mGameStateListener !=null)
+            gameRef.child(Constants.GAME_STATE).removeEventListener(mGameStateListener);
+        if(mPlayerCurrentStateListener!=null)
+            gameRef.child(Constants.CURRENT_STATE_LIST).removeEventListener(mPlayerCurrentStateListener);
+        if(mCurrentPlayerInformationListener!=null)
+            gameRef.child(Constants.NEXT_PLAYER_INFORMATION).removeEventListener(mCurrentPlayerInformationListener);
+        if(mPlayerHaveJoinedListener != null)
+            gameRef.child(Constants.GAMER_FIREBASE).removeEventListener(mPlayerHaveJoinedListener);
+    }
+    //all players load the total number of invitees when get into game room
+    public void loadPlayerInvitedTotal() {
+        gameRef.child(Constants.PLAYED_TOTAL_INVITED).addListenerForSingleValueEvent(mLoadPlayerTotalInvitedListener);
+
+    }
+    //host should upload the total number of player invited to the firebase
+    public void updatePlayInvitedCount(int count) {
+        gameRef.child(Constants.PLAYED_TOTAL_INVITED).setValue(count);
+    }
+    //tell firebase I'm playing a game or not
+    public void setIsGaming(boolean isGaming) {
+        Firebase userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
+        userDataRef.child(myUID).child(Constants.IS_GAMING).setValue(isGaming);
     }
 
     public void setGameStateInHelper(String stateInput) {
         gameState = stateInput;
     }
 
-    RoomListenerCallback mRoomListenerCallback= new RoomListenerCallback() {
+    public void setCurrentInformation(CurrentInformation currentInformationInput) {
+        currentInformation = currentInformationInput;
+        //one has been called
+        if(currentInformation.getRecentDiceType()==1) {
+            mPresenter.sethasTellOne(true);
+        }
+    }
+
+    public List<Gamer> getGamerList() {
+        return gamerList;
+    }
+    public CurrentInformation getCurrentInformation() {
+        return currentInformation;
+    }
+    public List<Integer> getDiceTotal() {
+        return diceTotal;
+    }
+
+    private void listenCurrentPlayerInformation() {
+        mCurrentPlayerInformationListener = new CurrentPlayerInformationListener(this,gamePageView);
+        gameRef.child(Constants.NEXT_PLAYER_INFORMATION).addValueEventListener(mCurrentPlayerInformationListener);
+    }
+
+    /*    Listeners' callbacks    */
+    private RoomListenerCallback mRoomListenerCallback= new RoomListenerCallback() {
             @Override
             public void returnCurrentHelper(CurrentStateHelper helperBack, List<Gamer> gamerListCallback) {
                 currentStateHelper = helperBack;
@@ -160,7 +246,6 @@ public class GameFirebaseHelper {
                 mPlayerCurrentStateListener = new PlayerCurrentStateListener(currentStateHelper);
             }
         };
-
 
     private PlayerGetRoomDataCallback mPlayerGetRoomDataCallback= new PlayerGetRoomDataCallback() {
            @Override
@@ -187,7 +272,7 @@ public class GameFirebaseHelper {
         }
     };
 
-    public EndGameListenerCallback mEndGameListenerCallback = new EndGameListenerCallback() {
+    private EndGameListenerCallback mEndGameListenerCallback = new EndGameListenerCallback() {
         @Override
         public void completedLoadInfo(GameEndInformation gameEndInformationInput) {
             //completed load endgameInformation
@@ -200,100 +285,11 @@ public class GameFirebaseHelper {
         }
     };
 
-    public PlayerJoinedListenerCallback mPlayerJoinedListenerCallback = new PlayerJoinedListenerCallback() {
+    private PlayerJoinedListenerCallback mPlayerJoinedListenerCallback = new PlayerJoinedListenerCallback() {
         @Override
         public void freshShowPlayerCountUI(ArrayList<Gamer> gamersJoinedListInput,Gamer newGamer) {
             mPlayerJoinedList = gamersJoinedListInput;
             mPresenter.updatePlayerHaveJoinedList(mPlayerJoinedList,newGamer);
         }
     };
-
-
-    public void setCurrentInformation(CurrentInformation currentInformationInput) {
-        currentInformation = currentInformationInput;
-        //one has been called
-        if(currentInformation.getRecentDiceType()==1) {
-            mPresenter.sethasTellOne(true);
-        }
-    }
-
-    public List<Gamer> getGamerList() {
-        return gamerList;
-    }
-    public CurrentInformation getCurrentInformation() {
-        return currentInformation;
-    }
-
-    public void  updateCurrentInformation(CurrentInformation currentInformation) {
-        gameRef.child(Constants.NEXT_PLAYER_INFORMATION).setValue(currentInformation);
-    }
-
-    public List<Integer> getDiceTotal() {
-        return diceTotal;
-    }
-
-    public void updateGameEndInfromation(GameEndInformation gameEndInformation) {
-        //update game end information
-        gameRef.child(Constants.END_INFORMATION).setValue(gameEndInformation);
-        //tell everyone should end game
-        gameRef.child(Constants.GAME_STATE).setValue(Constants.LOAD_END_INFO);
-        UpdateGameResult gameResult = new UpdateGameResult();
-        //If this game is a 2 person game,upadte the win and lose result to server
-        if(gamerList.size()==2) {
-            gameResult.updateToFirebase(gamerList,gameEndInformation);
-        }
-        gameResult.updateOnlyTimesToFirebase(gamerList);
-
-
-    }
-
-    public void loadGameEndInfromation() {
-        gameRef.child(Constants.END_INFORMATION).addListenerForSingleValueEvent(mEndGameListener);
-    }
-
-    public void reset() {
-        if(isHost) {
-            currentStateHelper.resetCount();
-            //start from who lose game
-            currentInformation.setCurrentPlayer(mGameEndInformation.getLoserUID());
-            currentInformation.setRecentDiceType(0);
-            currentInformation.setRecentDiceNumber(0);
-            currentInformation.setRecentPlayer(Constants.NODATA);
-            gameRef.child(Constants.NEXT_PLAYER_INFORMATION).setValue(currentInformation);
-        }
-        if(currentInformation.getCurrentPlayer().equals(myUID)) {
-            gamePageView.resetView(true);
-        }else {
-            gamePageView.resetView(false);
-        }
-        diceTotal.clear();
-        //restart a game , wait for ready
-        gameRef.child(Constants.CURRENT_STATE_LIST).child(myUID).setValue(Constants.COMPLETED_READ_INIT);
-    }
-
-    public void setIsGaming(boolean isGaming) {
-        Firebase userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData");
-        userDataRef.child(myUID).child(Constants.IS_GAMING).setValue(isGaming);
-    }
-
-    public void removeListener() {
-        if(gameStateListener!=null)
-            gameRef.child(Constants.GAME_STATE).removeEventListener(gameStateListener);
-        if(mPlayerCurrentStateListener!=null)
-            gameRef.child(Constants.CURRENT_STATE_LIST).removeEventListener(mPlayerCurrentStateListener);
-        if(mCurrentPlayerInformationListener!=null)
-            gameRef.child(Constants.NEXT_PLAYER_INFORMATION).removeEventListener(mCurrentPlayerInformationListener);
-        if(mPlayerHaveJoinedListener != null)
-            gameRef.child(Constants.GAMER_FIREBASE).removeEventListener(mPlayerHaveJoinedListener);
-
-    }
-
-    public void loadPlayerInvitedTotal() {
-        gameRef.child(Constants.PLAYED_TOTAL_INVITED).addListenerForSingleValueEvent(mLoadPlayerTotalInvitedListener);
-
-    }
-
-    public void updatePlayInvitedCount(int count) {
-        gameRef.child(Constants.PLAYED_TOTAL_INVITED).setValue(count);
-    }
 }

@@ -48,12 +48,13 @@ import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public class BluffMainActivity extends BaseActivity implements BluffContract.View, FragmentListener {
-
+    //layout裡的變數
     private ImageView imageMenuButton;
     private ImageView imageUserPhotoForDrawer;
     private TextView textNameForDrawer;
     private DrawerLayout myDrawerLayout;
     private NavigationView mNavigationView;
+    //其他變數
     private Context mContext;
     private ChangeUserPhotoHelper mChangeUserPhotoHelper;
     private ChangeUserPhotoCompletedCallback mPhotoCallback;

@@ -12,7 +12,8 @@ import java.util.List;
 
 public class UpdateGameResult {
     Firebase userDataRef = new Firebase("https://myproject-556f6.firebaseio.com/userData/");
-    public void updateToFirebase(List<Gamer> gamerList, final GameEndInformation gameEndInformation) {
+
+    public void updateTwoPersonResultToFirebase(List<Gamer> gamerList, final GameEndInformation gameEndInformation) {
         for (final Gamer gamer :gamerList) {
             userDataRef.child(gamer.getUserUID()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

@@ -48,28 +48,23 @@ import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public class GamePage extends BaseActivity implements View.OnClickListener ,GamePageContract.View {
-    private String roomID;
-    private boolean isHost;
-    private GamePagePresenter mPrsenter;
-  //  private ImageView imageIncreaseDiceButton;
-    private ConstraintLayout layoutIncreaseDice;
-  //  private ImageView imageCatchButton;
-    private ConstraintLayout layoutCatch;
+    //game page view layout elements
+    private ImageView imageHomeBackButton;
     private ImageView imageReadyStateButton;
     private ImageView[] imageDiceArray;
-    private int[] diceImageSourceArray;
-    private int[] diceImageSourceForInfo;
-    private ImageView imageHomeBackButton;
     private TextView textShowInformation;
-    private GameEndDialog mGameEndDialog;
-    private ExitGameDialog mExitGameDialog;
-    private GamePage thisActivity;
+    private TextView textPlayerCountRightNow;
+    private TextView textTellPlayerInfo;
+    private ConstraintLayout layoutPlayerList;
+    private ConstraintLayout layoutIncreaseDice;
+    private ConstraintLayout layoutCatch;
     //layout,image,buttons.. for webRTC
+    private ImageView imageVideoIcon;
+    private ImageView imageVideobackground;
     private RelativeLayout layoutVideoBack;
     private ConstraintLayout layoutSwitchForVideoShow;
     private Switch switchForVideo;
-    private ImageView imageVideoIcon;
-    private ImageView imageVideobackground;
+    //webRTC的變數
     private SurfaceViewRenderer localRender;
     private SurfaceViewRenderer remoteRenderScreen;
     private PercentFrameLayout localRenderLayout;
@@ -77,12 +72,18 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     private final List<VideoRenderer.Callbacks> remoteRenderers =
             new ArrayList<VideoRenderer.Callbacks>();
     private EglBase rootEglBase;
-    //show player list layout elements
-    private TextView textPlayerCountRightNow;
-    private ConstraintLayout layoutPlayerList;
-    int countForPlayerInviteTotal;
+    //其他變數
+    private int countForPlayerInviteTotal;
+    private int[] diceImageSourceArray;
+    private int[] diceImageSourceForInfo;
+    private String roomID;
+    private boolean isHost;
+    private GamePage thisActivity;
+    private GamePagePresenter mPrsenter;
+    private GameEndDialog mGameEndDialog;
+    private ExitGameDialog mExitGameDialog;
     private ArrayList<Gamer> playerJoinedList = new ArrayList<>();
-    private TextView textTellPlayerInfo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,37 +119,36 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     void initView() {
         //bind View By Id
         imageDiceArray = new ImageView[]{
-                (ImageView)findViewById(R.id.image_table_dice1),
-                (ImageView)findViewById(R.id.image_table_dice2),
-                (ImageView)findViewById(R.id.image_table_dice3),
-                (ImageView)findViewById(R.id.image_table_dice4),
-                (ImageView)findViewById(R.id.image_table_dice5)};
-       // imageIncreaseDiceButton = (ImageView)findViewById(R.id.image_increae_dice);
-        layoutIncreaseDice = (ConstraintLayout)findViewById(R.id.layout_increase_dice);
-      //  imageCatchButton = (ImageView)findViewById(R.id.image_catch);
-        layoutCatch = (ConstraintLayout)findViewById(R.id.layout_catch);
-        imageReadyStateButton = (ImageView)findViewById(R.id.image_game_state);
-        textShowInformation =(TextView)findViewById(R.id.text_show_current_info);
-        imageHomeBackButton = (ImageView)findViewById(R.id.image_home_button_gamepage);
-        textTellPlayerInfo = (TextView)findViewById(R.id.text_tell_player_information);
+                findViewById(R.id.image_table_dice1),
+                findViewById(R.id.image_table_dice2),
+                findViewById(R.id.image_table_dice3),
+                findViewById(R.id.image_table_dice4),
+                findViewById(R.id.image_table_dice5)};
+        imageReadyStateButton = findViewById(R.id.image_game_state);
+        imageHomeBackButton = findViewById(R.id.image_home_button_gamepage);
+        textShowInformation =findViewById(R.id.text_show_current_info);
+        textTellPlayerInfo = findViewById(R.id.text_tell_player_information);
+        textPlayerCountRightNow = findViewById(R.id.text_show_playerlist_button);
+        layoutIncreaseDice = findViewById(R.id.layout_increase_dice);
+        layoutCatch = findViewById(R.id.layout_catch);
         //view for video
-        imageVideobackground = (ImageView)findViewById(R.id.image_video_background);
-        layoutVideoBack = (RelativeLayout)findViewById(R.id.video_back_layout);
-        layoutSwitchForVideoShow = (ConstraintLayout)findViewById(R.id.layout_for_video_switch);
-        switchForVideo = (Switch)findViewById(R.id.switchForVideo);
+        imageVideoIcon = findViewById(R.id.image_video_button);
+        imageVideobackground = findViewById(R.id.image_video_background);
+        switchForVideo = findViewById(R.id.switchForVideo);
+        //只偵測把switch和icon包在一起layout的click事件
         switchForVideo.setClickable(false);
-        imageVideoIcon = (ImageView)findViewById(R.id.image_video_button);
-        localRender = (SurfaceViewRenderer) findViewById(R.id.local_video_view);
-        remoteRenderScreen = (SurfaceViewRenderer) findViewById(R.id.remote_video_view);
-        localRenderLayout = (PercentFrameLayout) findViewById(R.id.local_video_layout);
-        remoteRenderLayout = (PercentFrameLayout) findViewById(R.id.remote_video_layout);
-        textPlayerCountRightNow = (TextView)findViewById(R.id.text_show_playerlist_button);
-        layoutPlayerList = (ConstraintLayout)findViewById(R.id.layout_show_player_list);
+        layoutVideoBack = findViewById(R.id.video_back_layout);
+        layoutSwitchForVideoShow = findViewById(R.id.layout_for_video_switch);
+        localRender = findViewById(R.id.local_video_view);
+        localRenderLayout = findViewById(R.id.local_video_layout);
+        layoutPlayerList = findViewById(R.id.layout_show_player_list);
+        remoteRenderScreen = findViewById(R.id.remote_video_view);
+        remoteRenderLayout = findViewById(R.id.remote_video_layout);
         remoteRenderers.add(remoteRenderScreen);
         //set INVISIBLE first, if game is two persons' game set visible
         layoutSwitchForVideoShow.setVisibility(View.INVISIBLE);
         layoutVideoBack.setVisibility(View.INVISIBLE);
-        //init dice Array
+        //init dice drawable Array
         diceImageSourceArray = new int[] {R.drawable.table_dice1,R.drawable.table_dice2,R.drawable.table_dice3,
                 R.drawable.table_dice4,R.drawable.table_dice5,R.drawable.table_dice6};
         diceImageSourceForInfo = new int[] {R.drawable.dice1,R.drawable.dice2,R.drawable.dice3,
@@ -159,11 +159,11 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         // Create video renderers.
         if(localRender ==null) {
             localRender = new SurfaceViewRenderer(this);
-            localRender = (SurfaceViewRenderer) findViewById(R.id.local_video_view);
+            localRender = findViewById(R.id.local_video_view);
         }
         if( remoteRenderScreen == null) {
             remoteRenderScreen = new SurfaceViewRenderer(this);
-            remoteRenderScreen = (SurfaceViewRenderer) findViewById(R.id.remote_video_view);
+            remoteRenderScreen =findViewById(R.id.remote_video_view);
         }
         if(rootEglBase== null) {
             rootEglBase = EglBase.create();
@@ -176,8 +176,34 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     }
 
     @Override
-    public void updatePlayerHaveJoinedText(ArrayList<Gamer> joinedList,Gamer newGamer) {
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.image_game_state:
+                mPrsenter.clickStateButton();
+                break;
+            case R.id.layout_increase_dice:
+                mPrsenter.increaseDice();
+                break;
+            case R.id.layout_catch:
+                mPrsenter.catchPlayer();
+                break;
+            case R.id.image_home_button_gamepage:
+                mExitGameDialog = new ExitGameDialog(this,mExitRoomCallback);
+                mExitGameDialog.show();
+                break;
+            case R.id.layout_for_video_switch:
+                mPrsenter.touchVideoSwitch();
+                break;
+            case R.id.layout_show_player_list:
+                showPlayerJoinedDialog();
+                break;
+        }
+    }
+
+    @Override
+    public void freshPlayerHaveJoinedText(ArrayList<Gamer> joinedList, Gamer newGamer) {
         playerJoinedList = joinedList;
+        //load init players data
         if(countForPlayerInviteTotal == 0 ){
             mPrsenter.loadPlayerInvitedTotal();
         }else {
@@ -187,8 +213,8 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
             Toast.makeText(thisActivity, "玩家 "+newGamer.getUserName()+" 已加入", Toast.LENGTH_SHORT).show();
         }
     }
-
-    public void inviteeSetTotalPlayerInivted(int count) {
+    @Override
+    public void freshTotalPlayerUI(int count) {
         countForPlayerInviteTotal = count;
         textPlayerCountRightNow.setText(playerJoinedList.size()+"/"+countForPlayerInviteTotal);
     }
@@ -222,30 +248,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         localRender.requestLayout();
         remoteRenderScreen.requestLayout();
     }
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.image_game_state:
-                mPrsenter.clickStateButton();
-                break;
-            case R.id.layout_increase_dice:
-                mPrsenter.increaseDice();
-                break;
-            case R.id.layout_catch:
-                mPrsenter.catchPlayer();
-                break;
-            case R.id.image_home_button_gamepage:
-                mExitGameDialog = new ExitGameDialog(this,mExitRoomCallback);
-                mExitGameDialog.show();
-                break;
-            case R.id.layout_for_video_switch:
-                mPrsenter.touchVideoSwitch();
-                break;
-            case R.id.layout_show_player_list:
-                showPlayerJoinedDialog();
-                break;
-        }
-    }
+
 
     private void showPlayerJoinedDialog() {
         PlayerJoinedDialog playerJoinedDialog = new PlayerJoinedDialog();
@@ -297,7 +300,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     }
 
     @Override
-    public void refreshCatchAndIncreaseUI(boolean increaseVisible, boolean catchVisible) {
+    public void freshCatchAndIncreaseUI(boolean increaseVisible, boolean catchVisible) {
         if(increaseVisible)  {
             layoutIncreaseDice.setVisibility(View.VISIBLE);
         }
@@ -345,16 +348,6 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
     public void showOtherGamerLeaveDialog() {
         GamerLeaveDialog gamerLeaveDialog = new GamerLeaveDialog(this,mExitRoomCallback);
         gamerLeaveDialog.show();
-    }
-
-    @Override
-    public void showTwoPlayerLayout() {
-
-    }
-
-    @Override
-    public void showMultiplePlayerLayout() {
-
     }
 
     @Override
@@ -408,9 +401,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
             layoutSwitchForVideoShow.setOnClickListener(this);
         } else {
           //TODO not two persons' game , set another UI
-
         }
-
     }
 
     @Override

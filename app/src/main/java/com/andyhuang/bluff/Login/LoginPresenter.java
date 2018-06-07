@@ -71,7 +71,6 @@ public class LoginPresenter implements LoginContract.Presenter{
     public void checkEditTextInput(String accountEmail, String password) {
         if(accountEmail.isEmpty()||password.isEmpty()) {
             loginView.showToast(loginView.getString(R.string.account_and_password_null_error_message));
-
         }else {
             firebaseAccount.login(accountEmail,password,firebaseCallback());
         }

@@ -1,15 +1,15 @@
 package com.andyhuang.bluff.GamPage.GameHelper;
 
 import com.andyhuang.bluff.Util.Constants;
-import com.andyhuang.bluff.activities.GamePage;
 
 public class CurrentStateHelper {
     private int countForCompletedRead=0;
     private int countForGetReady = 0;
     private int countForNewDice = 0;
     private int countForStartPlaying = 0;
-    private GameFirebaseHelper firebaseHelper;
     private int playerTotal;
+    private GameFirebaseHelper firebaseHelper;
+
     public CurrentStateHelper(GameFirebaseHelper firebaseHelperInput, int playerTotalInput) {
         firebaseHelper = firebaseHelperInput;
         playerTotal = playerTotalInput;

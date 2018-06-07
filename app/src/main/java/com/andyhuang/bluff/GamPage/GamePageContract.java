@@ -11,25 +11,25 @@ import java.util.List;
 
 public interface GamePageContract {
     interface View extends BaseView {
+        //fresh UI
         void freshStateButtonUI(String buttonType);
         void freshDiceUI(List<Integer> diceList);
-        void refreshCatchAndIncreaseUI(boolean increaseVisible,boolean catchVisible);
+        void freshCatchAndIncreaseUI(boolean increaseVisible, boolean catchVisible);
         void freshRecentDiceUI(CurrentInformation currentInformation);
+        void freshSwitchUI(boolean shouldOpen);
+        void freshTextInfo(String message);
+        void freshPlayerHaveJoinedText(ArrayList<Gamer> joinedList, Gamer newGamer);
+        void freshTotalPlayerUI(int count);
         void showEndInformation(String endText);
         void resetView(boolean isNextPlayer);
+        //show dialog
         void showOtherGamerLeaveDialog();
-        void showTwoPlayerLayout();
-        void showMultiplePlayerLayout();
+        //video methods
         void showVideo();
         void closeVideo();
         void setVideoElement(boolean show);
-        void freshSwitchUI(boolean shouldOpen);
         void releaseSurfaceView();
         void creatVideoRenders();
-        void updatePlayerHaveJoinedText(ArrayList<Gamer> joinedList,Gamer newGamer);
-        void inviteeSetTotalPlayerInivted(int count);
-
-        void freshTextInfo(String message);
     }
     interface Presenter extends BasePresenter {
         void init(String RoomID,boolean isHost);
@@ -38,15 +38,18 @@ public interface GamePageContract {
         void catchPlayer();
         void clickStateButton();
         void tellServerNotInGame();
-        void initVideoData();
         void initMultipleData();
-        void startVideo();
-        void disconnectVideo();
-        void touchVideoSwitch();
-        boolean getIceConnectedInWebRTC();
         void updatePlayerHaveJoinedList(ArrayList<Gamer> joinedList,Gamer newGamer);
         void loadPlayerInvitedTotal();
         void updatePlayInvitedCountToUI(int count);
         void updatePlayInvitedCountToFirebase(int count);
+        //WebRTC video
+        void touchVideoSwitch();
+        void disconnectVideo();
+        void startVideo();
+        void initVideoData();
+        boolean getIceConnectedInWebRTC();
+
+
     }
 }

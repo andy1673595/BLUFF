@@ -122,7 +122,6 @@ public class ChangeUserPhotoHelper {
             e.printStackTrace();
         }
         if (imageFile != null) {
-            //mImageCameraTempUri
             imageUri = FileProvider.getUriForFile(context, "com.andyhuang.bluff.fileprovider", imageFile);
             intentPhotoGallery.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             ((BluffMainActivity)mContext).startActivityForResult(intentPhotoGallery, Constants.GET_PHOTO_FROM_GALLERY);

@@ -1,5 +1,4 @@
 package com.andyhuang.bluff.GamPage;
-import android.util.Log;
 
 import com.andyhuang.bluff.GamPage.GameHelper.CheckWhoWin;
 import com.andyhuang.bluff.GamPage.GameObject.GameEndInformation;
@@ -11,26 +10,24 @@ import com.andyhuang.bluff.activities.GamePage;
 import com.andyhuang.bluff.webRTC.WebRTC;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GamePagePresenter implements GamePageContract.Presenter{
-    private GamePageContract.View gamePgaeView;
     private String roomID;
-    private boolean isHost;
     private String buttonType;
+    private boolean isHost;
     private boolean isplaying = false;
-    private GameFirebaseHelper firebaseHelper;
-    private IncreaseDiceDialog mDialog;
     private boolean hasTellOne = false;
     private boolean isVideoSwitchOn = false;
-    private WebRTC mWebRTC;
+    private IncreaseDiceDialog mDialog;
     private ArrayList<Gamer> playerHaveJoinedList = new ArrayList<>();
+    private GamePageContract.View gamePgaeView;
+    private GameFirebaseHelper firebaseHelper;
+    private WebRTC mWebRTC;
 
     @Override
     public void start() {
 
     }
-
 
     public GamePagePresenter(GamePageContract.View gamePgaeViewInput) {
         gamePgaeView = gamePgaeViewInput;
@@ -42,22 +39,13 @@ public class GamePagePresenter implements GamePageContract.Presenter{
         isHost = isHostInput;
         firebaseHelper = new GameFirebaseHelper(roomID,gamePgaeView,isHost,this);
         //set Button UI
-        if(isHost) {
-            buttonType = Constants.BUTTON_START;
-            gamePgaeView.freshStateButtonUI(Constants.BUTTON_START);
-            //host set game state to wait for host start
-            firebaseHelper.setGameState(Constants.WAIT_HOST);
-        } else {
-            //invitee wait for host click start
-            buttonType =Constants.BUTTON_WAIT;
-            gamePgaeView.freshStateButtonUI(Constants.BUTTON_WAIT);
-        }
-
+        setButtonUI();
         firebaseHelper.listenGameState();
         //tell other I'm gaming
         firebaseHelper.setIsGaming(true);
         firebaseHelper.listenToPlayerJoinedEvent();
     }
+
 
     @Override
     public void increaseDice() {
@@ -96,7 +84,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
                 break;
         }
     }
-
+    //leave the game room , tell server I'm not in game room and remove the listener of firebase
     @Override
     public void tellServerNotInGame() {
         firebaseHelper.setCurrentState(Constants.EXIT_GAME);
@@ -123,19 +111,16 @@ public class GamePagePresenter implements GamePageContract.Presenter{
         mWebRTC = new WebRTC(this,(GamePage) gamePgaeView,roomID);
         mWebRTC.startCall();
     }
-
+    //when click video icon layout or leave game , disconnect video
     @Override
     public void disconnectVideo() {
-        Log.d("errorTEST","presenter.disconnect");
         isVideoSwitchOn = false;
         mWebRTC.disconnectReset();
         mWebRTC =null;
-        Log.d("errorTEST","webRTC = null");
         gamePgaeView.freshSwitchUI(isVideoSwitchOn);
         gamePgaeView.closeVideo();
-        Log.d("errorTEST","close video");
     }
-    //when touch Video chat swtich , it will call this method,and judge what to do
+    //when touch Video chat switch , it will call this method,and judge what to do
     @Override
     public void touchVideoSwitch() {
         if(isVideoSwitchOn) {
@@ -165,7 +150,20 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     @Override
     public void updatePlayerHaveJoinedList(ArrayList<Gamer> joinedList,Gamer newGamer) {
         playerHaveJoinedList = joinedList;
-        gamePgaeView.updatePlayerHaveJoinedText(joinedList,newGamer);
+        gamePgaeView.freshPlayerHaveJoinedText(joinedList,newGamer);
+    }
+
+    private void setButtonUI() {
+        if(isHost) {
+            buttonType = Constants.BUTTON_START;
+            gamePgaeView.freshStateButtonUI(Constants.BUTTON_START);
+            //host set game state to wait for host start
+            firebaseHelper.setGameState(Constants.WAIT_HOST);
+        } else {
+            //invitee wait for host click start
+            buttonType =Constants.BUTTON_WAIT;
+            gamePgaeView.freshStateButtonUI(Constants.BUTTON_WAIT);
+        }
     }
 
     public ArrayList<String> getPlayerJoinedNameList() {
@@ -192,22 +190,16 @@ public class GamePagePresenter implements GamePageContract.Presenter{
         buttonType = Constants.BUTTON_READY;
     }
 
+    @Override
+    public void updatePlayInvitedCountToUI(int count) {
+        gamePgaeView.freshTotalPlayerUI(count);
+    }
+
     public void setButtonType(String type) {
         buttonType = type;
     }
     public void setIsplaying(boolean isplayingInput) {isplaying = isplayingInput;}
     public void sethasTellOne(boolean hasTellOneInput) {hasTellOne = hasTellOneInput;}
-
-    public void loadPlayerInvitedTotal() {
-        firebaseHelper.loadPlayerInvitedTotal();
-    }
-
-    @Override
-    public void updatePlayInvitedCountToUI(int count) {
-        gamePgaeView.inviteeSetTotalPlayerInivted(count);
-    }
-
-    public void updatePlayInvitedCountToFirebase(int count) {
-        firebaseHelper.updatePlayInvitedCount(count);
-    }
+    public void loadPlayerInvitedTotal() {firebaseHelper.loadPlayerInvitedTotal(); }
+    public void updatePlayInvitedCountToFirebase(int count) {firebaseHelper.updatePlayInvitedCount(count);}
 }
