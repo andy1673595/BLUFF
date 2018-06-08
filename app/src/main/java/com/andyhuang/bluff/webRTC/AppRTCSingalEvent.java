@@ -2,31 +2,23 @@ package com.andyhuang.bluff.webRTC;
 
 
 import android.widget.Toast;
-
 import com.andyhuang.bluff.activities.GamePage;
-
-import org.webrtc.Camera1Enumerator;
-import org.webrtc.CameraEnumerator;
+import com.andyhuang.bluff.webRTC.AppRTCClient.SignalingParameters;
 import org.webrtc.IceCandidate;
 import org.webrtc.SessionDescription;
 import org.webrtc.VideoCapturer;
-import com.andyhuang.bluff.webRTC.AppRTCClient.SignalingParameters;
 
 public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
     private long callStartedTimeMs = 0;
     private GamePage mGamePageView;
     private PeerConnectionClient peerConnectionClient;
     private WebRTC mWebRTC;
+    private MyVideoCapture mMyVideoCapture;
 
     AppRTCSingalEvent(GamePage gamePage,WebRTC webRTC) {
         mWebRTC = webRTC;
         mGamePageView = gamePage;
-    }
-    public void setCallStartedTimeMs (long time) {
-        callStartedTimeMs = time;
-    }
-    public void setPeerConnectionClient(PeerConnectionClient peerConnectionClientInput) {
-        peerConnectionClient = peerConnectionClientInput;
+        mMyVideoCapture = new MyVideoCapture();
     }
 
     @Override
@@ -47,11 +39,11 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
                 if (peerConnectionClient == null) {
                     return;
                 }
+                //兩人收到sdp都需要設定RemoteDescription
                 peerConnectionClient.setRemoteDescription(sdp);
                 AppRTCClient.SignalingParameters peer = mWebRTC.getSignalingParameters();
                 if (!mWebRTC.getSignalingParameters().initiator) {
-                    // Create answer. Answer SDP will be sent to offering client in
-                    // PeerConnectionEvents.onLocalDescription event.
+                    //第二個進入房間的人回傳answer
                     peerConnectionClient.createAnswer();
                 }
             }
@@ -102,17 +94,24 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
         });
     }
 
+    public void setCallStartedTimeMs (long time) {
+        callStartedTimeMs = time;
+    }
+    public void setPeerConnectionClient(PeerConnectionClient peerConnectionClientInput) {
+        peerConnectionClient = peerConnectionClientInput;
+    }
+
+
     private void onConnectedToRoomInternal(final SignalingParameters params) {
-        final long delta = System.currentTimeMillis() - callStartedTimeMs;
         mWebRTC.setSignalingParameters(params);
-        VideoCapturer videoCapturer = createVideoCapturer();
+        VideoCapturer videoCapturer = mMyVideoCapture.createVideoCapturer();
+        //將視訊流導入peerConnectionClient
         peerConnectionClient.createPeerConnection(
                 mGamePageView.getRootEglBase().getEglBaseContext(),mGamePageView.getLocalRender()
                 ,mGamePageView.getRemoteRenderers(), videoCapturer, mWebRTC.getSignalingParameters());
 
         if (params.initiator) {
-            // Create offer. Offer SDP will be sent to answering client in
-            // PeerConnectionEvents.onLocalDescription event.
+            //I'm Initiator, I should Create SDP offer
             peerConnectionClient.createOffer();
         } else {
             if (params.offerSdp != null) {
@@ -130,36 +129,4 @@ public class AppRTCSingalEvent implements AppRTCClient.SignalingEvents  {
         }
     }
 
-    private VideoCapturer createVideoCapturer() {
-        VideoCapturer videoCapturer = null;
-        //get camera
-        videoCapturer = createCameraCapturer(new Camera1Enumerator(true));
-        if (videoCapturer == null) {
-            return null;
-        }
-        return videoCapturer;
-    }
-
-    private VideoCapturer createCameraCapturer(CameraEnumerator enumerator) {
-        final String[] deviceNames = enumerator.getDeviceNames();
-        // First, try to find front facing camera
-        for (String deviceName : deviceNames) {
-            if (enumerator.isFrontFacing(deviceName)) {
-                VideoCapturer videoCapturer = enumerator.createCapturer(deviceName, null);
-                if (videoCapturer != null) {
-                    return videoCapturer;
-                }
-            }
-        }
-        for (String deviceName : deviceNames) {
-            if (!enumerator.isFrontFacing(deviceName)) {
-                VideoCapturer videoCapturer = enumerator.createCapturer(deviceName, null);
-                if (videoCapturer != null) {
-                    return videoCapturer;
-                }
-            }
-        }
-
-        return null;
-    }
 }

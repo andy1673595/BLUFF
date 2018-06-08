@@ -78,7 +78,6 @@ public class WebRTC {
 
     public void startCall() {
         callStartedTimeMs = System.currentTimeMillis();
-        mPeerConnectionEvent.setCallStartedTimeMs(callStartedTimeMs);
         mAppRTCSingalEvent.setCallStartedTimeMs(callStartedTimeMs);
         mFirebaseRTCClient.connectToRoom(roomConnectionParameters);
         audioManager = AppRTCAudioManager.create(mGamePageView, new Runnable() {

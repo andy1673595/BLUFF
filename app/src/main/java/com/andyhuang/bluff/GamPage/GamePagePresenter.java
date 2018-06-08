@@ -114,7 +114,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
             }
         });
 
-        mWebRTC = new WebRTC(this,(GamePage) mGamePageView,roomID);
+        mWebRTC = new WebRTC(this,mGamePageView,roomID);
         mWebRTC.startCall();
     }
     //when click video icon layout or leave game , disconnect video

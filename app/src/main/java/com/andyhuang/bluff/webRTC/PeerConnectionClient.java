@@ -9,9 +9,7 @@
  */
 package com.andyhuang.bluff.webRTC;
 
-import android.app.Activity;
 import android.content.Context;
-import android.media.projection.MediaProjection;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
@@ -29,23 +27,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.webrtc.AudioSource;
 import org.webrtc.AudioTrack;
-import org.webrtc.Camera1Enumerator;
-import org.webrtc.Camera2Enumerator;
-import org.webrtc.CameraEnumerator;
 import org.webrtc.CameraVideoCapturer;
 import org.webrtc.DataChannel;
 import org.webrtc.EglBase;
-import org.webrtc.FileVideoCapturer;
 import org.webrtc.IceCandidate;
 import org.webrtc.Logging;
 import org.webrtc.MediaConstraints;
 import org.webrtc.MediaStream;
 import org.webrtc.PeerConnection;
-import org.webrtc.PeerConnection.IceConnectionState;
 import org.webrtc.PeerConnectionFactory;
 import org.webrtc.RtpParameters;
 import org.webrtc.RtpSender;
-import org.webrtc.ScreenCapturerAndroid;
 import org.webrtc.SdpObserver;
 import org.webrtc.SessionDescription;
 import org.webrtc.StatsObserver;
@@ -400,6 +392,27 @@ public class PeerConnectionClient {
 
     private void createMediaConstraintsInternal() {
         // Create peer connection constraints.
+        createMediaConstraints();
+        // Create audio constraints.
+        createAudioConstrains();
+        // Create SDP constraints.
+        createSDPConstrains();
+    }
+
+    private void createSDPConstrains() {
+        sdpMediaConstraints = new MediaConstraints();
+        sdpMediaConstraints.mandatory.add(
+                new MediaConstraints.KeyValuePair("OfferToReceiveAudio", "true"));
+        if (videoCallEnabled || peerConnectionParameters.loopback) {
+            sdpMediaConstraints.mandatory.add(
+                    new MediaConstraints.KeyValuePair("OfferToReceiveVideo", "true"));
+        } else {
+            sdpMediaConstraints.mandatory.add(
+                    new MediaConstraints.KeyValuePair("OfferToReceiveVideo", "false"));
+        }
+    }
+
+    private void createMediaConstraints() {
         pcConstraints = new MediaConstraints();
         // Enable DTLS for normal calls and disable for loopback calls.
         if (peerConnectionParameters.loopback) {
@@ -433,8 +446,9 @@ public class PeerConnectionClient {
             }
             Logging.d(TAG, "Capturing format: " + videoWidth + "x" + videoHeight + "@" + videoFps);
         }
+    }
 
-        // Create audio constraints.
+    private void createAudioConstrains() {
         audioConstraints = new MediaConstraints();
         // added for audio performance measurements
         if (peerConnectionParameters.noAudioProcessing) {
@@ -453,18 +467,8 @@ public class PeerConnectionClient {
             audioConstraints.mandatory.add(
                     new MediaConstraints.KeyValuePair(AUDIO_LEVEL_CONTROL_CONSTRAINT, "true"));
         }
-        // Create SDP constraints.
-        sdpMediaConstraints = new MediaConstraints();
-        sdpMediaConstraints.mandatory.add(
-                new MediaConstraints.KeyValuePair("OfferToReceiveAudio", "true"));
-        if (videoCallEnabled || peerConnectionParameters.loopback) {
-            sdpMediaConstraints.mandatory.add(
-                    new MediaConstraints.KeyValuePair("OfferToReceiveVideo", "true"));
-        } else {
-            sdpMediaConstraints.mandatory.add(
-                    new MediaConstraints.KeyValuePair("OfferToReceiveVideo", "false"));
-        }
     }
+
 
     private void createPeerConnectionInternal(EglBase.Context renderEGLContext) {
         if (factory == null || isError) {
@@ -505,6 +509,7 @@ public class PeerConnectionClient {
         }
 
         mediaStream.addTrack(createAudioTrack());
+        //將本地端的視訊流傳給peerConnection
         peerConnection.addStream(mediaStream);
         if (videoCallEnabled) {
             findVideoSender();

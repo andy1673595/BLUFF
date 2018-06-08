@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 
+import com.andyhuang.bluff.Constant.ConstantForWebRTC;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,6 +60,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     public void onDataChange(DataSnapshot dataSnapshot) {
         Log.d(TAG, "onDataChanged");
         if(!dataSnapshot.exists() && !isInitiator) {
+            //I'm the communication Initiator
             isInitiator = true;
         }
 
@@ -70,6 +72,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
                 mWebRTC.showDisconnectMessage();
                 return;
             }
+            //tell server I'm connected
             database.child(CHANNEL_VIDEO).child(gameRoomID).child(roomID).child("connected").setValue(true);
             isConnected = true;
             //Connected
@@ -78,17 +81,16 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
                 public void run() {
                     List<PeerConnection.IceServer> iceServerList = null;
                     try {
-                        iceServerList = requestTurnServers("https://networktraversal.googleapis.com/v1alpha/iceconfig?key=AIzaSyAJdh2HkajseEIltlZ3SIXO02Tze9sO3NY");
-                        //iceServerList = new LinkedList<PeerConnection.IceServer>();
+                        iceServerList = requestTurnServers(ConstantForWebRTC.TURN_SERVER_URL);
                         SignalingParameters parameters = new SignalingParameters(
-                                // Ice servers are not needed for direct connections.
+                                // Ice TURN servers are not needed for direct connections
                                 iceServerList,
                                 isInitiator, // Server side acts as the initiator on direct connections.
-                                null, // clientId
-                                null, // wssUrl
-                                null, // wwsPostUrl
-                                null, // offerSdp
-                                null // iceCandidates
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                         );
                         Log.d(TAG,"event.onConnectedToRomm");
                         events.onConnectedToRoom(parameters);
@@ -102,12 +104,11 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
 
         if(dataSnapshot.hasChildren()) {
             Iterator<DataSnapshot> children = dataSnapshot.getChildren().iterator();
-
             while(children.hasNext()) {
                 DataSnapshot child = children.next();
-
                 if(child.getKey() != roomID) {
                     if(child.hasChild("sdp") ) {
+                        //接收先進房間的人傳送的sdp
                         child.getChildren();
                         final SessionDescription sdp = getSdp(child.child("sdp"));
                         Log.d(TAG, "onRemoteDescription: " + sdp.description);
@@ -149,9 +150,6 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     @Override
     public void connectToRoom(RoomConnectionParameters connectionParameters) {
         Log.d(TAG, "connect to room : " + connectionParameters.roomId);
-        if (connectionParameters.loopback) {
-            Log.d(TAG, "Loopback connections aren't supported by FirebaseRTCClient.");
-        }
         roomID = Build.SERIAL;
         database.child(CHANNEL_VIDEO).child(gameRoomID).addValueEventListener(this);
     }
@@ -206,6 +204,7 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
         sdpAdded.clear();
     }
 
+    //request for TURN servers
     private LinkedList<PeerConnection.IceServer> requestTurnServers(String url)
             throws IOException, JSONException {
         LinkedList<PeerConnection.IceServer> turnServers = new LinkedList<PeerConnection.IceServer>();

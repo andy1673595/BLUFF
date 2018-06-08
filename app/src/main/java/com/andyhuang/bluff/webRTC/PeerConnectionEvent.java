@@ -7,12 +7,12 @@ import org.webrtc.SessionDescription;
 import org.webrtc.StatsReport;
 
 public class PeerConnectionEvent implements  PeerConnectionClient.PeerConnectionEvents {
-    private PeerConnectionClient mPeerConnectionClient;
-    private  AppRTCClient mFirebaseRTCClient;
     private GamePage mGamePageView;
-    private long callStartedTimeMs =0;
-    private PeerConnectionParameters mPeerConnectionParameters;
     private WebRTC mWebRTC;
+    private AppRTCClient mFirebaseRTCClient;
+    private PeerConnectionClient mPeerConnectionClient;
+    private PeerConnectionParameters mPeerConnectionParameters;
+
     public PeerConnectionEvent(GamePage gamePage, PeerConnectionParameters peerParameters
             ,  AppRTCClient firebaseRTCClientInput,WebRTC webRTC) {
         mGamePageView = gamePage;
@@ -20,13 +20,11 @@ public class PeerConnectionEvent implements  PeerConnectionClient.PeerConnection
         mFirebaseRTCClient =firebaseRTCClientInput;
         mWebRTC = webRTC;
     }
+    //從PeerConnectionClient傳來的client元件綁定
     public void setPeerConnectionClient(PeerConnectionClient client) {
         mPeerConnectionClient = client;
     }
 
-    public void setCallStartedTimeMs(long time) {
-        callStartedTimeMs = time;
-    }
     @Override
     public void onLocalDescription(final SessionDescription sdp) {
         mGamePageView.runOnUiThread(new Runnable() {
