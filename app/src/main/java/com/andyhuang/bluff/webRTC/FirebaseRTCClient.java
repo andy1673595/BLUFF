@@ -72,34 +72,13 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
                 mWebRTC.showDisconnectMessage();
                 return;
             }
-            //tell server I'm connected
-            database.child(CHANNEL_VIDEO).child(gameRoomID).child(roomID).child("connected").setValue(true);
-            isConnected = true;
-            //Connected
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    List<PeerConnection.IceServer> iceServerList = null;
-                    try {
-                        iceServerList = requestTurnServers(ConstantForWebRTC.TURN_SERVER_URL);
-                        SignalingParameters parameters = new SignalingParameters(
-                                // Ice TURN servers are not needed for direct connections
-                                iceServerList,
-                                isInitiator, // Server side acts as the initiator on direct connections.
-                                null,
-                                null,
-                                null,
-                                null,
-                                null
-                        );
-                        Log.d(TAG,"event.onConnectedToRomm");
-                        events.onConnectedToRoom(parameters);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
+            else {
+                //tell server I'm connected
+                database.child(CHANNEL_VIDEO).child(gameRoomID).child(roomID).child("connected").setValue(true);
+                isConnected = true;
+                //Connected
+                connectedToRoomOnAppRTC();
+            }
         }
 
         if(dataSnapshot.hasChildren()) {
@@ -109,34 +88,13 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
                 if(child.getKey() != roomID) {
                     if(child.hasChild("sdp") ) {
                         //接收先進房間的人傳送的sdp
-                        child.getChildren();
-                        final SessionDescription sdp = getSdp(child.child("sdp"));
-                        Log.d(TAG, "onRemoteDescription: " + sdp.description);
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(sdpAdded.get(sdp.type + sdp.description) == null) {
-                                    events.onRemoteDescription(sdp);
-                                    sdpAdded.put(sdp.type + sdp.description, true);
-                                }
-                            }
-                        });
-
+                        //setRemoteDescription on AppRTC
+                        setRemoteDescriptionOnAppRTC(getSdp(child.child("sdp")));
                     }
-
                     Iterator<DataSnapshot>  iceList = child.child("icecandidate").getChildren().iterator();
-
                     while (iceList.hasNext()) {
-                        DataSnapshot iceChild = iceList.next();
-                        final IceCandidate candidate = getIceCandidate(iceChild);
-
-                        Log.d(TAG, "onRemoteIceCandidate");
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                events.onRemoteIceCandidate(candidate);
-                            }
-                        });
+                        //添加候補ice伺服器
+                        addIceCandiateOnAppRTC(getIceCandidate(iceList.next()));
                     }
                 }
             }
@@ -154,12 +112,6 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
         database.child(CHANNEL_VIDEO).child(gameRoomID).addValueEventListener(this);
     }
 
-    private SessionDescription getSdp(DataSnapshot db) {
-        String type = db.child("type").getValue().toString();
-        String desc = db.child("description").getValue().toString();
-
-        return new SessionDescription(SessionDescription.Type.fromCanonicalForm(type), desc);
-    }
 
     @Override
     public void sendOfferSdp(SessionDescription sdp) {
@@ -171,14 +123,6 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
     public void sendAnswerSdp(SessionDescription sdp) {
         Log.d(TAG, "send answer sdp");
         database.child(CHANNEL_VIDEO).child(gameRoomID).child(roomID).child("sdp").setValue(sdp);
-    }
-
-    private IceCandidate getIceCandidate(DataSnapshot db) {
-        String sdp = db.child("sdp").getValue(String.class);
-        int sdpMLineIndex = db.child("sdpMLineIndex").getValue(Integer.class);
-        String sdpMid = db.child("sdpMid").getValue(String.class);
-
-        return new IceCandidate(sdpMid, sdpMLineIndex, sdp);
     }
 
     @Override
@@ -243,5 +187,72 @@ public class FirebaseRTCClient implements AppRTCClient, ValueEventListener {
         Scanner s = new Scanner(in).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
     }
+
+
+    /* AppRtc methods */
+    //return the sdp
+    private SessionDescription getSdp(DataSnapshot db) {
+        String type = db.child("type").getValue().toString();
+        String desc = db.child("description").getValue().toString();
+        return new SessionDescription(SessionDescription.Type.fromCanonicalForm(type), desc);
+    }
+    //get Ice Candidate data
+    private IceCandidate getIceCandidate(DataSnapshot db) {
+        String sdp = db.child("sdp").getValue(String.class);
+        int sdpMLineIndex = db.child("sdpMLineIndex").getValue(Integer.class);
+        String sdpMid = db.child("sdpMid").getValue(String.class);
+        return new IceCandidate(sdpMid, sdpMLineIndex, sdp);
+    }
+
+    //Connect to room on AppRTC
+    private void connectedToRoomOnAppRTC() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<PeerConnection.IceServer> iceServerList = null;
+                try {
+                    iceServerList = requestTurnServers(ConstantForWebRTC.TURN_SERVER_URL);
+                    SignalingParameters parameters = new SignalingParameters(
+                            // Ice TURN servers are not needed for direct connections
+                            iceServerList,
+                            isInitiator, // Server side acts as the initiator on direct connections.
+                            null,
+                            null,
+                            null,
+                            null,
+                            null
+                    );
+                    //connect to room
+                    events.onConnectedToRoom(parameters);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void setRemoteDescriptionOnAppRTC(final SessionDescription sdp) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if(sdpAdded.get(sdp.type + sdp.description) == null) {
+                    events.onRemoteDescription(sdp);
+                    sdpAdded.put(sdp.type + sdp.description, true);
+                }
+            }
+        });
+    }
+
+    private void addIceCandiateOnAppRTC(final IceCandidate candidate) {
+        Log.d(TAG, "onRemoteIceCandidate");
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                events.onRemoteIceCandidate(candidate);
+            }
+        });
+    }
+
+
 
 }

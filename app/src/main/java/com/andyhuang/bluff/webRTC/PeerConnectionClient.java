@@ -1133,7 +1133,6 @@ public class PeerConnectionClient {
 
         @Override
         public void onSetSuccess() {
-            Log.d(TAG,"into setSuccess");
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
