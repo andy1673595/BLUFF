@@ -19,6 +19,9 @@ BLUFF是一款能讓使用者連線視訊吹牛的 App，<br />
   * 可點選好友欄位觀看好友個人資料
   * 勾選想要邀請遊戲的對象右邊的框框，按下下方開啟遊戲房間進行邀請
   * 若有人拒絕邀請則遊戲房間會自動關閉，請重新進行邀請
+ 
+* 隨機對戰 (兩人吹牛)
+  * 點選選單 "隨機對戰" 即可加入佇列等待遊戲
   
 * 遊戲房間頁面
   * 可以點開上方 "目前玩家" 觀看進入房間的人數
@@ -36,7 +39,7 @@ BLUFF是一款能讓使用者連線視訊吹牛的 App，<br />
   * 可讓使用者從自身手機裡選取圖片，自定義大頭照
   * 可讓使用者改變個性化簽名
 
-排行榜
+* 排行榜
   * 可觀看 firebase 上面總次數、兩人遊戲贏的總次數以及勝率等排行前三名
   * 勝率目前暫定 5 場以上兩人遊戲才有進入排行
 
@@ -49,11 +52,9 @@ BLUFF是一款能讓使用者連線視訊吹牛的 App，<br />
 
 
 # Screenshot
-<img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-05-28-15-28-39-509_com.andyhuang.bluff.png" width="240"> 
-<img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-06-13-01-08-23-223_com.andyhuang.bluff.png" width="240"> 
-<img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-05-28-15-32-25-202_com.andyhuang.bluff.png" width="240"> 
-<img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-05-28-15-35-46-061_com.andyhuang.bluff.png" width="240"> 
-<img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-06-05-15-18-32-925_com.andyhuang.bluff.png" width="240"> 
+<img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-05-28-15-28-39-509_com.andyhuang.bluff.png" width="240"><img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-06-13-01-08-23-223_com.andyhuang.bluff.png" width="240"> 
+<img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-05-28-15-32-25-202_com.andyhuang.bluff.png" width="240"><img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-05-28-15-35-46-061_com.andyhuang.bluff.png" width="240"> 
+<img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-06-05-15-18-32-925_com.andyhuang.bluff.png" width="240">
 
 
 # Requirement
