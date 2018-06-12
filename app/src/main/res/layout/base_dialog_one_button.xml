@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/base_dialog_one_button_background"
+        android:layout_width="329dp"
+        android:layout_height="250dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/increase_dialog_back_2" />
+
+
+    <TextView
+        android:id="@+id/text_base_dialog_one_button_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="標題"
+        android:textColor="@color/teal600"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/base_dialog_one_button_background" />
+
+    <Button
+        android:id="@+id/button_base_dialog_one_button"
+        style="@style/MyButtonInDiceDialog"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="確認"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/base_dialog_one_button_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/text_content_base_dialog_one_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/teal800"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/button_base_dialog_one_button"
+        app:layout_constraintEnd_toEndOf="@+id/base_dialog_one_button_background"
+        app:layout_constraintStart_toStartOf="@+id/base_dialog_one_button_background"
+        tools:text="內容" />
+
+</android.support.constraint.ConstraintLayout>

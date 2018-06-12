@@ -16,6 +16,8 @@ public interface FriendContract {
         void showGamePage(String GameRoomID,int playerInvitedTotal);
         void showErrorDialog(String message);
         void showFriendProfile(String friendUID);
+        void showInviteFriendErrorDialog(String email);
+        void showInviteFriendSuccessDialog(String email);
     }
     interface Presenter extends BasePresenter {
         void inviteGame(FriendInformation friend);

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andyhuang.bluff.Bluff;
+import com.andyhuang.bluff.Dialog.BaseDialogForOneButton;
 import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.activities.BluffMainActivity;
@@ -101,6 +102,19 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
     public void showErrorDialog(String errorMessage) {
         IniviteErrorDialog dialog = new IniviteErrorDialog(this.getActivity(),errorMessage);
         dialog.show();
+    }
+    @Override
+    public void showInviteFriendErrorDialog(String email) {
+        BaseDialogForOneButton errorDialog = new BaseDialogForOneButton(this.getActivity(),
+                "邀請錯誤","邀請 "+ email +" 失敗");
+        errorDialog.show();
+    }
+
+    @Override
+    public void showInviteFriendSuccessDialog(String email) {
+        BaseDialogForOneButton errorDialog = new BaseDialogForOneButton(this.getActivity(),
+                "邀請成功","邀請 "+ email +" 成功");
+        errorDialog.show();
     }
 
     @Override
