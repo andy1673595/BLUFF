@@ -82,6 +82,7 @@ public class Login extends BaseActivity implements View.OnClickListener,LoginCon
             case R.id.constraintLayout_fb_login:
                 //fb登入按鈕
                 UserManager.getInstance().reset();
+                LoginManager.getInstance().logOut();
                 LoginManager.getInstance().logInWithReadPermissions(this,
                         Arrays.asList("public_profile", "user_friends","email"));
                 break;
