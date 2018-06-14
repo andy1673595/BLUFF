@@ -52,9 +52,9 @@ BLUFF是一款能讓使用者連線視訊吹牛的 App，<br />
 
 
 # Screenshot
-<img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-05-28-15-28-39-509_com.andyhuang.bluff.png" width="240"><tr /><img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-06-13-01-08-23-223_com.andyhuang.bluff.png" width="240"> 
-<img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-05-28-15-32-25-202_com.andyhuang.bluff.png" width="240"><tr /><img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-05-28-15-35-46-061_com.andyhuang.bluff.png" width="240"> 
-<img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-06-05-15-18-32-925_com.andyhuang.bluff.png" width="240"><tr /><img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-06-13-03-56-27-783_com.andyhuang.bluff.png" width="240">
+<img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-05-28-15-28-39-509_com.andyhuang.bluff.png" width="240">  <img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-06-13-01-08-23-223_com.andyhuang.bluff.png" width="240"> 
+<img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-05-28-15-32-25-202_com.andyhuang.bluff.png" width="240">  <img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-05-28-15-35-46-061_com.andyhuang.bluff.png" width="240"> 
+<img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-06-05-15-18-32-925_com.andyhuang.bluff.png" width="240">  <img src="https://github.com/andy1673595/BLUFF/blob/master/pictures/Screenshot_2018-06-13-03-56-27-783_com.andyhuang.bluff.png" width="240">
 
 
 # Requirement
