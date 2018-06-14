@@ -38,6 +38,8 @@ public class ChangeUserPhotoHelper {
             contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         } else if ("audio".equals(type)) {
             contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        } else if ("primary".equalsIgnoreCase(type)) {
+            return Environment.getExternalStorageDirectory() + "/" + split[1];
         }
         final String selection = "_id=?";
         final String[] selectionArgs = new String[]{

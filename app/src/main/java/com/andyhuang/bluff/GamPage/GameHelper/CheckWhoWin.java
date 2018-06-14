@@ -62,7 +62,7 @@ public class CheckWhoWin {
     }
 
     //檢查是喊得贏還是抓得贏
-    private boolean checkCatchSuccess(CurrentInformation currentInformation) {
+    public boolean checkCatchSuccess(CurrentInformation currentInformation) {
         int numberCatch = currentInformation.getRecentDiceType();
         int countCatch = currentInformation.getRecentDiceNumber();
         //沒有喊過1 , 1可以當所有的數目
