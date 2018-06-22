@@ -1,5 +1,6 @@
 package com.andyhuang.bluff.GamPage;
 
+import com.andyhuang.bluff.Callback.DisconnectCallback;
 import com.andyhuang.bluff.GamPage.GameHelper.CheckWhoWin;
 import com.andyhuang.bluff.GamPage.GameObject.GameEndInformation;
 import com.andyhuang.bluff.GamPage.GameHelper.GameFirebaseHelper;
@@ -121,8 +122,14 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     @Override
     public void disconnectVideo() {
         isVideoSwitchOn = false;
-        mWebRTC.disconnectReset();
-        mWebRTC =null;
+        if(mWebRTC != null) {
+            mWebRTC.disconnectReset(new DisconnectCallback() {
+                @Override
+                public void completedDisconnected() {
+                    mWebRTC =null;
+                }
+            });
+        }
         mGamePageView.freshSwitchUI(isVideoSwitchOn);
         mGamePageView.closeVideo();
     }

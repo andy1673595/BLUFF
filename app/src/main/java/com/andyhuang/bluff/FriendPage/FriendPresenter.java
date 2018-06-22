@@ -157,17 +157,27 @@ public class FriendPresenter implements FriendContract.Presenter {
         query.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
             @Override
             public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                String friendUID = "";
+                boolean error = false;
                 if (dataSnapshot.exists()) {
                     for (com.google.firebase.database.DataSnapshot datafind : dataSnapshot.getChildren()) {
-                        String friendUID =datafind.getKey();
-                        //send invite
-                        myRef.child(friendUID).child(Constants.FRIEND_LIST_FIREBASE).child(myUID)
-                                .setValue(friendInviteMap);
-
-
+                        friendUID =datafind.getKey();
+                        if(friendUID .equals(UserManager.getInstance().getUserUID())) {
+                            //can't invite yourself
+                            error = true;
+                        } else {
+                            //send invite
+                            myRef.child(friendUID).child(Constants.FRIEND_LIST_FIREBASE).child(myUID)
+                                    .setValue(friendInviteMap);
+                        }
                     }
-                    friendPageView.showInviteFriendSuccessDialog(email);
-                } else {
+                    if(!error) {
+                        //display dialog
+                        friendPageView.showInviteFriendSuccessDialog(email);
+                    }
+                }
+                if(error) {
+                    //show invite error dialog
                     friendPageView.showInviteFriendErrorDialog(email);
                 }
             }

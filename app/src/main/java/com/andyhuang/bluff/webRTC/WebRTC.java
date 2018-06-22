@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.andyhuang.bluff.Callback.DisconnectCallback;
 import com.andyhuang.bluff.Callback.DisconnectDialogCallback;
 import com.andyhuang.bluff.GamPage.GamePagePresenter;
 import com.andyhuang.bluff.activities.GamePage;
@@ -90,7 +91,7 @@ public class WebRTC {
         audioManager.init();
     }
 
-    public void disconnectReset() {
+    public void disconnectReset(DisconnectCallback callback) {
         if (mFirebaseRTCClient != null) {
             mFirebaseRTCClient.disconnectFromRoom();
             mFirebaseRTCClient = null;
@@ -106,6 +107,7 @@ public class WebRTC {
             audioManager = null;
         }
         Log.d("errorTEST","endWebRTC audio = null end");
+        callback.completedDisconnected();
     }
     void checkPermissions() {
         // Check for mandatory permissions.

@@ -171,7 +171,7 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
 
     @Override
     public void setUserPhotoOnDrawer(String userPhotoURL) {
-        if (!userPhotoURL.equals(Constants.NODATA)) {
+        if (!(userPhotoURL==null)&&!(userPhotoURL.equals(Constants.NODATA))) {
             //not default value, set the image by photo url
             imageUserPhotoForDrawer.setTag(userPhotoURL);
             new ImageFromLruCache().set(imageUserPhotoForDrawer, userPhotoURL, 10000f);
