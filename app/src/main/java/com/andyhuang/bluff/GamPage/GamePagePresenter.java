@@ -19,7 +19,7 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     private boolean isplaying = false;
     private boolean hasTellOne = false;
     private boolean isVideoSwitchOn = false;
-    private IncreaseDiceDialog mDialog;
+    private IncreaseDiceDialog mIncreaseDiceDialogDialog =null;
     private ArrayList<Gamer> playerHaveJoinedList = new ArrayList<>();
     private GamePage mGamePageView;
     private GameFirebaseHelper firebaseHelper;
@@ -51,8 +51,8 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     @Override
     public void increaseDice() {
         if(isplaying) {
-            mDialog = new IncreaseDiceDialog((GamePage) mGamePageView,firebaseHelper);
-            mDialog.show();
+            mIncreaseDiceDialogDialog = new IncreaseDiceDialog((GamePage) mGamePageView,firebaseHelper);
+            mIncreaseDiceDialogDialog.show();
         }
     }
 
@@ -198,6 +198,10 @@ public class GamePagePresenter implements GamePageContract.Presenter{
     //when each game is end ,reset game variables
     @Override
     public void reset() {
+        //dismiss IncreaseDialog to avoid bug happen
+        if(mIncreaseDiceDialogDialog!=null&&mIncreaseDiceDialogDialog.isShowing()) {
+            mIncreaseDiceDialogDialog.dismiss();
+        }
         hasTellOne =false;
         isplaying = false;
         buttonType = Constants.BUTTON_READY;

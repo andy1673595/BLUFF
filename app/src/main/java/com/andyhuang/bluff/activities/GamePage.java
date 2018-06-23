@@ -23,6 +23,7 @@ import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 import com.andyhuang.bluff.GamPage.GamePageContract;
 import com.andyhuang.bluff.GamPage.GamePagePresenter;
 import com.andyhuang.bluff.GamPage.GamerLeaveDialog.GamerLeaveDialog;
+import com.andyhuang.bluff.GamPage.IncreaseDiceDialog.IncreaseDiceDialog;
 import com.andyhuang.bluff.GamPage.LeaveRoomDialog.ExitGameDialog;
 import com.andyhuang.bluff.GamPage.GamerJoinedDialog.PlayerJoinedDialog;
 import com.andyhuang.bluff.R;
@@ -173,6 +174,7 @@ public class GamePage extends BaseActivity implements View.OnClickListener ,Game
         }
         updateVideoView();
     }
+
 
     @Override
     public void onClick(View v) {
