@@ -1,16 +1,19 @@
 package com.andyhuang.bluff.FriendPage;
 
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.Constant.Constants;
@@ -29,6 +32,7 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
         mPresenter = mPresenterInput;
         friendPageView = friendPageViewInput;
         listFriend = listInput;
+
     }
 
     @Override
@@ -109,13 +113,14 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
             //set OnClickListeners
             imageLeftIcon.setOnClickListener(this);
             imageRightIcon.setOnClickListener(this);
-            layoutItemBackground.setOnClickListener(this);
+            imageFriendPhoto.setOnClickListener(this);
             checkBoxForInviteGame.setOnCheckedChangeListener(this);
 
         }
 
         @Override
         public void onClick(View v) {
+
             int position = getAdapterPosition();
             switch (v.getId()){
                 case R.id.image_righ_icon_friend_listitem:
@@ -130,7 +135,7 @@ public class FriendPageAdapter extends RecyclerView.Adapter<FriendPageAdapter.Vi
                         mPresenter.acceptInvite(position);
                     }
                     break;
-                case R.id.layout_item_friend_background:
+                case R.id.image_user_photo_friend_invite:
                     //click photo to  look friend Profile
                     friendPageView.showFriendProfile(listFriend.get(position).getUID());
                     break;

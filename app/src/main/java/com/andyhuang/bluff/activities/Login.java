@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,6 +48,7 @@ public class Login extends BaseActivity implements View.OnClickListener,LoginCon
         //檢查sharedPrefrence是否有帳號密碼,有的話直接從裡面拿出來不用讓使用者重新輸入
         mLoginPresenter = new LoginPresenter(this);
         mLoginPresenter.checkSharedPreference();
+
     }
 
     //把layout的變數找到對應的id
@@ -144,4 +147,6 @@ public class Login extends BaseActivity implements View.OnClickListener,LoginCon
     public void setPresenter(Object presenter) {
 
     }
+
+
 }

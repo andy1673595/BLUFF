@@ -55,6 +55,8 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
         return root;
     }
 
+
+
     @Override
     public void setPresenter(Object presenter) {
         mPresenter = (FriendPresenter) presenter;
@@ -64,6 +66,8 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
     public void freshFriendList() {
 
     }
+
+
 
     @Override
     public void setAdapter(ArrayList<FriendInformation> listInput) {
@@ -128,6 +132,7 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
             case R.id.image_find_friend:
                 mPresenter.inviteFriend(String.valueOf(editEmailToFindFriend.getText()));
                 hideSoftInput();
+                clearEditTestFocus();
                 break;
             case R.id.text_open_room_friend_page:
                 mPresenter.getNumberOfGameRoom(mAdapter);
@@ -147,4 +152,9 @@ public class FriendFragment extends Fragment implements FriendContract.View,View
         friendFragmentListener= (FragmentListener) activity;
         super.onAttach(activity);
     }
+
+    public void  clearEditTestFocus() {
+        editEmailToFindFriend.clearFocus();
+    }
+
 }

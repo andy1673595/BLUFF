@@ -13,7 +13,9 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,6 +72,7 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
         mChangeUserPhotoHelper = new ChangeUserPhotoHelper(this);
         //set drawer layout default setting
         setDrawerLayout();
+
     }
 
     private void initView() {
@@ -77,6 +80,7 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
         //navigationView element
         mNavigationView = findViewById(R.id.navigation_view);
         imageUserPhotoForDrawer = mNavigationView.getHeaderView(0).findViewById(R.id.imageUserPhotoInDrawer);
+        imageUserPhotoForDrawer.setOnClickListener(mainClickListener);
         textNameForDrawer = mNavigationView.getHeaderView(0).findViewById(R.id.textUserNameInDrawer);
         myDrawerLayout = findViewById(R.id.drawrlayout_main);
     }
@@ -124,6 +128,10 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
                 //開啟 drawer 選單
                 case R.id.image_menu_button:
                     myDrawerLayout.openDrawer(Gravity.LEFT);
+                    break;
+                case R.id.imageUserPhotoInDrawer:
+                    mPresenter.transToProfilePage();
+                    myDrawerLayout.closeDrawers();
                     break;
             }
         }
@@ -290,5 +298,8 @@ public class BluffMainActivity extends BaseActivity implements BluffContract.Vie
             }
         }
     };
+
+
+
 }
 

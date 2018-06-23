@@ -8,6 +8,7 @@ import com.andyhuang.bluff.GamPage.GameObject.Gamer;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class BLUFFTest extends AndroidTestCase {
@@ -33,4 +34,6 @@ public class BLUFFTest extends AndroidTestCase {
         //assert
         assertEquals(expect, actual);
     }
+
+
 }

@@ -28,10 +28,6 @@
             app:layout_constraintEnd_toStartOf="@+id/image_find_friend"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/image_find_friend"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/image_find_friend"

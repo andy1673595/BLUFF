@@ -176,7 +176,7 @@ public class FriendPresenter implements FriendContract.Presenter {
                         friendPageView.showInviteFriendSuccessDialog(email);
                     }
                 }
-                if(error) {
+                else  {
                     //show invite error dialog
                     friendPageView.showInviteFriendErrorDialog(email);
                 }
