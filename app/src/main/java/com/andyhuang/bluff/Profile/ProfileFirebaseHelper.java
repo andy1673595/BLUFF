@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.andyhuang.bluff.Callback.GameResultCallback;
 import com.andyhuang.bluff.Callback.ProfileUserDataCallback;
+import com.andyhuang.bluff.Callback.UpdateUserPhotoCallback;
 import com.andyhuang.bluff.Object.FriendInformation;
 import com.andyhuang.bluff.Profile.Listener.GameResultListener;
 import com.andyhuang.bluff.Profile.Listener.UserDataListener;
@@ -39,7 +40,7 @@ public class ProfileFirebaseHelper {
     /** input the photo changed Uri, then upload it to firebase
         firebase will return a Url for getting image uploaded
         then update this url to database on firebase **/
-    public void updateUserPhotoAfterChanged(Uri newPhotoUri) {
+    public void updateUserPhotoAfterChanged(Uri newPhotoUri, final UpdateUserPhotoCallback callback) {
         Uri file = newPhotoUri;
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         StorageReference riversRef = mStorageRef.child("Profile_images/" + UserManager.getInstance().getUserUID() + ".jpg");
@@ -56,6 +57,7 @@ public class ProfileFirebaseHelper {
                                 .setValue(downloadUrl.toString());
                         //update all my photo urls of my friends on firebase
                         updateAllFriendMyPhoto(downloadUrl.toString());
+                        callback.completed(downloadUrl.toString());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

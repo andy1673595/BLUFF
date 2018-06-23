@@ -6,10 +6,12 @@ import android.net.Uri;
 import com.andyhuang.bluff.Bluff;
 import com.andyhuang.bluff.Callback.GameResultCallback;
 import com.andyhuang.bluff.Callback.ProfileUserDataCallback;
+import com.andyhuang.bluff.Callback.UpdateUserPhotoCallback;
 import com.andyhuang.bluff.Object.GameResult;
 import com.andyhuang.bluff.R;
 import com.andyhuang.bluff.User.UserManager;
 import com.andyhuang.bluff.Constant.Constants;
+import com.andyhuang.bluff.activities.BluffMainActivity;
 
 public class ProfilePresenter implements ProfileContract.Presenter {
     ProfileContract.View mProfileView;
@@ -42,11 +44,11 @@ public class ProfilePresenter implements ProfileContract.Presenter {
 
     @Override
     public void changeUserPhoto(Uri newPhotoUri) {
-        mFirebaseHelper.updateUserPhotoAfterChanged(newPhotoUri);
+        mFirebaseHelper.updateUserPhotoAfterChanged(newPhotoUri,mUpdateUserPhotoCallback);
 
     }
 
-    GameResultCallback mGameResultCallback = new GameResultCallback() {
+    private GameResultCallback mGameResultCallback = new GameResultCallback() {
         @Override
         public void getGameResultData(GameResult gameResult) {
             String totalTimes = ""+gameResult.getTotalTimes();
@@ -61,13 +63,20 @@ public class ProfilePresenter implements ProfileContract.Presenter {
         }
     };
 
-    ProfileUserDataCallback mProfileUserDataCallback = new ProfileUserDataCallback() {
+    private ProfileUserDataCallback mProfileUserDataCallback = new ProfileUserDataCallback() {
         @Override
         public void userDataReadCompleted(String userName, String userEmail, String userPhotoUrl, String userComment) {
             if(userComment.equals(Constants.NODATA)) {
                 userComment = Bluff.getContext().getString(R.string.comment_default);
             }
             mProfileView.setUserDataToUI(userName,userEmail,userPhotoUrl,userComment);
+        }
+    };
+
+    private UpdateUserPhotoCallback mUpdateUserPhotoCallback = new UpdateUserPhotoCallback() {
+        @Override
+        public void completed(String photoUrl) {
+            ((BluffMainActivity)((ProfileFragment)mProfileView).getActivity()).setUserPhotoOnDrawer(photoUrl);
         }
     };
 }
